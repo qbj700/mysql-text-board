@@ -77,19 +77,68 @@ public class ArticleDao {
 		return articles;
 	}
 
-	private List<Article> getFakeArticles() {
+	public Article loadArticleDataById(int inputedId) {
+		Connection con = null;
+		Article article = null;
 
-		List<Article> articles = new ArrayList<>();
+		try {
 
-		Article article;
-		// 첫번째 가짜 게시물 만들기
-		article = new Article(1, "2020-11-12 12:12:12", "2020-11-12 12:12:12", "제목1", "내용1", 1, 1);
-		articles.add(article);
+			String driver = "com.mysql.cj.jdbc.Driver";
 
-		// 두번째 가짜 게시물 만들기
-		article = new Article(2, "2020-11-12 12:12:13", "2020-11-12 12:12:13", "제목2", "내용2", 1, 1);
-		articles.add(article);
+			String url = "jdbc:mysql://127.0.0.1:3306/textBoard?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull&connectTimeout=60000&socketTimeout=60000";
+			String user = "sbsst";
+			String pw = "sbs123414";
 
-		return articles;
+			// MySQL 드라이버 등록
+			try {
+				Class.forName(driver);
+			} catch (ClassNotFoundException e1) {
+				e1.printStackTrace();
+			}
+
+			// 연결 생성
+			try {
+				con = DriverManager.getConnection(url, user, pw);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+			String sql = "SELECT * FROM article WHERE id = ?";
+
+			try {
+				PreparedStatement pstmt = con.prepareStatement(sql);
+
+				pstmt.setInt(1, inputedId);
+
+				ResultSet rs = pstmt.executeQuery();
+
+				if (rs.next()) {
+					int id = rs.getInt("id");
+					String regDate = rs.getString("regDate");
+					String updateDate = rs.getString("updateDate");
+					String title = rs.getString("title");
+					String body = rs.getString("body");
+					int memberId = rs.getInt("memberId");
+					int boardId = rs.getInt("boardId");
+
+					article = new Article(id, regDate, updateDate, title, body, memberId, boardId);
+				}
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		} finally {
+			try {
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return article;
 	}
+
 }

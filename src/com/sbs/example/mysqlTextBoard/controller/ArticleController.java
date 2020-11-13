@@ -13,7 +13,44 @@ public class ArticleController {
 		articleService = new ArticleService();
 	}
 
-	public void showList() {
+	public void doCommand(String cmd) {
+		if (cmd.equals("article list")) {
+			showList(cmd);
+		} else if (cmd.startsWith("article detail ")) {
+			showDetail(cmd);
+		}
+
+	}
+
+	private void showDetail(String cmd) {
+		int inputedId = 0;
+		try {
+			inputedId = Integer.parseInt(cmd.split(" ")[2]);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			System.out.println("게시물 번호를 입력해주세요.");
+			return;
+		} catch (NumberFormatException e) {
+			System.out.println("게시물 번호는 양의 정수를입력해 주세요.");
+			return;
+		}
+
+		Article article = articleService.getArticleById(inputedId);
+
+		if (article == null) {
+			System.out.printf("%d번 게시물은 존재하지 않습니다.\n", inputedId);
+			return;
+		}
+
+		System.out.println("== 게시물 상세정보 ==");
+		System.out.printf("번호 : %d\n", article.id);
+		System.out.printf("등록일자 : %s\n", article.regDate);
+		System.out.printf("수정일자 : %s\n", article.updateDate);
+		System.out.printf("제목 : %s\n", article.title);
+		System.out.printf("내용 : %s\n", article.body);
+
+	}
+
+	public void showList(String cmd) {
 		System.out.println("== 게시물 리스트 ==");
 
 		List<Article> articles = articleService.getArticles();
