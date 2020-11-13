@@ -4,14 +4,18 @@ import java.util.List;
 
 import com.sbs.example.mysqlTextBoard.Container;
 import com.sbs.example.mysqlTextBoard.dto.Article;
+import com.sbs.example.mysqlTextBoard.dto.Member;
 import com.sbs.example.mysqlTextBoard.service.ArticleService;
+import com.sbs.example.mysqlTextBoard.service.MemberService;
 
 public class ArticleController {
 
 	private ArticleService articleService;
+	private MemberService memberService;
 
 	public ArticleController() {
-		articleService = new ArticleService();
+		articleService = Container.articleService;
+		memberService = Container.memberService;
 	}
 
 	public void doCommand(String cmd) {
@@ -37,7 +41,7 @@ public class ArticleController {
 		System.out.printf("내용 : ");
 		String body = Container.scanner.nextLine();
 
-		int memberId = 1; // 임시
+		int memberId = Container.session.loginedMemberId;
 		int boardId = 1; // 임시
 
 		int id = articleService.saveArticle(title, body, memberId, boardId);
@@ -119,8 +123,11 @@ public class ArticleController {
 			return;
 		}
 
+		Member member = memberService.getMemberByMemberId(article.memberId);
+
 		System.out.println("== 게시물 상세정보 ==");
 		System.out.printf("번호 : %d\n", article.id);
+		System.out.printf("작성자 : %s\n", member.name);
 		System.out.printf("등록일자 : %s\n", article.regDate);
 		System.out.printf("수정일자 : %s\n", article.updateDate);
 		System.out.printf("제목 : %s\n", article.title);
@@ -133,11 +140,12 @@ public class ArticleController {
 
 		List<Article> articles = articleService.getArticles();
 
-		System.out.println("번호 / 작성 / 수정 /작성자 / 제목");
+		System.out.println("번호 / 작성일 / 수정일 / 작성자 / 제목");
 
 		for (Article article : articles) {
-			System.out.printf("%d / %s / %s / %d / %s\n", article.id, article.regDate, article.updateDate,
-					article.memberId, article.title);
+			Member member = memberService.getMemberByMemberId(article.memberId);
+			System.out.printf("%d / %s / %s / %s / %s\n", article.id, article.regDate, article.updateDate, member.name,
+					article.title);
 		}
 
 	}
