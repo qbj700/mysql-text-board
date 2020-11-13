@@ -25,4 +25,12 @@ public class ArticleService {
 
 	}
 
+	public void modify(int inputedId, String title, String body) {
+		articleDao.modify(inputedId, title, body);
+	}
+
+	public int saveArticle(String title, String body, int memberId, int boardId) {
+		return articleDao.addArticleData(title, body, memberId, boardId);
+	}
+
 }
