@@ -17,7 +17,20 @@ public class MemberController {
 			doJoin(cmd);
 		} else if (cmd.equals("member login")) {
 			doLogin(cmd);
+		} else if (cmd.equals("member logout")) {
+			doLogout(cmd);
 		}
+
+	}
+
+	private void doLogout(String cmd) {
+		if (Container.session.isLogined() == false) {
+			System.out.println("로그인 후 이용해주세요.");
+			return;
+		}
+
+		memberService.logout();
+		System.out.println("정상적으로 로그아웃 되었습니다.");
 
 	}
 

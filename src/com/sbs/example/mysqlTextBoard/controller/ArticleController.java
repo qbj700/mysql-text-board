@@ -34,6 +34,11 @@ public class ArticleController {
 	}
 
 	private void doWrite(String cmd) {
+		if (Container.session.isLogined() == false) {
+			System.out.println("로그인 후 이용해주세요.");
+			return;
+		}
+
 		System.out.println("== 게시물 작성 ==");
 
 		System.out.printf("제목 : ");
@@ -50,6 +55,11 @@ public class ArticleController {
 	}
 
 	private void doModify(String cmd) {
+		if (Container.session.isLogined() == false) {
+			System.out.println("로그인 후 이용해주세요.");
+			return;
+		}
+
 		int inputedId = 0;
 		try {
 			inputedId = Integer.parseInt(cmd.split(" ")[2]);
@@ -65,6 +75,10 @@ public class ArticleController {
 
 		if (article == null) {
 			System.out.printf("%d번 게시물은 존재하지 않습니다.\n", inputedId);
+			return;
+		}
+		if (article.memberId != Container.session.loginedMemberId) {
+			System.out.println("수정할 권한이 없습니다. (작성자만 수정 가능)");
 			return;
 		}
 
@@ -81,6 +95,11 @@ public class ArticleController {
 	}
 
 	private void doDelete(String cmd) {
+		if (Container.session.isLogined() == false) {
+			System.out.println("로그인 후 이용해주세요.");
+			return;
+		}
+
 		int inputedId = 0;
 		try {
 			inputedId = Integer.parseInt(cmd.split(" ")[2]);
@@ -96,6 +115,10 @@ public class ArticleController {
 
 		if (article == null) {
 			System.out.printf("%d번 게시물은 존재하지 않습니다.\n", inputedId);
+			return;
+		}
+		if (article.memberId != Container.session.loginedMemberId) {
+			System.out.println("삭제할 권한이 없습니다. (작성자만 삭제 가능)");
 			return;
 		}
 

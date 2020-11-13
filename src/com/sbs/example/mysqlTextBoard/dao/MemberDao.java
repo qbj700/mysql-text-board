@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sbs.example.mysqlTextBoard.Container;
 import com.sbs.example.mysqlTextBoard.dto.Member;
 
 public class MemberDao {
@@ -197,6 +198,11 @@ public class MemberDao {
 		}
 
 		return member;
+	}
+
+	public void logout() {
+		Container.session.logout();
+
 	}
 
 }

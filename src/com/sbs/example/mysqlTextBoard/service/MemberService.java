@@ -25,4 +25,9 @@ public class MemberService {
 	public Member getMemberByMemberId(int memberId) {
 		return memberDao.getMemberByMemberId(memberId);
 	}
+
+	public void logout() {
+		memberDao.logout();
+
+	}
 }
