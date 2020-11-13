@@ -20,4 +20,9 @@ public class ArticleService {
 		return articleDao.loadArticleDataById(inputedId);
 	}
 
+	public int delete(int inputedId) {
+		return articleDao.delete(inputedId);
+
+	}
+
 }

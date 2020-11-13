@@ -18,7 +18,33 @@ public class ArticleController {
 			showList(cmd);
 		} else if (cmd.startsWith("article detail ")) {
 			showDetail(cmd);
+		} else if (cmd.startsWith("article delete ")) {
+			doDelete(cmd);
 		}
+
+	}
+
+	private void doDelete(String cmd) {
+		int inputedId = 0;
+		try {
+			inputedId = Integer.parseInt(cmd.split(" ")[2]);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			System.out.println("게시물 번호를 입력해주세요.");
+			return;
+		} catch (NumberFormatException e) {
+			System.out.println("게시물 번호는 양의 정수를입력해 주세요.");
+			return;
+		}
+
+		Article article = articleService.getArticleById(inputedId);
+
+		if (article == null) {
+			System.out.printf("%d번 게시물은 존재하지 않습니다.\n", inputedId);
+			return;
+		}
+
+		articleService.delete(inputedId);
+		System.out.printf("%d번 게시물을 삭제하였습니다.\n", inputedId);
 
 	}
 
