@@ -58,6 +58,8 @@ public class ArticleController extends Controller {
 			System.out.printf("%d번 게시판은 존재하지 않습니다.\n", inputedId);
 			return;
 		}
+
+		Container.session.selectBoard(board.boardId);
 		System.out.printf("%s (%d번) 게시판이 선택되었습니다.\n", board.boardName, board.boardId);
 
 	}
@@ -87,7 +89,7 @@ public class ArticleController extends Controller {
 		String body = Container.scanner.nextLine();
 
 		int memberId = Container.session.loginedMemberId;
-		int boardId = 1; // 임시
+		int boardId = Container.session.selectedBoardId;
 
 		int id = articleService.saveArticle(title, body, memberId, boardId);
 		System.out.printf("%d번 게시물이 생성되었습니다.\n", id);

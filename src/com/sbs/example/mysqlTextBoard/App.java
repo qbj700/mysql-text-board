@@ -5,6 +5,7 @@ import java.util.Scanner;
 import com.sbs.example.mysqlTextBoard.controller.ArticleController;
 import com.sbs.example.mysqlTextBoard.controller.Controller;
 import com.sbs.example.mysqlTextBoard.controller.MemberController;
+import com.sbs.example.mysqlTextBoard.service.ArticleService;
 
 public class App {
 
@@ -15,6 +16,28 @@ public class App {
 		articleController = Container.articleController;
 		memberController = Container.memberController;
 
+		makeTestData();
+
+		init();
+	}
+
+	private void makeTestData() {
+		// 만약 공지사항 게시판이 존재하지 않다면 생성
+		ArticleService articleService = Container.articleService;
+		if (articleService.selectBoardByBoardId(1) == null) {
+			articleService.saveBoardData("공지사항");
+		}
+		// 만약 자유 게시판이 존재하지 않다면 생성
+		if (articleService.selectBoardByBoardId(2) == null) {
+			articleService.saveBoardData("자유");
+		}
+
+	}
+
+	private void init() {
+		// 기본 게시판을 공지사항 게시판으로 설정
+		ArticleService articleService = Container.articleService;
+		Container.session.selectedBoardId = articleService.boardDefaultSetting();
 	}
 
 	public void run() {
