@@ -5,6 +5,7 @@ import java.util.List;
 import com.sbs.example.mysqlTextBoard.Container;
 import com.sbs.example.mysqlTextBoard.dao.ArticleDao;
 import com.sbs.example.mysqlTextBoard.dto.Article;
+import com.sbs.example.mysqlTextBoard.dto.Board;
 
 public class ArticleService {
 	private ArticleDao articleDao;
@@ -32,6 +33,15 @@ public class ArticleService {
 
 	public int saveArticle(String title, String body, int memberId, int boardId) {
 		return articleDao.addArticleData(title, body, memberId, boardId);
+	}
+
+	public int saveBoardData(String boardName) {
+		return articleDao.addBoardData(boardName);
+	}
+
+	public Board selectBoardByBoardId(int inputedId) {
+		return articleDao.loadBoardDataByBoardId(inputedId);
+
 	}
 
 }

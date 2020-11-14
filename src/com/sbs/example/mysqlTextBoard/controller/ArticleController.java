@@ -4,11 +4,12 @@ import java.util.List;
 
 import com.sbs.example.mysqlTextBoard.Container;
 import com.sbs.example.mysqlTextBoard.dto.Article;
+import com.sbs.example.mysqlTextBoard.dto.Board;
 import com.sbs.example.mysqlTextBoard.dto.Member;
 import com.sbs.example.mysqlTextBoard.service.ArticleService;
 import com.sbs.example.mysqlTextBoard.service.MemberService;
 
-public class ArticleController {
+public class ArticleController extends Controller {
 
 	private ArticleService articleService;
 	private MemberService memberService;
@@ -29,7 +30,46 @@ public class ArticleController {
 			doModify(cmd);
 		} else if (cmd.startsWith("article write")) {
 			doWrite(cmd);
+		} else if (cmd.startsWith("article makeBoard")) {
+			doMakeBoard(cmd);
+		} else if (cmd.startsWith("article selectBoard")) {
+			doSelectBoard(cmd);
+		} else {
+			System.out.println("존재하지 않는 명령어입니다.");
+			return;
 		}
+
+	}
+
+	private void doSelectBoard(String cmd) {
+		int inputedId = 0;
+		try {
+			inputedId = Integer.parseInt(cmd.split(" ")[2]);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			System.out.println("게시물 번호를 입력해주세요.");
+			return;
+		} catch (NumberFormatException e) {
+			System.out.println("게시물 번호는 양의 정수를입력해 주세요.");
+			return;
+		}
+
+		Board board = articleService.selectBoardByBoardId(inputedId);
+		if (board == null) {
+			System.out.printf("%d번 게시판은 존재하지 않습니다.\n", inputedId);
+			return;
+		}
+		System.out.printf("%s (%d번) 게시판이 선택되었습니다.\n", board.boardName, board.boardId);
+
+	}
+
+	private void doMakeBoard(String cmd) {
+		System.out.println("== 게시판 등록 ==");
+
+		System.out.printf("게시판 이름 : ");
+		String boardName = Container.scanner.nextLine();
+
+		int boardId = articleService.saveBoardData(boardName);
+		System.out.printf("%s (%d번) 게시판이 생성되었습니다.\n", boardName, boardId);
 
 	}
 

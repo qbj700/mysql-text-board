@@ -4,7 +4,7 @@ import com.sbs.example.mysqlTextBoard.Container;
 import com.sbs.example.mysqlTextBoard.dto.Member;
 import com.sbs.example.mysqlTextBoard.service.MemberService;
 
-public class MemberController {
+public class MemberController extends Controller {
 
 	private MemberService memberService;
 
@@ -19,6 +19,9 @@ public class MemberController {
 			doLogin(cmd);
 		} else if (cmd.equals("member logout")) {
 			doLogout(cmd);
+		} else {
+			System.out.println("존재하지 않는 명령어입니다.");
+			return;
 		}
 
 	}

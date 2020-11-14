@@ -85,3 +85,16 @@ DESC `member`;
 SELECT * FROM `member`;
 
 SELECT * FROM MEMBER WHERE loginId = 'aaa';
+
+SHOW TABLES;
+
+CREATE TABLE board(
+    boardId INT(10) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    boardName VARCHAR(100) NOT NULL
+);
+
+SHOW TABLES;
+
+DESC board;
+
+SELECT * FROM board;
