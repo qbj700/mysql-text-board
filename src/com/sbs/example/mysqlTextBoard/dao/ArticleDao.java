@@ -8,72 +8,34 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.sbs.example.mysqlTextBoard.dto.Article;
 import com.sbs.example.mysqlTextBoard.dto.Board;
+import com.sbs.example.mysqlTextBoard.util.MysqlUtil;
+import com.sbs.example.mysqlTextBoard.util.SecSql;
 
 public class ArticleDao {
 
 	public List<Article> getArticles() {
 
-		Connection con = null;
-
 		List<Article> articles = new ArrayList<>();
 
-		try {
+		List<Map<String, Object>> articleListMap = MysqlUtil
+				.selectRows(new SecSql().append("SELECT * FROM article ORDER BY id DESC"));
 
-			String driver = "com.mysql.cj.jdbc.Driver";
+		for (Map<String, Object> articleMap : articleListMap) {
+			Article article = new Article();
+			article.id = (int) articleMap.get("id");
+			article.regDate = (String) articleMap.get("regDate");
+			article.updateDate = (String) articleMap.get("updateDate");
+			article.title = (String) articleMap.get("title");
+			article.body = (String) articleMap.get("body");
+			article.memberId = (int) articleMap.get("memberId");
+			article.boardId = (int) articleMap.get("boardId");
 
-			String url = "jdbc:mysql://127.0.0.1:3306/textBoard?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull&connectTimeout=60000&socketTimeout=60000";
-			String user = "sbsst";
-			String pw = "sbs123414";
+			articles.add(article);
 
-			// MySQL 드라이버 등록
-			try {
-				Class.forName(driver);
-			} catch (ClassNotFoundException e1) {
-				e1.printStackTrace();
-			}
-
-			// 연결 생성
-			try {
-				con = DriverManager.getConnection(url, user, pw);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-			String sql = "SELECT * FROM article ORDER BY id DESC";
-
-			try {
-				PreparedStatement pstmt = con.prepareStatement(sql);
-				ResultSet rs = pstmt.executeQuery();
-
-				while (rs.next()) {
-					int id = rs.getInt("id");
-					String regDate = rs.getString("regDate");
-					String updateDate = rs.getString("updateDate");
-					String title = rs.getString("title");
-					String body = rs.getString("body");
-					int memberId = rs.getInt("memberId");
-					int boardId = rs.getInt("boardId");
-
-					Article article = new Article(id, regDate, updateDate, title, body, memberId, boardId);
-
-					articles.add(article);
-				}
-
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-		} finally {
-			try {
-				if (con != null) {
-					con.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 		}
 
 		return articles;
