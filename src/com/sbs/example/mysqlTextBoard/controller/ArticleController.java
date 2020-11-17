@@ -1,5 +1,6 @@
 package com.sbs.example.mysqlTextBoard.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.sbs.example.mysqlTextBoard.Container;
@@ -20,7 +21,9 @@ public class ArticleController extends Controller {
 	}
 
 	public void doCommand(String cmd) {
-		if (cmd.startsWith("article list")) {
+		if (cmd.startsWith("article list ")) {
+			showList(cmd);
+		} else if (cmd.startsWith("article list")) {
 			showList(cmd);
 		} else if (cmd.startsWith("article detail ")) {
 			showDetail(cmd);
@@ -201,13 +204,55 @@ public class ArticleController extends Controller {
 	}
 
 	public void showList(String cmd) {
-		System.out.println("== 게시물 리스트 ==");
+		int page = 0;
+
+		try {
+			page = Integer.parseInt(cmd.split(" ")[2]);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			page = 1;
+		} catch (NumberFormatException e) {
+			System.out.println("페이지 번호를 양의정수로 입력해주세요.");
+			return;
+		}
+
+		if (page <= 1) {
+			page = 1;
+		}
 
 		List<Article> articles = articleService.getArticles();
+		List<Article> selectedBoardArticles = new ArrayList<>();
+		for (Article article : articles) {
+			if (article.boardId == Container.session.selectedBoardId) {
+				selectedBoardArticles.add(article);
+			}
+		}
+
+		Board board = articleService.selectBoardByBoardId(Container.session.selectedBoardId);
+
+		System.out.printf("== %s 게시판 게시물 리스트 ==\n", board.boardName);
+
+		if (selectedBoardArticles.size() == 0) {
+			System.out.println("게시물이 존재하지 않습니다.");
+			return;
+		}
+
+		int itemsInAPage = 10;
+		int startPos = selectedBoardArticles.size() - 1;
+		startPos -= (page - 1) * itemsInAPage;
+		int endPos = startPos - (itemsInAPage - 1);
+
+		if (startPos < 0) {
+			System.out.printf("%d 페이지는 존재하지 않습니다.\n", page);
+			return;
+		}
+		if (endPos < 0) {
+			endPos = 0;
+		}
 
 		System.out.println("번호 / 작성일 / 수정일 / 작성자 / 제목");
 
-		for (Article article : articles) {
+		for (int i = startPos; i >= endPos; i--) {
+			Article article = selectedBoardArticles.get(i);
 			Member member = memberService.getMemberByMemberId(article.memberId);
 			System.out.printf("%d / %s / %s / %s / %s\n", article.id, article.regDate, article.updateDate, member.name,
 					article.title);
