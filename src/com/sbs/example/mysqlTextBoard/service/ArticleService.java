@@ -22,8 +22,8 @@ public class ArticleService {
 		return articleDao.loadArticleDataById(inputedId);
 	}
 
-	public int delete(int inputedId) {
-		return articleDao.delete(inputedId);
+	public void delete(int inputedId) {
+		articleDao.delete(inputedId);
 
 	}
 

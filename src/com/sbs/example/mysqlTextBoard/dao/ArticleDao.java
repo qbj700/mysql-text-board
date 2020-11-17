@@ -18,11 +18,14 @@ import com.sbs.example.mysqlTextBoard.util.SecSql;
 public class ArticleDao {
 
 	public List<Article> getArticles() {
-
 		List<Article> articles = new ArrayList<>();
 
-		List<Map<String, Object>> articleListMap = MysqlUtil
-				.selectRows(new SecSql().append("SELECT * FROM article ORDER BY id DESC"));
+		SecSql sql = new SecSql();
+		sql.append("SELECT *");
+		sql.append("FROM article");
+		sql.append("ORDER BY id DESC");
+
+		List<Map<String, Object>> articleListMap = MysqlUtil.selectRows(sql);
 
 		for (Map<String, Object> articleMap : articleListMap) {
 			Article article = new Article();
@@ -44,8 +47,12 @@ public class ArticleDao {
 	public Article loadArticleDataById(int inputedId) {
 		Article article = new Article();
 
-		Map<String, Object> articleMap = MysqlUtil
-				.selectRow(new SecSql().append("SELECT * FROM article WHERE id = ?", inputedId));
+		SecSql sql = new SecSql();
+		sql.append("SELECT *");
+		sql.append("FROM article");
+		sql.append("WHERE id = ?", inputedId);
+
+		Map<String, Object> articleMap = MysqlUtil.selectRow(sql);
 
 		article.id = (int) articleMap.get("id");
 		article.regDate = (String) articleMap.get("regDate");
@@ -58,161 +65,42 @@ public class ArticleDao {
 		return article;
 	}
 
-	public int delete(int inputedId) {
-		int affectedRows = 0;
-		Connection con = null;
+	public void delete(int inputedId) {
 
-		try {
+		SecSql sql = new SecSql();
+		sql.append("DELETE FROM article");
+		sql.append("WHERE id = ?", inputedId);
 
-			String driver = "com.mysql.cj.jdbc.Driver";
+		MysqlUtil.delete(sql);
 
-			String url = "jdbc:mysql://127.0.0.1:3306/textBoard?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull&connectTimeout=60000&socketTimeout=60000";
-			String user = "sbsst";
-			String pw = "sbs123414";
-
-			// MySQL 드라이버 등록
-			try {
-				Class.forName(driver);
-			} catch (ClassNotFoundException e1) {
-				e1.printStackTrace();
-			}
-
-			// 연결 생성
-			try {
-				con = DriverManager.getConnection(url, user, pw);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-			String sql = "DELETE FROM article WHERE id = ?";
-
-			try {
-				PreparedStatement pstmt = con.prepareStatement(sql);
-				pstmt.setInt(1, inputedId);
-				affectedRows = pstmt.executeUpdate();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-		} finally {
-			try {
-				if (con != null) {
-					con.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		return affectedRows;
 	}
 
 	public void modify(int inputedId, String title, String body) {
 
-		Connection con = null;
+		SecSql sql = new SecSql();
+		sql.append("UPDATE article");
+		sql.append("SET title = ?,", title);
+		sql.append("body = ?,", body);
+		sql.append("updateDate = NOW()");
+		sql.append("WHERE id = ?", inputedId);
 
-		try {
-
-			String driver = "com.mysql.cj.jdbc.Driver";
-
-			String url = "jdbc:mysql://127.0.0.1:3306/textBoard?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull&connectTimeout=60000&socketTimeout=60000";
-			String user = "sbsst";
-			String pw = "sbs123414";
-
-			// MySQL 드라이버 등록
-			try {
-				Class.forName(driver);
-			} catch (ClassNotFoundException e1) {
-				e1.printStackTrace();
-			}
-
-			// 연결 생성
-			try {
-				con = DriverManager.getConnection(url, user, pw);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-			String sql = "UPDATE article SET title = ?,body = ? , updateDate = NOW()  WHERE id = ?";
-
-			try {
-				PreparedStatement pstmt = con.prepareStatement(sql);
-
-				pstmt.setString(1, title);
-				pstmt.setString(2, body);
-				pstmt.setInt(3, inputedId);
-
-				pstmt.executeUpdate();
-
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-		} finally {
-			try {
-				if (con != null) {
-					con.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
+		MysqlUtil.update(sql);
 
 	}
 
 	public int addArticleData(String title, String body, int memberId, int boardId) {
-		int id = 0;
-		Connection con = null;
 
-		try {
+		SecSql sql = new SecSql();
+		sql.append("INSERT INTO article");
+		sql.append("SET regDate = NOW(),");
+		sql.append("updateDate = NOW(),");
+		sql.append("title = ?,", title);
+		sql.append("body = ?,", body);
+		sql.append("memberId = ?,", memberId);
+		sql.append("boardId = ?", boardId);
 
-			String driver = "com.mysql.cj.jdbc.Driver";
+		int id = MysqlUtil.insert(sql);
 
-			String url = "jdbc:mysql://127.0.0.1:3306/textBoard?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull&connectTimeout=60000&socketTimeout=60000";
-			String user = "sbsst";
-			String pw = "sbs123414";
-
-			// MySQL 드라이버 등록
-			try {
-				Class.forName(driver);
-			} catch (ClassNotFoundException e1) {
-				e1.printStackTrace();
-			}
-
-			// 연결 생성
-			try {
-				con = DriverManager.getConnection(url, user, pw);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-			String sql = "INSERT INTO article SET regDate = NOW(), updateDate = NOW(), title = ?, body = ?, memberId = ?, boardId = ?";
-
-			try {
-				PreparedStatement pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-
-				pstmt.setString(1, title);
-				pstmt.setString(2, body);
-				pstmt.setInt(3, memberId);
-				pstmt.setInt(4, boardId);
-				pstmt.executeUpdate();
-
-				ResultSet rs = pstmt.getGeneratedKeys();
-				rs.next();
-				id = rs.getInt(1);
-
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-		} finally {
-			try {
-				if (con != null) {
-					con.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
 		return id;
 	}
 
