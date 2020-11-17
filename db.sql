@@ -93,6 +93,14 @@ CREATE TABLE board(
     boardName VARCHAR(100) NOT NULL
 );
 
+# 1번 게시판 생성
+INSERT INTO board
+SET boardName = '공지사항';
+
+# 2번 게시판 생성
+INSERT INTO board
+SET boardName = '자유';
+
 SHOW TABLES;
 
 DESC board;

@@ -17,28 +17,17 @@ public class App {
 		articleController = Container.articleController;
 		memberController = Container.memberController;
 
-		makeTestData();
-
 		init();
 	}
 
-	private void makeTestData() {
-		// 만약 공지사항 게시판이 존재하지 않다면 생성
-		ArticleService articleService = Container.articleService;
-		if (articleService.selectBoardByBoardId(1) == null) {
-			articleService.saveBoardData("공지사항");
-		}
-		// 만약 자유 게시판이 존재하지 않다면 생성
-		if (articleService.selectBoardByBoardId(2) == null) {
-			articleService.saveBoardData("자유");
-		}
-
-	}
-
 	private void init() {
+		MysqlUtil.setDBInfo("localhost", "sbsst", "sbs123414", "textBoard");
+
 		// 기본 게시판을 공지사항 게시판으로 설정
 		ArticleService articleService = Container.articleService;
 		Container.session.selectedBoardId = articleService.boardDefaultSetting();
+
+		MysqlUtil.closeConnection();
 	}
 
 	public void run() {
@@ -52,24 +41,18 @@ public class App {
 			MysqlUtil.setDBInfo("localhost", "sbsst", "sbs123414", "textBoard");
 
 			// 개발자모드 (true = 명령어 출력 / false = 명령어 출력 X)
-			MysqlUtil.setDevMode(true);
+			MysqlUtil.setDevMode(false);
 
 			if (cmd.equals("system exit")) {
 				System.out.println("== 시스템 종료 ==");
-
-				// DB접속 종료
 				MysqlUtil.closeConnection();
-
 				break;
 			}
 
 			Controller controller = getControllerByCmd(cmd);
 			if (controller == null) {
 				System.out.println("존재하지 않는 명령어 입니다.");
-
-				// DB접속 종료
 				MysqlUtil.closeConnection();
-
 				continue;
 			}
 			controller.doCommand(cmd);

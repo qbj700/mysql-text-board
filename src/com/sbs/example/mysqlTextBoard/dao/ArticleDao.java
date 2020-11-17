@@ -1,11 +1,5 @@
 package com.sbs.example.mysqlTextBoard.dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -28,16 +22,8 @@ public class ArticleDao {
 		List<Map<String, Object>> articleListMap = MysqlUtil.selectRows(sql);
 
 		for (Map<String, Object> articleMap : articleListMap) {
-			Article article = new Article();
-			article.id = (int) articleMap.get("id");
-			article.regDate = (String) articleMap.get("regDate");
-			article.updateDate = (String) articleMap.get("updateDate");
-			article.title = (String) articleMap.get("title");
-			article.body = (String) articleMap.get("body");
-			article.memberId = (int) articleMap.get("memberId");
-			article.boardId = (int) articleMap.get("boardId");
 
-			articles.add(article);
+			articles.add(new Article(articleMap));
 
 		}
 
@@ -45,7 +31,6 @@ public class ArticleDao {
 	}
 
 	public Article loadArticleDataById(int inputedId) {
-		Article article = new Article();
 
 		SecSql sql = new SecSql();
 		sql.append("SELECT *");
@@ -54,15 +39,11 @@ public class ArticleDao {
 
 		Map<String, Object> articleMap = MysqlUtil.selectRow(sql);
 
-		article.id = (int) articleMap.get("id");
-		article.regDate = (String) articleMap.get("regDate");
-		article.updateDate = (String) articleMap.get("updateDate");
-		article.title = (String) articleMap.get("title");
-		article.body = (String) articleMap.get("body");
-		article.memberId = (int) articleMap.get("memberId");
-		article.boardId = (int) articleMap.get("boardId");
+		if (articleMap.isEmpty()) {
+			return null;
+		}
 
-		return article;
+		return new Article(articleMap);
 	}
 
 	public void delete(int inputedId) {
@@ -99,122 +80,28 @@ public class ArticleDao {
 		sql.append("memberId = ?,", memberId);
 		sql.append("boardId = ?", boardId);
 
-		int id = MysqlUtil.insert(sql);
-
-		return id;
+		return MysqlUtil.insert(sql);
 	}
 
 	public int addBoardData(String boardName) {
-		int id = 0;
-		Connection con = null;
 
-		try {
+		SecSql sql = new SecSql();
+		sql.append("INSERT INTO board");
+		sql.append("SET boardName = ?", boardName);
 
-			String driver = "com.mysql.cj.jdbc.Driver";
-
-			String url = "jdbc:mysql://127.0.0.1:3306/textBoard?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull&connectTimeout=60000&socketTimeout=60000";
-			String user = "sbsst";
-			String pw = "sbs123414";
-
-			// MySQL 드라이버 등록
-			try {
-				Class.forName(driver);
-			} catch (ClassNotFoundException e1) {
-				e1.printStackTrace();
-			}
-
-			// 연결 생성
-			try {
-				con = DriverManager.getConnection(url, user, pw);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-			String sql = "INSERT INTO board SET boardName = ?";
-
-			try {
-				PreparedStatement pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-
-				pstmt.setString(1, boardName);
-				pstmt.executeUpdate();
-
-				ResultSet rs = pstmt.getGeneratedKeys();
-				rs.next();
-				id = rs.getInt(1);
-
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-		} finally {
-			try {
-				if (con != null) {
-					con.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		return id;
+		return MysqlUtil.insert(sql);
 	}
 
 	public Board loadBoardDataByBoardId(int inputedId) {
-		Connection con = null;
-		Board board = null;
 
-		try {
+		SecSql sql = new SecSql();
+		sql.append("SELECT *");
+		sql.append("FROM board");
+		sql.append("WHERE boardId = ?", inputedId);
 
-			String driver = "com.mysql.cj.jdbc.Driver";
+		Map<String, Object> articleMap = MysqlUtil.selectRow(sql);
 
-			String url = "jdbc:mysql://127.0.0.1:3306/textBoard?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull&connectTimeout=60000&socketTimeout=60000";
-			String user = "sbsst";
-			String pw = "sbs123414";
-
-			// MySQL 드라이버 등록
-			try {
-				Class.forName(driver);
-			} catch (ClassNotFoundException e1) {
-				e1.printStackTrace();
-			}
-
-			// 연결 생성
-			try {
-				con = DriverManager.getConnection(url, user, pw);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-			String sql = "SELECT * FROM board WHERE boardId = ?";
-
-			try {
-				PreparedStatement pstmt = con.prepareStatement(sql);
-
-				pstmt.setInt(1, inputedId);
-
-				ResultSet rs = pstmt.executeQuery();
-
-				if (rs.next()) {
-					int boardId = rs.getInt("boardId");
-					String boardName = rs.getString("boardName");
-
-					board = new Board(boardId, boardName);
-				}
-
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-		} finally {
-			try {
-				if (con != null) {
-					con.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
-		return board;
+		return new Board(articleMap);
 
 	}
 
