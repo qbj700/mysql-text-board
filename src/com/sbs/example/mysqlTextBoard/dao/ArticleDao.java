@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.sbs.example.mysqlTextBoard.dto.Article;
 import com.sbs.example.mysqlTextBoard.dto.Board;
+import com.sbs.example.mysqlTextBoard.dto.Reply;
 import com.sbs.example.mysqlTextBoard.util.MysqlUtil;
 import com.sbs.example.mysqlTextBoard.util.SecSql;
 
@@ -134,6 +135,43 @@ public class ArticleDao {
 		sql.append("reply = ?", reply);
 
 		return MysqlUtil.insert(sql);
+	}
+
+	public List<Reply> getRepliesById(int id) {
+		List<Reply> replies = new ArrayList<>();
+
+		SecSql sql = new SecSql();
+		sql.append("SELECT *");
+		sql.append("FROM articleReply");
+		sql.append("WHERE articleId = ?", id);
+		sql.append("ORDER BY id DESC");
+
+		List<Map<String, Object>> replyListMap = MysqlUtil.selectRows(sql);
+
+		for (Map<String, Object> replyMap : replyListMap) {
+
+			replies.add(new Reply(replyMap));
+
+		}
+
+		return replies;
+	}
+
+	public Article loadForPrintArticleDataById(int inputedId) {
+
+		SecSql sql = new SecSql();
+		sql.append("SELECT article.*,member.name AS extra__writer");
+		sql.append("FROM article");
+		sql.append("INNER JOIN member");
+		sql.append("ON article.id = ? AND article.memberId = member.id", inputedId);
+
+		Map<String, Object> articleMap = MysqlUtil.selectRow(sql);
+
+		if (articleMap.isEmpty()) {
+			return null;
+		}
+
+		return new Article(articleMap);
 	}
 
 }

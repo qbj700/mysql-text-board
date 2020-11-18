@@ -7,17 +7,16 @@ import com.sbs.example.mysqlTextBoard.Container;
 import com.sbs.example.mysqlTextBoard.dto.Article;
 import com.sbs.example.mysqlTextBoard.dto.Board;
 import com.sbs.example.mysqlTextBoard.dto.Member;
+import com.sbs.example.mysqlTextBoard.dto.Reply;
 import com.sbs.example.mysqlTextBoard.service.ArticleService;
-import com.sbs.example.mysqlTextBoard.service.MemberService;
 
 public class ArticleController extends Controller {
 
 	private ArticleService articleService;
-	private MemberService memberService;
 
 	public ArticleController() {
 		articleService = Container.articleService;
-		memberService = Container.memberService;
+
 	}
 
 	public void doCommand(String cmd) {
@@ -230,7 +229,7 @@ public class ArticleController extends Controller {
 			return;
 		}
 
-		Article article = articleService.getArticleById(inputedId);
+		Article article = articleService.getForPrintArticleById(inputedId);
 
 		if (article == null) {
 			System.out.printf("%d번 게시물은 존재하지 않습니다.\n", inputedId);
@@ -245,7 +244,26 @@ public class ArticleController extends Controller {
 		System.out.printf("등록일자 : %s\n", article.regDate);
 		System.out.printf("수정일자 : %s\n", article.updateDate);
 		System.out.printf("제목 : %s\n", article.title);
-		System.out.printf("내용 : %s\n", article.body);
+		System.out.printf("내용 : %s\n\n", article.body);
+
+		List<Reply> replies = articleService.getRepliesById(inputedId);
+		System.out.println("== 댓글 리스트 ==");
+
+		if (replies.size() == 0) {
+			System.out.println("댓글이 존재하지 않습니다.");
+			return;
+		}
+
+		for (int i = 0; i < replies.size(); i++) {
+			Reply reply = replies.get(i);
+			Member member = Container.memberService.getMemberByMemberId(reply.memberId);
+
+			System.out.printf("== %d번 댓글 ==\n", reply.id);
+			System.out.printf("작성자 : %s\n", member.name);
+			System.out.printf("작성일자 : %s\n", reply.regDate);
+			System.out.printf("수정일자 : %s\n", reply.updateDate);
+			System.out.printf("내용 : %s\n\n", reply.reply);
+		}
 
 	}
 
