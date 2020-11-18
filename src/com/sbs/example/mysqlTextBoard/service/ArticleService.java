@@ -53,4 +53,8 @@ public class ArticleService {
 		return articleDao.getForPrintArticles();
 	}
 
+	public int addReply(int inputedId, int loginedMemberId, String reply) {
+		return articleDao.saveReplyData(inputedId, loginedMemberId, reply);
+	}
+
 }

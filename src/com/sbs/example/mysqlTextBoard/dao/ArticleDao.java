@@ -124,4 +124,16 @@ public class ArticleDao {
 		return articles;
 	}
 
+	public int saveReplyData(int inputedId, int loginedMemberId, String reply) {
+		SecSql sql = new SecSql();
+		sql.append("INSERT INTO articleReply");
+		sql.append("SET regDate = NOW(),");
+		sql.append("updateDate = NOW(),");
+		sql.append("articleId = ?,", inputedId);
+		sql.append("memberId = ?,", loginedMemberId);
+		sql.append("reply = ?", reply);
+
+		return MysqlUtil.insert(sql);
+	}
+
 }

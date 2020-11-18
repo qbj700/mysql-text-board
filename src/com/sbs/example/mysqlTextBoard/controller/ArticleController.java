@@ -31,16 +31,62 @@ public class ArticleController extends Controller {
 			doDelete(cmd);
 		} else if (cmd.startsWith("article modify ")) {
 			doModify(cmd);
-		} else if (cmd.startsWith("article write")) {
+		} else if (cmd.equals("article write")) {
 			doWrite(cmd);
 		} else if (cmd.startsWith("article makeBoard")) {
 			doMakeBoard(cmd);
 		} else if (cmd.startsWith("article selectBoard")) {
 			doSelectBoard(cmd);
+		} else if (cmd.startsWith("article writeReply ")) {
+			doWriteReply(cmd);
 		} else {
 			System.out.println("존재하지 않는 명령어입니다.");
 			return;
 		}
+
+	}
+
+	private void doWriteReply(String cmd) {
+		if (Container.session.isLogined() == false) {
+			System.out.println("로그인 후 이용해주세요.");
+			return;
+		}
+
+		int inputedId = 0;
+		try {
+			inputedId = Integer.parseInt(cmd.split(" ")[2]);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			System.out.println("게시물 번호를 입력해주세요.");
+			return;
+		} catch (NumberFormatException e) {
+			System.out.println("게시물 번호는 양의 정수를입력해 주세요.");
+			return;
+		}
+
+		Article article = articleService.getArticleById(inputedId);
+		if (article == null) {
+			System.out.printf("%d번 게시물은 존재하지 않습니다.\n", inputedId);
+			return;
+		}
+
+		String writer = article.extra__writer;
+
+		System.out.println("== 게시물 정보 ==");
+		System.out.printf("번호 : %d\n", article.id);
+		System.out.printf("작성자 : %s\n", writer);
+		System.out.printf("등록일자 : %s\n", article.regDate);
+		System.out.printf("수정일자 : %s\n", article.updateDate);
+		System.out.printf("제목 : %s\n", article.title);
+		System.out.printf("내용 : %s\n\n", article.body);
+
+		System.out.println("== 댓글 등록 ==");
+		System.out.printf("입력할 댓글 : ");
+		String reply = Container.scanner.nextLine();
+
+		int loginedMemberId = Container.session.loginedMemberId;
+
+		int id = articleService.addReply(inputedId, loginedMemberId, reply);
+		System.out.printf("%d번 게시물의 %d번 댓글이 등록되었습니다.\n", inputedId, id);
 
 	}
 
@@ -191,11 +237,11 @@ public class ArticleController extends Controller {
 			return;
 		}
 
-		Member member = memberService.getMemberByMemberId(article.memberId);
+		String writer = article.extra__writer;
 
 		System.out.println("== 게시물 상세정보 ==");
 		System.out.printf("번호 : %d\n", article.id);
-		System.out.printf("작성자 : %s\n", member.name);
+		System.out.printf("작성자 : %s\n", writer);
 		System.out.printf("등록일자 : %s\n", article.regDate);
 		System.out.printf("수정일자 : %s\n", article.updateDate);
 		System.out.printf("제목 : %s\n", article.title);
