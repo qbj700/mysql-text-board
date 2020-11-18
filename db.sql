@@ -106,3 +106,24 @@ SHOW TABLES;
 DESC board;
 
 SELECT * FROM board;
+
+SELECT article.*, `member`.name
+FROM article
+INNER JOIN `member`
+ON article.memberId = member.id;
+
+CREATE TABLE articleReply(
+    id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    updateDate DATETIME NOT NULL,
+    memberId INT(10) NOT NULL,
+    articleId INT(10) NOT NULL,
+    reply TEXT NOT NULL
+);
+
+
+SELECT article.*, `member`.name
+FROM article
+INNER JOIN `member`
+ON article.id = 1 AND article.id = member.id;
+
