@@ -20,7 +20,11 @@ public class Article {
 		this.body = (String) articleMap.get("body");
 		this.memberId = (int) articleMap.get("memberId");
 		this.boardId = (int) articleMap.get("boardId");
-		this.extra__writer = (String) articleMap.get("extra__writer");
+
+		if (articleMap.containsKey("extra__writer")) {
+			this.extra__writer = (String) articleMap.get("extra__writer");
+		}
+
 	}
 
 	@Override

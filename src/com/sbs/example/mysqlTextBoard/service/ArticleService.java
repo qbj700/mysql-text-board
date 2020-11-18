@@ -49,4 +49,8 @@ public class ArticleService {
 		return board.boardId;
 	}
 
+	public List<Article> getForPrintArticles() {
+		return articleDao.getForPrintArticles();
+	}
+
 }

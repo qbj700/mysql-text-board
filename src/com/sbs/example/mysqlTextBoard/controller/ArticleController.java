@@ -219,7 +219,7 @@ public class ArticleController extends Controller {
 			page = 1;
 		}
 
-		List<Article> articles = articleService.getArticles();
+		List<Article> articles = articleService.getForPrintArticles();
 		List<Article> selectedBoardArticles = new ArrayList<>();
 		for (Article article : articles) {
 			if (article.boardId == Container.session.selectedBoardId) {
