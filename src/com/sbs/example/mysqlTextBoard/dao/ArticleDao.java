@@ -15,8 +15,10 @@ public class ArticleDao {
 		List<Article> articles = new ArrayList<>();
 
 		SecSql sql = new SecSql();
-		sql.append("SELECT *");
+		sql.append("SELECT article.*, member.name AS extra__writer");
 		sql.append("FROM article");
+		sql.append("INNER JOIN member");
+		sql.append("ON article.memberId = member.id");
 
 		List<Map<String, Object>> articleListMap = MysqlUtil.selectRows(sql);
 

@@ -253,8 +253,8 @@ public class ArticleController extends Controller {
 
 		for (int i = startPos; i >= endPos; i--) {
 			Article article = selectedBoardArticles.get(i);
-			Member member = memberService.getMemberByMemberId(article.memberId);
-			System.out.printf("%d / %s / %s / %s / %s\n", article.id, article.regDate, article.updateDate, member.name,
+			String writer = article.extra__writer;
+			System.out.printf("%d / %s / %s / %s / %s\n", article.id, article.regDate, article.updateDate, writer,
 					article.title);
 		}
 
