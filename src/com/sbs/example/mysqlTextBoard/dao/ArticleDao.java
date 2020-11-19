@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.sbs.example.mysqlTextBoard.dto.Article;
 import com.sbs.example.mysqlTextBoard.dto.Board;
+import com.sbs.example.mysqlTextBoard.dto.Recommand;
 import com.sbs.example.mysqlTextBoard.dto.Reply;
 import com.sbs.example.mysqlTextBoard.util.MysqlUtil;
 import com.sbs.example.mysqlTextBoard.util.SecSql;
@@ -217,6 +218,37 @@ public class ArticleDao {
 		sql.append("WHERE id = ?", inputedId);
 
 		MysqlUtil.update(sql);
+	}
+
+	public void addRecommandData(int inputedId, int loginedMemberId) {
+		SecSql sql = new SecSql();
+		sql.append("INSERT INTO recommand");
+		sql.append("SET regDate = NOW(),");
+		sql.append("updateDate = NOW(),");
+		sql.append("articleId = ?,", inputedId);
+		sql.append("memberId = ?", loginedMemberId);
+
+		MysqlUtil.insert(sql);
+
+	}
+
+	public List<Recommand> loadRecommandsById(int inputedId) {
+		List<Recommand> recommands = new ArrayList<>();
+
+		SecSql sql = new SecSql();
+		sql.append("SELECT *");
+		sql.append("FROM recommand");
+		sql.append("WHERE articleId = ?", inputedId);
+
+		List<Map<String, Object>> recommandListMap = MysqlUtil.selectRows(sql);
+
+		for (Map<String, Object> recommandMap : recommandListMap) {
+
+			recommands.add(new Recommand(recommandMap));
+
+		}
+
+		return recommands;
 	}
 
 }

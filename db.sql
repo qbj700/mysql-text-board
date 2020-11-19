@@ -136,3 +136,13 @@ ORDER BY articleReply.id DESC;
 ALTER TABLE article ADD COLUMN hit INT(10) UNSIGNED NOT NULL AFTER `body`;
 
 SELECT * FROM article;
+
+CREATE TABLE recommand(
+    id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    updateDate DATETIME NOT NULL,
+    memberId INT(10) NOT NULL,
+    articleId INT(10) NOT NULL
+);
+
+SELECT * FROM recommand;

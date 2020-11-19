@@ -6,6 +6,7 @@ import com.sbs.example.mysqlTextBoard.Container;
 import com.sbs.example.mysqlTextBoard.dao.ArticleDao;
 import com.sbs.example.mysqlTextBoard.dto.Article;
 import com.sbs.example.mysqlTextBoard.dto.Board;
+import com.sbs.example.mysqlTextBoard.dto.Recommand;
 import com.sbs.example.mysqlTextBoard.dto.Reply;
 
 public class ArticleService {
@@ -82,6 +83,14 @@ public class ArticleService {
 
 	public void incrementHit(int inputedId) {
 		articleDao.addHitData(inputedId);
+	}
+
+	public void doRecommand(int inputedId, int loginedMemberId) {
+		articleDao.addRecommandData(inputedId, loginedMemberId);
+	}
+
+	public List<Recommand> getRecommandsById(int inputedId) {
+		return articleDao.loadRecommandsById(inputedId);
 	}
 
 }

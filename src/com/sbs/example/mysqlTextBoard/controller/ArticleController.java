@@ -6,6 +6,7 @@ import java.util.List;
 import com.sbs.example.mysqlTextBoard.Container;
 import com.sbs.example.mysqlTextBoard.dto.Article;
 import com.sbs.example.mysqlTextBoard.dto.Board;
+import com.sbs.example.mysqlTextBoard.dto.Recommand;
 import com.sbs.example.mysqlTextBoard.dto.Reply;
 import com.sbs.example.mysqlTextBoard.service.ArticleService;
 
@@ -41,10 +42,51 @@ public class ArticleController extends Controller {
 			doSelectBoard(cmd);
 		} else if (cmd.startsWith("article writeReply ")) {
 			doWriteReply(cmd);
+		} else if (cmd.startsWith("article recommand ")) {
+			doRecommand(cmd);
 		} else {
 			System.out.println("존재하지 않는 명령어입니다.");
 			return;
 		}
+
+	}
+
+	private void doRecommand(String cmd) {
+		if (Container.session.isLogined() == false) {
+			System.out.println("로그인 후 이용해주세요.");
+			return;
+		}
+		int inputedId = 0;
+		try {
+			inputedId = Integer.parseInt(cmd.split(" ")[2]);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			System.out.println("게시물 번호를 입력해주세요.");
+			return;
+		} catch (NumberFormatException e) {
+			System.out.println("게시물 번호는 양의 정수를입력해 주세요.");
+			return;
+		}
+		Article article = articleService.getArticleById(inputedId);
+
+		if (article == null) {
+			System.out.printf("%d번 게시물은 존재하지 않습니다.\n", inputedId);
+			return;
+		}
+
+		int loginedMemberId = Container.session.loginedMemberId;
+
+		List<Recommand> recommands = articleService.getRecommandsById(inputedId);
+
+		for (Recommand recommand : recommands) {
+			if (recommand.articleId == inputedId) {
+				if (recommand.memberId == loginedMemberId) {
+					System.out.printf("이미 %d번 게시물을 추천하였습니다.\n", inputedId);
+					return;
+				}
+			}
+		}
+		articleService.doRecommand(inputedId, loginedMemberId);
+		System.out.printf("%d번 게시물을 추천하였습니다.\n", inputedId);
 
 	}
 
