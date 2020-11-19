@@ -88,7 +88,9 @@ public class ArticleDao {
 
 		SecSql sql = new SecSql();
 		sql.append("INSERT INTO board");
-		sql.append("SET `name` = ?", boardName);
+		sql.append("SET regDate = NOW(),");
+		sql.append("updateDate = NOW(),");
+		sql.append("`name` = ?", boardName);
 
 		return MysqlUtil.insert(sql);
 	}

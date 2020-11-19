@@ -10,6 +10,10 @@ public class Member {
 	public String loginPw;
 	public String name;
 
+	public boolean isAdmin() {
+		return loginId.equals("aaa");
+	}
+
 	public Member(Map<String, Object> memberMap) {
 		this.memberId = (int) memberMap.get("id");
 		this.regDate = (String) memberMap.get("regDate");

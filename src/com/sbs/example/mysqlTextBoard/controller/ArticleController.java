@@ -6,9 +6,11 @@ import java.util.List;
 import com.sbs.example.mysqlTextBoard.Container;
 import com.sbs.example.mysqlTextBoard.dto.Article;
 import com.sbs.example.mysqlTextBoard.dto.Board;
+import com.sbs.example.mysqlTextBoard.dto.Member;
 import com.sbs.example.mysqlTextBoard.dto.Recommand;
 import com.sbs.example.mysqlTextBoard.dto.Reply;
 import com.sbs.example.mysqlTextBoard.service.ArticleService;
+import com.sbs.example.mysqlTextBoard.service.MemberService;
 
 public class ArticleController extends Controller {
 
@@ -267,6 +269,18 @@ public class ArticleController extends Controller {
 	}
 
 	private void doMakeBoard(String cmd) {
+
+		if (Container.session.isLogined() == false) {
+			System.out.println("로그인 후 이용해주세요.");
+			return;
+		}
+
+		MemberService memberService = Container.memberService;
+		Member member = memberService.getMemberByMemberId(Container.session.loginedMemberId);
+		if (member.isAdmin() == false) {
+			System.out.println("등록할 권한이 없습니다. (관리자만 등록 가능)");
+			return;
+		}
 		System.out.println("== 게시판 등록 ==");
 
 		System.out.printf("게시판 이름 : ");
