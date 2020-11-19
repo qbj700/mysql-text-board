@@ -352,12 +352,14 @@ public class ArticleController extends Controller {
 			return;
 		}
 		articleService.incrementHit(inputedId);
+		List<Recommand> recommands = articleService.getRecommandsById(inputedId);
 
 		String writer = article.extra__writer;
 
 		System.out.println("== 게시물 상세정보 ==");
 		System.out.printf("번호 : %d\n", article.id);
 		System.out.printf("조회수 : %d\n", article.hit + 1);
+		System.out.printf("추천수 : %d\n", recommands.size());
 		System.out.printf("작성자 : %s\n", writer);
 		System.out.printf("등록일자 : %s\n", article.regDate);
 		System.out.printf("수정일자 : %s\n", article.updateDate);
@@ -430,13 +432,14 @@ public class ArticleController extends Controller {
 			endPos = 0;
 		}
 
-		System.out.println("번호 / 작성일 / 수정일 / 작성자 / 제목 / 조회수");
+		System.out.println("번호 / 작성일 / 수정일 / 작성자 / 제목 / 조회수 / 추천수");
 
 		for (int i = startPos; i >= endPos; i--) {
 			Article article = selectedBoardArticles.get(i);
 			String writer = article.extra__writer;
-			System.out.printf("%d / %s / %s / %s / %s / %d\n", article.id, article.regDate, article.updateDate, writer,
-					article.title, article.hit);
+			List<Recommand> recommands = articleService.getRecommandsById(article.id);
+			System.out.printf("%d / %s / %s / %s / %s / %d / %d\n", article.id, article.regDate, article.updateDate,
+					writer, article.title, article.hit, recommands.size());
 		}
 
 	}
