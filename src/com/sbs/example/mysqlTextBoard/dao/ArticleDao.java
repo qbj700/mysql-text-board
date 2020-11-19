@@ -210,4 +210,13 @@ public class ArticleDao {
 
 	}
 
+	public void addHitData(int inputedId) {
+		SecSql sql = new SecSql();
+		sql.append("UPDATE article");
+		sql.append("SET hit = hit + 1");
+		sql.append("WHERE id = ?", inputedId);
+
+		MysqlUtil.update(sql);
+	}
+
 }

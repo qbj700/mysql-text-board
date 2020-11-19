@@ -133,3 +133,6 @@ INNER JOIN `member`
 ON articleReply.articleId = 4 AND articleReply.memberId = `member`.id
 ORDER BY articleReply.id DESC;
 
+ALTER TABLE article ADD COLUMN hit INT(10) UNSIGNED NOT NULL AFTER `body`;
+
+SELECT * FROM article;

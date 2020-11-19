@@ -80,4 +80,8 @@ public class ArticleService {
 
 	}
 
+	public void incrementHit(int inputedId) {
+		articleDao.addHitData(inputedId);
+	}
+
 }
