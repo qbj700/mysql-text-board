@@ -69,6 +69,10 @@ public class MemberController extends Controller {
 	}
 
 	private void doJoin(String cmd) {
+		if (Container.session.isLogined()) {
+			System.out.println("로그아웃 후에 이용해주세요.");
+			return;
+		}
 		System.out.println("== 회원 가입 ==");
 		String loginId;
 		String loginPw;

@@ -48,7 +48,7 @@ public class ArticleService {
 
 	public int boardDefaultSetting() {
 		Board board = articleDao.loadBoardDataByBoardId(1);
-		return board.boardId;
+		return board.id;
 	}
 
 	public List<Article> getForPrintArticles() {

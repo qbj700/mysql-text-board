@@ -88,7 +88,7 @@ public class ArticleDao {
 
 		SecSql sql = new SecSql();
 		sql.append("INSERT INTO board");
-		sql.append("SET boardName = ?", boardName);
+		sql.append("SET `name` = ?", boardName);
 
 		return MysqlUtil.insert(sql);
 	}
@@ -98,11 +98,11 @@ public class ArticleDao {
 		SecSql sql = new SecSql();
 		sql.append("SELECT *");
 		sql.append("FROM board");
-		sql.append("WHERE boardId = ?", inputedId);
+		sql.append("WHERE id = ?", inputedId);
 
-		Map<String, Object> articleMap = MysqlUtil.selectRow(sql);
+		Map<String, Object> boardMap = MysqlUtil.selectRow(sql);
 
-		return new Board(articleMap);
+		return new Board(boardMap);
 
 	}
 

@@ -261,8 +261,8 @@ public class ArticleController extends Controller {
 			return;
 		}
 
-		Container.session.selectBoard(board.boardId);
-		System.out.printf("%s (%d번) 게시판이 선택되었습니다.\n", board.boardName, board.boardId);
+		Container.session.selectBoard(board.id);
+		System.out.printf("%s (%d번) 게시판이 선택되었습니다.\n", board.name, board.id);
 
 	}
 
@@ -450,7 +450,7 @@ public class ArticleController extends Controller {
 
 		Board board = articleService.selectBoardByBoardId(Container.session.selectedBoardId);
 
-		System.out.printf("== %s 게시판 게시물 리스트 ==\n", board.boardName);
+		System.out.printf("== %s 게시판 게시물 리스트 ==\n", board.name);
 
 		if (selectedBoardArticles.size() == 0) {
 			System.out.println("게시물이 존재하지 않습니다.");
