@@ -84,13 +84,14 @@ public class ArticleDao {
 		return MysqlUtil.insert(sql);
 	}
 
-	public int addBoardData(String boardName) {
+	public int addBoardData(String code, String name) {
 
 		SecSql sql = new SecSql();
 		sql.append("INSERT INTO board");
 		sql.append("SET regDate = NOW(),");
 		sql.append("updateDate = NOW(),");
-		sql.append("`name` = ?", boardName);
+		sql.append("`code` = ?,", code);
+		sql.append("`name` = ?", name);
 
 		return MysqlUtil.insert(sql);
 	}
@@ -108,7 +109,7 @@ public class ArticleDao {
 
 	}
 
-	public List<Article> getForPrintArticles() {
+	public List<Article> getForPrintArticles(int boardId) {
 		List<Article> articles = new ArrayList<>();
 
 		SecSql sql = new SecSql();
@@ -116,6 +117,9 @@ public class ArticleDao {
 		sql.append("FROM article");
 		sql.append("INNER JOIN member");
 		sql.append("ON article.memberId = member.id");
+		if (boardId != 0) {
+			sql.append("WHERE article.boardId = ?", boardId);
+		}
 
 		List<Map<String, Object>> articleListMap = MysqlUtil.selectRows(sql);
 
@@ -275,6 +279,74 @@ public class ArticleDao {
 		}
 
 		return new Recommand(recommandMap);
+	}
+
+	public Board getBoardByCode(String code) {
+		SecSql sql = new SecSql();
+		sql.append("SELECT *");
+		sql.append("FROM board");
+		sql.append("WHERE `code` = ?", code);
+
+		Map<String, Object> boardMap = MysqlUtil.selectRow(sql);
+
+		if (boardMap.isEmpty()) {
+			return null;
+		}
+
+		return new Board(boardMap);
+	}
+
+	public Board getBoardByName(String name) {
+		SecSql sql = new SecSql();
+		sql.append("SELECT *");
+		sql.append("FROM board");
+		sql.append("WHERE `name` = ?", name);
+
+		Map<String, Object> boardMap = MysqlUtil.selectRow(sql);
+
+		if (boardMap.isEmpty()) {
+			return null;
+		}
+
+		return new Board(boardMap);
+	}
+
+	public List<Board> getForPrintBoards() {
+		List<Board> boards = new ArrayList<>();
+
+		SecSql sql = new SecSql();
+		sql.append("SELECT *");
+		sql.append("FROM board");
+		sql.append("ORDER BY board.id DESC");
+
+		List<Map<String, Object>> boardListMap = MysqlUtil.selectRows(sql);
+
+		for (Map<String, Object> boardMap : boardListMap) {
+
+			boards.add(new Board(boardMap));
+
+		}
+
+		return boards;
+	}
+
+	public int getArticlesCount(int boardId) {
+
+		SecSql sql = new SecSql();
+		sql.append("SELECT COUNT(*) AS cnt");
+		sql.append("FROM article");
+		sql.append("WHERE boardId = ?", boardId);
+
+		return MysqlUtil.selectRowIntValue(sql);
+	}
+
+	public int getRecommandsCount(int articleId) {
+		SecSql sql = new SecSql();
+		sql.append("SELECT COUNT(*) AS cnt");
+		sql.append("FROM recommand");
+		sql.append("WHERE articleId = ?", articleId);
+
+		return MysqlUtil.selectRowIntValue(sql);
 	}
 
 }

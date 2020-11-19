@@ -19,10 +19,31 @@ public class MemberController extends Controller {
 			doLogin(cmd);
 		} else if (cmd.equals("member logout")) {
 			doLogout(cmd);
+		} else if (cmd.equals("member whoami")) {
+			showWhoami(cmd);
 		} else {
 			System.out.println("존재하지 않는 명령어입니다.");
 			return;
 		}
+
+	}
+
+	private void showWhoami(String cmd) {
+		if (Container.session.isLogined() == false) {
+			System.out.println("로그인 후 이용해주세요.");
+			return;
+		}
+
+		System.out.println("== 회원 정보 ==");
+
+		int loginedMemberId = Container.session.loginedMemberId;
+		Member member = memberService.getMemberByMemberId(loginedMemberId);
+
+		System.out.printf("번호 : %d\n", member.id);
+		System.out.printf("가입일자 : %s\n", member.regDate);
+		System.out.printf("로그인아이디 : %s\n", member.loginId);
+		System.out.printf("이름 : %s\n", member.name);
+		System.out.printf("회원종류 : %s\n", member.getType());
 
 	}
 
@@ -63,7 +84,7 @@ public class MemberController extends Controller {
 			return;
 		}
 
-		Container.session.login(member.memberId);
+		Container.session.login(member.id);
 		System.out.printf("로그인 성공, %s님 환영합니다.\n", member.name);
 
 	}

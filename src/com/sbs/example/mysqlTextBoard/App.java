@@ -5,7 +5,6 @@ import java.util.Scanner;
 import com.sbs.example.mysqlTextBoard.controller.ArticleController;
 import com.sbs.example.mysqlTextBoard.controller.Controller;
 import com.sbs.example.mysqlTextBoard.controller.MemberController;
-import com.sbs.example.mysqlTextBoard.service.ArticleService;
 import com.sbs.example.mysqlTextBoard.util.MysqlUtil;
 
 public class App {
@@ -17,17 +16,6 @@ public class App {
 		articleController = Container.articleController;
 		memberController = Container.memberController;
 
-		init();
-	}
-
-	private void init() {
-		MysqlUtil.setDBInfo("localhost", "sbsst", "sbs123414", "textBoard");
-
-		// 기본 게시판을 공지사항 게시판으로 설정
-		ArticleService articleService = Container.articleService;
-		Container.session.selectedBoardId = articleService.boardDefaultSetting();
-
-		MysqlUtil.closeConnection();
 	}
 
 	public void run() {

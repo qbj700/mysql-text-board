@@ -4,10 +4,14 @@ public class Session {
 
 	public int loginedMemberId;
 	public int selectedBoardId;
+	private String CurrentBoardCode;
 
 	public Session() {
 		loginedMemberId = 0;
-		selectedBoardId = 0;
+
+		// 공지사항을 기본 선택된 게시판으로 지정
+		selectedBoardId = 1;
+		CurrentBoardCode = "notice";
 	}
 
 	public void login(int memberId) {
@@ -23,9 +27,20 @@ public class Session {
 		return loginedMemberId != 0;
 	}
 
-	public void selectBoard(int boardId) {
-		selectedBoardId = boardId;
+	public int getSelectedBoardId() {
+		return selectedBoardId;
+	}
 
+	public void setSelectedBoardId(int BoardId) {
+		this.selectedBoardId = BoardId;
+	}
+
+	public String getCurrentBoardCode() {
+		return CurrentBoardCode;
+	}
+
+	public void setCurrentBoardCode(String boardCode) {
+		this.CurrentBoardCode = boardCode;
 	}
 
 }

@@ -37,8 +37,8 @@ public class ArticleService {
 		return articleDao.addArticleData(title, body, memberId, boardId);
 	}
 
-	public int saveBoardData(String boardName) {
-		return articleDao.addBoardData(boardName);
+	public int saveBoardData(String code, String name) {
+		return articleDao.addBoardData(code, name);
 	}
 
 	public Board selectBoardByBoardId(int inputedId) {
@@ -51,8 +51,8 @@ public class ArticleService {
 		return board.id;
 	}
 
-	public List<Article> getForPrintArticles() {
-		return articleDao.getForPrintArticles();
+	public List<Article> getForPrintArticles(int boardId) {
+		return articleDao.getForPrintArticles(boardId);
 	}
 
 	public int addReply(int inputedId, int loginedMemberId, String reply) {
@@ -100,6 +100,33 @@ public class ArticleService {
 
 	public Recommand getRecommandById(int inputedId, int loginedMemberId) {
 		return articleDao.loadRecommandById(inputedId, loginedMemberId);
+	}
+
+	public Board getBoardByCode(String boardCode) {
+		return articleDao.getBoardByCode(boardCode);
+	}
+
+	public boolean isMakeBoardAvilableName(String name) {
+		Board board = articleDao.getBoardByName(name);
+
+		return board == null;
+	}
+
+	public boolean isMakeBoardAvilableCode(String code) {
+		Board board = articleDao.getBoardByCode(code);
+		return board == null;
+	}
+
+	public List<Board> getForPrintBoards() {
+		return articleDao.getForPrintBoards();
+	}
+
+	public int getArticlesCount(int boardId) {
+		return articleDao.getArticlesCount(boardId);
+	}
+
+	public int getRecommandsCount(int articleId) {
+		return articleDao.getRecommandsCount(articleId);
 	}
 
 }

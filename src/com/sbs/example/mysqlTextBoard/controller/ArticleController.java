@@ -1,7 +1,7 @@
 package com.sbs.example.mysqlTextBoard.controller;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import com.sbs.example.mysqlTextBoard.Container;
 import com.sbs.example.mysqlTextBoard.dto.Article;
@@ -246,24 +246,32 @@ public class ArticleController extends Controller {
 	}
 
 	private void doSelectBoard(String cmd) {
-		int inputedId = 0;
-		try {
-			inputedId = Integer.parseInt(cmd.split(" ")[2]);
-		} catch (ArrayIndexOutOfBoundsException e) {
-			System.out.println("게시물 번호를 입력해주세요.");
-			return;
-		} catch (NumberFormatException e) {
-			System.out.println("게시물 번호는 양의 정수를입력해 주세요.");
-			return;
+
+		System.out.println("== 게시판 선택 ==");
+
+		System.out.println("= 게시판 목록 =");
+		System.out.println("번호 / 생성날짜 / 코드 / 이름 / 게시물 수");
+
+		List<Board> boards = articleService.getForPrintBoards();
+
+		for (Board board : boards) {
+			int articlesCount = articleService.getArticlesCount(board.id);
+
+			System.out.printf("%d / %s / %s / %s / %d\n", board.id, board.regDate, board.code, board.name,
+					articlesCount);
 		}
 
-		Board board = articleService.selectBoardByBoardId(inputedId);
+		System.out.printf("게시판 코드 : ");
+		String inputedBoardCode = Container.scanner.nextLine().trim();
+
+		Board board = articleService.getBoardByCode(inputedBoardCode);
 		if (board == null) {
-			System.out.printf("%d번 게시판은 존재하지 않습니다.\n", inputedId);
+			System.out.println("잘못된 코드를 입력하였습니다.");
 			return;
 		}
 
-		Container.session.selectBoard(board.id);
+		Container.session.setCurrentBoardCode(board.code);
+		Container.session.setSelectedBoardId(board.id);
 		System.out.printf("%s (%d번) 게시판이 선택되었습니다.\n", board.name, board.id);
 
 	}
@@ -281,13 +289,28 @@ public class ArticleController extends Controller {
 			System.out.println("등록할 권한이 없습니다. (관리자만 등록 가능)");
 			return;
 		}
+
+		Scanner sc = Container.scanner;
 		System.out.println("== 게시판 등록 ==");
 
 		System.out.printf("게시판 이름 : ");
-		String boardName = Container.scanner.nextLine();
+		String name = sc.nextLine();
 
-		int boardId = articleService.saveBoardData(boardName);
-		System.out.printf("%s (%d번) 게시판이 생성되었습니다.\n", boardName, boardId);
+		if (articleService.isMakeBoardAvilableName(name) == false) {
+			System.out.println("해당 게시판 이름은 이미 사용중입니다.");
+			return;
+		}
+
+		System.out.printf("게시판 코드 : ");
+		String code = sc.nextLine();
+
+		if (articleService.isMakeBoardAvilableCode(code) == false) {
+			System.out.println("해당 게시판 코드는 이미 사용중입니다.");
+			return;
+		}
+
+		int id = articleService.saveBoardData(code, name);
+		System.out.printf("%s (%d번) 게시판이 생성되었습니다.\n", name, id);
 
 	}
 
@@ -404,14 +427,14 @@ public class ArticleController extends Controller {
 			return;
 		}
 		articleService.incrementHit(inputedId);
-		List<Recommand> recommands = articleService.getRecommandsById(inputedId);
 
 		String writer = article.extra__writer;
+		int recommandsCount = articleService.getRecommandsCount(article.id);
 
 		System.out.println("== 게시물 상세정보 ==");
 		System.out.printf("번호 : %d\n", article.id);
 		System.out.printf("조회수 : %d\n", article.hit + 1);
-		System.out.printf("추천수 : %d\n", recommands.size());
+		System.out.printf("추천수 : %d\n", recommandsCount);
 		System.out.printf("작성자 : %s\n", writer);
 		System.out.printf("등록일자 : %s\n", article.regDate);
 		System.out.printf("수정일자 : %s\n", article.updateDate);
@@ -454,25 +477,19 @@ public class ArticleController extends Controller {
 			page = 1;
 		}
 
-		List<Article> articles = articleService.getForPrintArticles();
-		List<Article> selectedBoardArticles = new ArrayList<>();
-		for (Article article : articles) {
-			if (article.boardId == Container.session.selectedBoardId) {
-				selectedBoardArticles.add(article);
-			}
-		}
+		String boardCode = Container.session.getCurrentBoardCode();
+		Board board = articleService.getBoardByCode(boardCode);
 
-		Board board = articleService.selectBoardByBoardId(Container.session.selectedBoardId);
-
+		List<Article> articles = articleService.getForPrintArticles(board.id);
 		System.out.printf("== %s 게시판 게시물 리스트 ==\n", board.name);
 
-		if (selectedBoardArticles.size() == 0) {
+		if (articles.size() == 0) {
 			System.out.println("게시물이 존재하지 않습니다.");
 			return;
 		}
 
 		int itemsInAPage = 10;
-		int startPos = selectedBoardArticles.size() - 1;
+		int startPos = articles.size() - 1;
 		startPos -= (page - 1) * itemsInAPage;
 		int endPos = startPos - (itemsInAPage - 1);
 
@@ -487,7 +504,7 @@ public class ArticleController extends Controller {
 		System.out.println("번호 / 작성일 / 수정일 / 작성자 / 제목 / 조회수 / 추천수");
 
 		for (int i = startPos; i >= endPos; i--) {
-			Article article = selectedBoardArticles.get(i);
+			Article article = articles.get(i);
 			String writer = article.extra__writer;
 			List<Recommand> recommands = articleService.getRecommandsById(article.id);
 			System.out.printf("%d / %s / %s / %s / %s / %d / %d\n", article.id, article.regDate, article.updateDate,
