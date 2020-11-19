@@ -27,6 +27,8 @@ public class ArticleController extends Controller {
 			showDetail(cmd);
 		} else if (cmd.startsWith("article delete ")) {
 			doDelete(cmd);
+		} else if (cmd.startsWith("article deleteReply ")) {
+			doDeleteReply(cmd);
 		} else if (cmd.startsWith("article modify ")) {
 			doModify(cmd);
 		} else if (cmd.equals("article write")) {
@@ -41,6 +43,39 @@ public class ArticleController extends Controller {
 			System.out.println("존재하지 않는 명령어입니다.");
 			return;
 		}
+
+	}
+
+	private void doDeleteReply(String cmd) {
+		if (Container.session.isLogined() == false) {
+			System.out.println("로그인 후 이용해주세요.");
+			return;
+		}
+
+		int inputedId = 0;
+		try {
+			inputedId = Integer.parseInt(cmd.split(" ")[2]);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			System.out.println("댓글 번호를 입력해주세요.");
+			return;
+		} catch (NumberFormatException e) {
+			System.out.println("댓글 번호는 양의 정수를입력해 주세요.");
+			return;
+		}
+
+		Reply reply = articleService.getReplyById(inputedId);
+		if (reply == null) {
+			System.out.printf("%d번 댓글은 존재하지 않습니다.\n", inputedId);
+			return;
+		}
+
+		if (reply.memberId != Container.session.loginedMemberId) {
+			System.out.println("삭제할 권한이 없습니다. (작성자만 삭제 가능)");
+			return;
+		}
+
+		articleService.deleteReply(inputedId);
+		System.out.printf("%d번 댓글을 삭제하였습니다.\n", inputedId);
 
 	}
 

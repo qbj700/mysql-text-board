@@ -66,4 +66,13 @@ public class ArticleService {
 		return articleDao.loadForPrintArticleDataById(inputedId);
 	}
 
+	public Reply getReplyById(int inputedId) {
+		return articleDao.getReplyById(inputedId);
+	}
+
+	public void deleteReply(int inputedId) {
+		articleDao.deleteReply(inputedId);
+
+	}
+
 }

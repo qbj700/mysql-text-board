@@ -175,4 +175,28 @@ public class ArticleDao {
 		return new Article(articleMap);
 	}
 
+	public Reply getReplyById(int inputedId) {
+		SecSql sql = new SecSql();
+		sql.append("SELECT *");
+		sql.append("FROM articleReply");
+		sql.append("WHERE id = ?", inputedId);
+
+		Map<String, Object> replyMap = MysqlUtil.selectRow(sql);
+
+		if (replyMap.isEmpty()) {
+			return null;
+		}
+
+		return new Reply(replyMap);
+	}
+
+	public void deleteReply(int inputedId) {
+		SecSql sql = new SecSql();
+		sql.append("DELETE FROM articleReply");
+		sql.append("WHERE id = ?", inputedId);
+
+		MysqlUtil.delete(sql);
+
+	}
+
 }
