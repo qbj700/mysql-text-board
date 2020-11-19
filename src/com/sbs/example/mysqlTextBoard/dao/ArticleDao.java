@@ -199,4 +199,15 @@ public class ArticleDao {
 
 	}
 
+	public void modifyReply(int inputedId, String modifiedReply) {
+		SecSql sql = new SecSql();
+		sql.append("UPDATE articleReply");
+		sql.append("SET reply = ?,", modifiedReply);
+		sql.append("updateDate = NOW()");
+		sql.append("WHERE id = ?", inputedId);
+
+		MysqlUtil.update(sql);
+
+	}
+
 }

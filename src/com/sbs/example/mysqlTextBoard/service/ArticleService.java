@@ -75,4 +75,9 @@ public class ArticleService {
 
 	}
 
+	public void modifyReply(int inputedId, String modifiedReply) {
+		articleDao.modifyReply(inputedId, modifiedReply);
+
+	}
+
 }
