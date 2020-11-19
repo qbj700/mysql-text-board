@@ -3,6 +3,7 @@ package com.sbs.example.mysqlTextBoard.util;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 
+@SuppressWarnings("serial")
 public class MysqlUtilException extends RuntimeException {
 	private Exception originException;
 

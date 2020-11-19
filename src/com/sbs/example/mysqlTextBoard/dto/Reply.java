@@ -10,6 +10,7 @@ public class Reply {
 	public String reply;
 	public int memberId;
 	public int articleId;
+	public String extra__writer;
 
 	public Reply(Map<String, Object> replyMap) {
 		this.id = (int) replyMap.get("id");
@@ -18,5 +19,10 @@ public class Reply {
 		this.reply = (String) replyMap.get("reply");
 		this.memberId = (int) replyMap.get("memberId");
 		this.articleId = (int) replyMap.get("articleId");
+
+		if (replyMap.containsKey("extra__writer")) {
+			this.extra__writer = (String) replyMap.get("extra__writer");
+		}
+
 	}
 }

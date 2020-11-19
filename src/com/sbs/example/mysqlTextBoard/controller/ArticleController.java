@@ -6,7 +6,6 @@ import java.util.List;
 import com.sbs.example.mysqlTextBoard.Container;
 import com.sbs.example.mysqlTextBoard.dto.Article;
 import com.sbs.example.mysqlTextBoard.dto.Board;
-import com.sbs.example.mysqlTextBoard.dto.Member;
 import com.sbs.example.mysqlTextBoard.dto.Reply;
 import com.sbs.example.mysqlTextBoard.service.ArticleService;
 
@@ -246,7 +245,7 @@ public class ArticleController extends Controller {
 		System.out.printf("제목 : %s\n", article.title);
 		System.out.printf("내용 : %s\n\n", article.body);
 
-		List<Reply> replies = articleService.getRepliesById(inputedId);
+		List<Reply> replies = articleService.getForPrintRepliesById(inputedId);
 		System.out.println("== 댓글 리스트 ==");
 
 		if (replies.size() == 0) {
@@ -256,10 +255,9 @@ public class ArticleController extends Controller {
 
 		for (int i = 0; i < replies.size(); i++) {
 			Reply reply = replies.get(i);
-			Member member = Container.memberService.getMemberByMemberId(reply.memberId);
 
 			System.out.printf("== %d번 댓글 ==\n", reply.id);
-			System.out.printf("작성자 : %s\n", member.name);
+			System.out.printf("작성자 : %s\n", reply.extra__writer);
 			System.out.printf("작성일자 : %s\n", reply.regDate);
 			System.out.printf("수정일자 : %s\n", reply.updateDate);
 			System.out.printf("내용 : %s\n\n", reply.reply);

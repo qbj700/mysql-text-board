@@ -58,8 +58,8 @@ public class ArticleService {
 		return articleDao.saveReplyData(inputedId, loginedMemberId, reply);
 	}
 
-	public List<Reply> getRepliesById(int id) {
-		return articleDao.getRepliesById(id);
+	public List<Reply> getForPrintRepliesById(int id) {
+		return articleDao.getForPrintRepliesById(id);
 	}
 
 	public Article getForPrintArticleById(int inputedId) {

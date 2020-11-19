@@ -137,14 +137,15 @@ public class ArticleDao {
 		return MysqlUtil.insert(sql);
 	}
 
-	public List<Reply> getRepliesById(int id) {
+	public List<Reply> getForPrintRepliesById(int id) {
 		List<Reply> replies = new ArrayList<>();
 
 		SecSql sql = new SecSql();
-		sql.append("SELECT *");
+		sql.append("SELECT articleReply.*, `member`.name AS extra__writer");
 		sql.append("FROM articleReply");
-		sql.append("WHERE articleId = ?", id);
-		sql.append("ORDER BY id DESC");
+		sql.append("INNER JOIN member");
+		sql.append("ON articleReply.articleId = ? AND articleReply.memberId = `member`.id", id);
+		sql.append("ORDER BY articleReply.id DESC");
 
 		List<Map<String, Object>> replyListMap = MysqlUtil.selectRows(sql);
 

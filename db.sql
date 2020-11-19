@@ -127,3 +127,9 @@ FROM article
 INNER JOIN `member`
 ON article.id = 1 AND article.id = member.id;
 
+SELECT articleReply.*, `member`.name AS extra__writer
+FROM articleReply
+INNER JOIN `member`
+ON articleReply.articleId = 4 AND articleReply.memberId = `member`.id
+ORDER BY articleReply.id DESC;
+
