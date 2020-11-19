@@ -93,4 +93,13 @@ public class ArticleService {
 		return articleDao.loadRecommandsById(inputedId);
 	}
 
+	public void doCancelRecommand(int inputedId, int loginedMemberId) {
+		articleDao.doCancelRecommand(inputedId, loginedMemberId);
+
+	}
+
+	public Recommand getRecommandById(int inputedId, int loginedMemberId) {
+		return articleDao.loadRecommandById(inputedId, loginedMemberId);
+	}
+
 }

@@ -44,10 +44,48 @@ public class ArticleController extends Controller {
 			doWriteReply(cmd);
 		} else if (cmd.startsWith("article recommand ")) {
 			doRecommand(cmd);
+		} else if (cmd.startsWith("article cancelRecommand ")) {
+			doCancelRecommand(cmd);
 		} else {
 			System.out.println("존재하지 않는 명령어입니다.");
 			return;
 		}
+
+	}
+
+	private void doCancelRecommand(String cmd) {
+		if (Container.session.isLogined() == false) {
+			System.out.println("로그인 후 이용해주세요.");
+			return;
+		}
+		int inputedId = 0;
+		try {
+			inputedId = Integer.parseInt(cmd.split(" ")[2]);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			System.out.println("게시물 번호를 입력해주세요.");
+			return;
+		} catch (NumberFormatException e) {
+			System.out.println("게시물 번호는 양의 정수를입력해 주세요.");
+			return;
+		}
+
+		Article article = articleService.getArticleById(inputedId);
+
+		if (article == null) {
+			System.out.printf("%d번 게시물은 존재하지 않습니다.\n", inputedId);
+			return;
+		}
+
+		int loginedMemberId = Container.session.loginedMemberId;
+		Recommand recommand = articleService.getRecommandById(inputedId, loginedMemberId);
+
+		if (recommand == null) {
+			System.out.printf("회원님의 %d번 게시물 추천 내역이 존재하지 않습니다.\n", inputedId);
+			return;
+		}
+
+		articleService.doCancelRecommand(inputedId, loginedMemberId);
+		System.out.printf("%d번 게시물의 추천을 취소하였습니다.\n", inputedId);
 
 	}
 

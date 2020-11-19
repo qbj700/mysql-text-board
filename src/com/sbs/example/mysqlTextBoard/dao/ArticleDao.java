@@ -251,4 +251,28 @@ public class ArticleDao {
 		return recommands;
 	}
 
+	public void doCancelRecommand(int inputedId, int loginedMemberId) {
+		SecSql sql = new SecSql();
+		sql.append("DELETE FROM recommand");
+		sql.append("WHERE articleId = ? AND memberId = ?", inputedId, loginedMemberId);
+
+		MysqlUtil.delete(sql);
+
+	}
+
+	public Recommand loadRecommandById(int inputedId, int loginedMemberId) {
+		SecSql sql = new SecSql();
+		sql.append("SELECT *");
+		sql.append("FROM recommand");
+		sql.append("WHERE articleId = ? AND memberId = ?", inputedId, loginedMemberId);
+
+		Map<String, Object> recommandMap = MysqlUtil.selectRow(sql);
+
+		if (recommandMap.isEmpty()) {
+			return null;
+		}
+
+		return new Recommand(recommandMap);
+	}
+
 }
