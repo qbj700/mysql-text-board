@@ -89,17 +89,26 @@ SELECT * FROM MEMBER WHERE loginId = 'aaa';
 SHOW TABLES;
 
 CREATE TABLE board(
-    boardId INT(10) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    boardName VARCHAR(100) NOT NULL
+    id INT(10) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    updateDate DATETIME NOT NULL,
+    `name` CHAR(50) NOT NULL,
+    `code` CHAR(20) NOT NULL
 );
 
 # 1번 게시판 생성
 INSERT INTO board
-SET boardName = '공지사항';
+SET regDate = NOW(),
+updateDate = NOW(),
+`name` = '공지사항',
+`code` = 'notice';
 
 # 2번 게시판 생성
 INSERT INTO board
-SET boardName = '자유';
+SET regDate = NOW(),
+updateDate = NOW(),
+`name` = '자유',
+`code` = 'free';
 
 SHOW TABLES;
 
