@@ -33,8 +33,8 @@ public class ArticleService {
 		articleDao.modify(inputedId, title, body);
 	}
 
-	public int saveArticle(String title, String body, int memberId, int boardId) {
-		return articleDao.addArticleData(title, body, memberId, boardId);
+	public int saveArticle(String title, String body, int memberId, int boardId, int hit) {
+		return articleDao.addArticleData(title, body, memberId, boardId, hit);
 	}
 
 	public int saveBoardData(String code, String name) {

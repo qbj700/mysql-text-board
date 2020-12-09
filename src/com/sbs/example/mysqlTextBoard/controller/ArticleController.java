@@ -329,8 +329,9 @@ public class ArticleController extends Controller {
 
 		int memberId = Container.session.loginedMemberId;
 		int boardId = Container.session.selectedBoardId;
+		int hit = 0;
 
-		int id = articleService.saveArticle(title, body, memberId, boardId);
+		int id = articleService.saveArticle(title, body, memberId, boardId, hit);
 		System.out.printf("%d번 게시물이 생성되었습니다.\n", id);
 
 	}

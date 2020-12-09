@@ -70,7 +70,7 @@ public class ArticleDao {
 
 	}
 
-	public int addArticleData(String title, String body, int memberId, int boardId) {
+	public int addArticleData(String title, String body, int memberId, int boardId, int hit) {
 
 		SecSql sql = new SecSql();
 		sql.append("INSERT INTO article");
@@ -78,6 +78,7 @@ public class ArticleDao {
 		sql.append("updateDate = NOW(),");
 		sql.append("title = ?,", title);
 		sql.append("body = ?,", body);
+		sql.append("hit = ?,", hit);
 		sql.append("memberId = ?,", memberId);
 		sql.append("boardId = ?", boardId);
 
