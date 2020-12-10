@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.sbs.example.mysqlTextBoard.Container;
 import com.sbs.example.mysqlTextBoard.dto.Article;
+import com.sbs.example.mysqlTextBoard.dto.Board;
 import com.sbs.example.mysqlTextBoard.util.Util;
 
 public class BuildService {
@@ -26,6 +27,17 @@ public class BuildService {
 
 		// 게시물 상세 페이지 시작
 		String head = Util.getFileContents("site_template/head.html");
+
+		String boardListHtml = "";
+		List<Board> boards = articleService.getBoards();
+
+		for (Board board : boards) {
+			boardListHtml += "<li><a href=\"#\" class=\"block\"><i class=\"fas fa-flag\"></i><span>" + board.name
+					+ "</span></a></li>";
+		}
+
+		head = head.replace("[[existsBoardList]]", boardListHtml);
+
 		String foot = Util.getFileContents("site_template/foot.html");
 
 		for (Article article : articles) {

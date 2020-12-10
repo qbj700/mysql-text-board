@@ -129,4 +129,8 @@ public class ArticleService {
 		return articleDao.getRecommandsCount(articleId);
 	}
 
+	public List<Board> getBoards() {
+		return articleDao.getBoards();
+	}
+
 }

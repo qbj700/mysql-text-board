@@ -350,4 +350,22 @@ public class ArticleDao {
 		return MysqlUtil.selectRowIntValue(sql);
 	}
 
+	public List<Board> getBoards() {
+		List<Board> boards = new ArrayList<>();
+
+		SecSql sql = new SecSql();
+		sql.append("SELECT *");
+		sql.append("FROM board");
+
+		List<Map<String, Object>> boardListMap = MysqlUtil.selectRows(sql);
+
+		for (Map<String, Object> boardMap : boardListMap) {
+
+			boards.add(new Board(boardMap));
+
+		}
+
+		return boards;
+	}
+
 }
