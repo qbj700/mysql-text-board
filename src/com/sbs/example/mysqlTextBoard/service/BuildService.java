@@ -31,8 +31,22 @@ public class BuildService {
 		String boardListHtml = "";
 		List<Board> boards = articleService.getBoards();
 
+		String noticeIcon = "<i class=\"fas fa-flag\">";
+		String freeIcon = "<i class=\"fab fa-free-code-camp\">";
+		String elseIcon = "<i class=\"fas fa-stream\">";
+
 		for (Board board : boards) {
-			boardListHtml += "<li><a href=\"#\" class=\"block\"><i class=\"fas fa-flag\"></i><span>" + board.name
+			String icon = "";
+
+			if (board.code.contains("free")) {
+				icon += freeIcon;
+			} else if (board.code.contains("notice")) {
+				icon += noticeIcon;
+			} else {
+				icon += elseIcon;
+			}
+
+			boardListHtml += "<li><a href=\"#\" class=\"block\">" + icon + "</i><span>" + board.name
 					+ "</span></a></li>";
 		}
 
