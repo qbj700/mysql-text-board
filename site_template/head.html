@@ -16,9 +16,11 @@
 	<!-- 로고바 시작 -->
 	<header class="logo-bar con-min-width">
 		<div class="con height-100p flex flex-jc-c">
-			<a href="#" class="logo flex flex-ai-c"> <i
-				class="fab fa-jenkins"></i> <span> Develo<span>p</span>ers
-			</span>
+			<a href="#" class="logo flex flex-ai-c"> 
+				<i class="fab fa-jenkins"></i> 
+				<span>
+					Develo<span>p</span>ers
+				</span>
 			</a>
 		</div>
 	</header>
@@ -34,7 +36,7 @@
 					</a></li>
 					<li><a class="block"> <i class="fas fa-list"></i> <span>ARTICLES</span>
 					</a>
-						<ul>[[existsBoardList]]
+						<ul>${menu-bar__menu-1__board-menu-content}
 						</ul></li>
 					<li><a class="block"> <i class="fas fa-link"></i> <span>LINK</span>
 					</a>
@@ -54,3 +56,10 @@
 		</div>
 	</header>
 	<!-- 메뉴바 끝 -->
+
+	<main class="flex-grow-1">
+		<section class="title-bar con-min-width">
+			<h1 class="con">
+				${title-bar__content}
+			</h1>
+		</section>
