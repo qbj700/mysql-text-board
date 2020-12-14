@@ -48,12 +48,14 @@ public class BuildService {
 			}
 			for (Article article : articles) {
 
+				String link = "article_detail_" + article.id + ".html";
+
 				mainContent.append("<div>");
 				mainContent.append("<div class=\"article-list__cell-id\">" + article.id + "</div>");
 				mainContent.append("<div class=\"article-list__cell-reg-date\">" + article.regDate + "</div>");
 				mainContent.append("<div class=\"article-list__cell-writer\">" + article.extra__writer + "</div>");
 				mainContent.append("<div class=\"article-list__cell-title\">");
-				mainContent.append("<a href=\"article_detail_" + article.id + ".html\" class=\"hover-underline\">");
+				mainContent.append("<a href=\"" + link + "\" class=\"hover-underline\">");
 				mainContent.append(article.title + "</a></div>");
 				mainContent.append("</div>");
 
@@ -64,7 +66,7 @@ public class BuildService {
 			sb.append(body);
 			sb.append(foot);
 
-			String fileName = "article_" + board.code + "_list.html";
+			String fileName = "article_list_" + board.code + "_1.html";
 			String filePath = "site/" + fileName;
 
 			Util.writerFile(filePath, sb.toString());
@@ -140,7 +142,7 @@ public class BuildService {
 		for (Board board : boards) {
 			boardMenuContentHtml.append("<li>");
 
-			String link = board.code + "-list-1.html";
+			String link = "article_list_" + board.code + "_1.html";
 
 			boardMenuContentHtml.append("<a href=\"" + link + "\" class=\"block\">");
 
