@@ -29,48 +29,39 @@ public class BuildService {
 	}
 
 	private void buildListPages() {
-
-		String head = "";
-		String foot = Util.getFileContents("site_template/foot.html");
-
 		List<Board> boards = articleService.getBoards();
+
+		String bodyTemplate = Util.getFileContents("site_template/article_list.html");
+		String foot = Util.getFileContents("site_template/foot.html");
 
 		for (Board board : boards) {
 			StringBuilder sb = new StringBuilder();
 			List<Article> articles = articleService.getForPrintArticles(board.id);
-			head = getHeadHtml("article_list_" + board.code);
 
-			sb.append(head);
-			sb.append("<section class=\"section-1 con-min-width\">");
-			sb.append("<div class=\"con\">");
-			sb.append("<div class=\"article-list\">");
-			sb.append("<header>");
-			sb.append("<div>");
+			sb.append(getHeadHtml("article_list_" + board.code));
+			String body = bodyTemplate;
 
-			sb.append("<div class=\"article-list__cell-id\">번호</div>");
-			sb.append("<div class=\"article-list__cell-reg-date\">날짜</div>");
-			sb.append("<div class=\"article-list__cell-writer\">작성자</div>");
-			sb.append("<div class=\"article-list__cell-title\">제목</div>");
+			StringBuilder mainContent = new StringBuilder();
 
-			sb.append("</div>");
-			sb.append("</header>");
-
-			sb.append("<main>");
-			for (Article article : articles) {
-				sb.append("<div>");
-				sb.append("<div class=\"article-list__cell-id\">" + article.id + "</div>");
-				sb.append("<div class=\"article-list__cell-reg-date\">" + article.regDate + "</div>");
-				sb.append("<div class=\"article-list__cell-writer\">" + article.extra__writer + "</div>");
-				sb.append("<div class=\"article-list__cell-title\">");
-				sb.append("<a href=\"article_detail_" + article.id + ".html\" class=\"hover-underline\">");
-				sb.append(article.title + "</a></div>");
-				sb.append("</div>");
+			if (articles.size() == 0) {
+				body = bodyTemplate.replace("${article-list__main-content}", "<div>게시물이 존재하지 않습니다.</div>");
 			}
-			sb.append("</main>");
+			for (Article article : articles) {
 
-			sb.append("</div>");
-			sb.append("</div>");
-			sb.append("</section>");
+				mainContent.append("<div>");
+				mainContent.append("<div class=\"article-list__cell-id\">" + article.id + "</div>");
+				mainContent.append("<div class=\"article-list__cell-reg-date\">" + article.regDate + "</div>");
+				mainContent.append("<div class=\"article-list__cell-writer\">" + article.extra__writer + "</div>");
+				mainContent.append("<div class=\"article-list__cell-title\">");
+				mainContent.append("<a href=\"article_detail_" + article.id + ".html\" class=\"hover-underline\">");
+				mainContent.append(article.title + "</a></div>");
+				mainContent.append("</div>");
+
+				body = bodyTemplate.replace("${article-list__main-content}", mainContent.toString());
+
+			}
+
+			sb.append(body);
 			sb.append(foot);
 
 			String fileName = "article_" + board.code + "_list.html";
