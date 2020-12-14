@@ -24,7 +24,66 @@ public class BuildService {
 		Util.copy("site_template/app.css", "site/app.css");
 
 		buildIndexPage();
+		buildListPages();
 		buildArticleDetailPages();
+	}
+
+	private void buildListPages() {
+		StringBuilder sb = new StringBuilder();
+
+		String head = "";
+		String foot = Util.getFileContents("site_template/foot.html");
+
+		List<Board> boards = articleService.getBoards();
+
+		for (Board board : boards) {
+			if (board.code.startsWith("notice")) {
+				List<Article> articles = articleService.getForPrintArticles(board.id);
+				head = getHeadHtml("article_list_" + board.code);
+
+				sb.append(head);
+				sb.append("<section class=\"section-1 con-min-width\">");
+				sb.append("<div class=\"con\">");
+				sb.append("<div class=\"article-list\">");
+				sb.append("<header>");
+				sb.append("<div>");
+
+				sb.append("<div class=\"article-list__cell-id\">번호</div>");
+				sb.append("<div class=\"article-list__cell-reg-date\">날짜</div>");
+				sb.append("<div class=\"article-list__cell-writer\">작성자</div>");
+				sb.append("<div class=\"article-list__cell-title\">제목</div>");
+
+				sb.append("</div>");
+				sb.append("</header>");
+
+				sb.append("<main>");
+				for (Article article : articles) {
+					sb.append("<div>");
+					sb.append("<div class=\"article-list__cell-id\">" + article.id + "</div>");
+					sb.append("<div class=\"article-list__cell-reg-date\">" + article.regDate + "</div>");
+					sb.append("<div class=\"article-list__cell-writer\">" + article.extra__writer + "</div>");
+					sb.append("<div class=\"article-list__cell-title\">");
+					sb.append("<a href=\"article_detail_" + article.id + ".html\" class=\"hover-underline\">");
+					sb.append(article.title + "</a></div>");
+					sb.append("</div>");
+				}
+				sb.append("</main>");
+
+				sb.append("</div>");
+				sb.append("</div>");
+				sb.append("</section>");
+				sb.append(foot);
+
+				String fileName = "article_" + board.code + "_list.html";
+				String filePath = "site/" + fileName;
+
+				Util.writerFile(filePath, sb.toString());
+
+				System.out.println(filePath + " 생성");
+
+			}
+		}
+
 	}
 
 	private void buildIndexPage() {
