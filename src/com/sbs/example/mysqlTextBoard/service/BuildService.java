@@ -5,6 +5,7 @@ import java.util.List;
 import com.sbs.example.mysqlTextBoard.Container;
 import com.sbs.example.mysqlTextBoard.dto.Article;
 import com.sbs.example.mysqlTextBoard.dto.Board;
+import com.sbs.example.mysqlTextBoard.dto.Member;
 import com.sbs.example.mysqlTextBoard.util.Util;
 
 public class BuildService {
@@ -98,29 +99,50 @@ public class BuildService {
 	private void buildArticleDetailPages() {
 		List<Article> articles = articleService.getArticles();
 
-		String head = getHeadHtml("article_detail");
+		String bodyTemplate = Util.getFileContents("site_template/article_detail.html");
 		String foot = Util.getFileContents("site_template/foot.html");
 
 		// 게시물 상세 페이지 시작
+
 		for (Article article : articles) {
 			StringBuilder sb = new StringBuilder();
+			StringBuilder articleDetailContent = new StringBuilder();
 
-			sb.append(head);
+			String body = bodyTemplate;
+			sb.append(getHeadHtml("article_detail"));
+			Board board = articleService.getBoardByBoardId(article.boardId);
 
-			sb.append("번호 : " + article.id + "<br>");
-			sb.append("작성날짜 : " + article.regDate + "<br>");
-			sb.append("갱신날짜 : " + article.updateDate + "<br>");
-			sb.append("제목 : " + article.title + "<br>");
-			sb.append("내용 : " + article.body + "<br>");
+			String link = "article_list_" + board.code + "_1.html";
+			int recommandCount = articleService.getRecommandsCount(article.id);
+			Member member = memberService.getMemberByMemberId(article.memberId);
+			String writer = member.name;
+
+			articleDetailContent.append(
+					"<div class=\"article-detail__title\" style=\"font-size:2rem\">" + article.title + "</div>");
+			articleDetailContent.append("<div class=\"article-detail__meta-data flex flex-jc-sb\">");
+			articleDetailContent.append("<div class=\"meta-data__left\">");
+			articleDetailContent.append("<span>게시판 : " + board.name + "</span>");
+			articleDetailContent.append("<span>작성일 : " + article.regDate + "</span>");
+			articleDetailContent.append("<span>작성자 : " + writer + "</span></div>");
+			articleDetailContent.append("<div class=\"meta-data__right\">");
+			articleDetailContent.append("<span>번호 : " + article.id + "</span>");
+			articleDetailContent.append("<span>조회수 : " + article.hit + "</span>");
+			articleDetailContent.append("<span>추천수 : " + recommandCount + "</span></div></div>");
+			articleDetailContent.append("<div class=\"article-detail__body\">" + article.body + "</div>");
+			articleDetailContent.append("<div class=\"article-detail__menu flex flex-jc-c\">");
 			if (article.id - 1 != 0) {
-				sb.append("<a href=\"article_detail_" + (+article.id - 1) + ".html\">이전글</a><br>");
+				articleDetailContent
+						.append("<span><a href=\"article_detail_" + (+article.id - 1) + ".html\">&lt; 이전 글</a></span>");
 			}
+			articleDetailContent.append("<span><a href=\"" + link + "\">리스트</a></span>");
+
 			if (article.id + 1 <= articles.size()) {
-				sb.append("<a href=\"article_detail_" + (+article.id + 1) + ".html\">다음글</a><br>");
+				articleDetailContent.append(
+						"<span><a href=\"article_detail_" + (+article.id + 1) + ".html\">다음 글 &gt;</a></span> </div>");
 			}
+			body = bodyTemplate.replace("${article-detail__content}", articleDetailContent.toString());
 
-			sb.append("</div>");
-
+			sb.append(body);
 			sb.append(foot);
 
 			String fileName = "article_detail_" + article.id + ".html";
@@ -130,6 +152,7 @@ public class BuildService {
 
 			System.out.println(filePath + " 생성");
 		}
+
 		// 게시물 상세 페이지 끝
 
 	}

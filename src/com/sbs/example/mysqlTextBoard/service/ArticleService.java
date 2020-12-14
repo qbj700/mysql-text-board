@@ -133,4 +133,8 @@ public class ArticleService {
 		return articleDao.getBoards();
 	}
 
+	public Board getBoardByBoardId(int boardId) {
+		return articleDao.getBoardByBoardId(boardId);
+	}
+
 }
