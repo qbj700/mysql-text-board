@@ -214,7 +214,7 @@ a {
   position:relative;
 }
 
-.article-list > header > div > div::after {
+.article-list > header > div > div:not(:last-child)::after {
   content:"";
   position:absolute;
   top:50%;
