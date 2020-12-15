@@ -1,7 +1,27 @@
 <section class="section-1 con-min-width">
 	<div class="con">
 		<div class="article-detail">
-			${article-detail__content}
+			<div class="article-detail__title" style="font-size: 2rem">${article-detail__title}</div>
+			<div class="article-detail__meta-data flex flex-jc-sb">
+				<div class="meta-data__left">
+					<span>${article-detail__board-name}</span> 
+					<span>${article-detail__reg-date}</span>
+					<span>${article-detail__writer}</span>
+				</div>
+				<div class="meta-data__right">
+					<span>${article-detail__id}</span> 
+					<span>${article-detail__hit}</span> 
+					<span>${article-detail__recommand}</span>
+				</div>
+			</div>
+			
+			<div class="article-detail__body">${article-detail__body}</div>
+			
+			<div class="article-detail__menu flex flex-jc-c">
+				<span><a href="${article-detail__link-prev-article-url}" class="hover-underline ${article-detail__link-prev-article-class-addi}">&lt; 이전 글</a></span> 
+				<span><a href="${article-detail__link-list-url}" class="hover-underline ${article-detail__link-list-class-addi}">리스트</a></span> 
+				<span><a href="${article-detail__link-next-article-url}" class="hover-underline ${article-detail__link-next-article-class-addi}"> 다음 글 &gt;</a></span>
+			</div>
 		</div>
 	</div>
 </section>

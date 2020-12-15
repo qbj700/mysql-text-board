@@ -115,9 +115,13 @@ public class ArticleDao {
 
 		SecSql sql = new SecSql();
 		sql.append("SELECT article.*, member.name AS extra__writer");
+		sql.append(",board.name AS extra__boardName");
+		sql.append(",board.code AS extra__boardCode");
 		sql.append("FROM article");
-		sql.append("INNER JOIN member");
+		sql.append("INNER JOIN `member`");
 		sql.append("ON article.memberId = member.id");
+		sql.append("INNER JOIN `board`");
+		sql.append("ON article.boardId = board.id");
 		if (boardId != 0) {
 			sql.append("WHERE article.boardId = ?", boardId);
 		}

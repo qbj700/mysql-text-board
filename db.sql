@@ -124,8 +124,8 @@ updateDate = NOW(),
 title = CONCAT('제목_', RAND()),
 `body` = CONCAT('내용_', RAND()),
 hit = 0,
-memberId = IF(RAND() > 0.5, 1, 2),
-boardId = IF(RAND() > 0.5, 1, 2);
+memberId = FLOOR(RAND() * 2) + 1,
+boardId = FLOOR(RAND() * 2) + 1;
 
 INSERT INTO article
 SET regDate = NOW(),
@@ -133,8 +133,8 @@ updateDate = NOW(),
 title = CONCAT('제목_', RAND()),
 `body` = CONCAT('내용_', RAND()),
 hit = 0,
-memberId = IF(RAND() > 0.5, 1, 2),
-boardId = IF(RAND() > 0.5, 1, 2);
+memberId = FLOOR(RAND() * 2) + 1,
+boardId = FLOOR(RAND() * 2) + 1;
 
 INSERT INTO article
 SET regDate = NOW(),
@@ -142,8 +142,8 @@ updateDate = NOW(),
 title = CONCAT('제목_', RAND()),
 `body` = CONCAT('내용_', RAND()),
 hit = 0,
-memberId = IF(RAND() > 0.5, 1, 2),
-boardId = IF(RAND() > 0.5, 1, 2);
+memberId = FLOOR(RAND() * 2) + 1,
+boardId = FLOOR(RAND() * 2) + 1;
 
 INSERT INTO article
 SET regDate = NOW(),
@@ -151,5 +151,15 @@ updateDate = NOW(),
 title = CONCAT('제목_', RAND()),
 `body` = CONCAT('내용_', RAND()),
 hit = 0,
-memberId = IF(RAND() > 0.5, 1, 2),
-boardId = IF(RAND() > 0.5, 1, 2);
+memberId = FLOOR(RAND() * 2) + 1,
+boardId = FLOOR(RAND() * 2) + 1;
+
+INSERT INTO article
+SET regDate = NOW(),
+updateDate = NOW(),
+title = CONCAT('제목_', RAND()),
+`body` = CONCAT('내용_', RAND()),
+hit = 0,
+memberId = FLOOR(RAND() * 2) + 1,
+boardId = FLOOR(RAND() * 2) + 1;
+

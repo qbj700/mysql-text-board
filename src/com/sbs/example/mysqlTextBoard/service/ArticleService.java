@@ -54,6 +54,10 @@ public class ArticleService {
 	public List<Article> getForPrintArticles(int boardId) {
 		return articleDao.getForPrintArticles(boardId);
 	}
+	
+	public List<Article> getForPrintArticles() {
+		return articleDao.getForPrintArticles(0);
+	}
 
 	public int addReply(int inputedId, int loginedMemberId, String reply) {
 		return articleDao.saveReplyData(inputedId, loginedMemberId, reply);

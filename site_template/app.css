@@ -97,6 +97,10 @@ a {
   display:block;
 }
 
+.none {
+	display:none;
+}
+
 .hover-underline:hover{
   text-decoration:underline;
 }
@@ -309,7 +313,7 @@ a {
   margin-left:20px;
 }
 
-.article-detail__menu > span:nth-child(2){
+.article-detail__menu > span:nth-child(2) > a{
 	margin-left:40px;
 	margin-right:40px;
 }

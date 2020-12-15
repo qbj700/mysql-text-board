@@ -52,7 +52,7 @@ public class BuildService {
 		for (int i = start; i <= end; i++) {
 			Article article = articles.get(i);
 
-			String link = "article_detail_" + article.id + ".html";
+			String link = getArticleDetailFileName(article.id);
 
 			mainContent.append("<div>");
 			mainContent.append("<div class=\"article-list__cell-id\">" + article.id + "</div>");
@@ -145,8 +145,12 @@ public class BuildService {
 		System.out.println(filePath + " 생성");
 	}
 
-	private String getArticleListFileName(Board board, int i) {
-		return "article_list_" + board.code + "_" + i + ".html";
+	private String getArticleListFileName(Board board, int page) {
+		return getArticleListFileName(board.code, page);
+	}
+
+	private String getArticleListFileName(String boardCode, int page) {
+		return "article_list_" + boardCode + "_" + page + ".html";
 	}
 
 	private void buildArticleListPages() {
@@ -188,64 +192,82 @@ public class BuildService {
 	}
 
 	private void buildArticleDetailPages() {
-		List<Article> articles = articleService.getArticles();
+		List<Board> boards = articleService.getBoards();
 
+		String head = getHeadHtml("article_detail");
 		String bodyTemplate = Util.getFileContents("site_template/article_detail.html");
 		String foot = Util.getFileContents("site_template/foot.html");
 
 		// 게시물 상세 페이지 시작
+		for (Board board : boards) {
+			List<Article> articles = articleService.getForPrintArticles(board.id);
 
-		for (Article article : articles) {
-			StringBuilder sb = new StringBuilder();
-			StringBuilder articleDetailContent = new StringBuilder();
+			for (int i = 0; i < articles.size(); i++) {
+				Article article = articles.get(i);
+				Article prevArticle = null;
+				int prevArticleIndex = i + 1;
+				int prevArticleId = 0;
 
-			String body = bodyTemplate;
-			sb.append(getHeadHtml("article_detail"));
-			Board board = articleService.getBoardByBoardId(article.boardId);
+				if (prevArticleIndex < articles.size()) {
+					prevArticle = articles.get(prevArticleIndex);
+					prevArticleId = prevArticle.id;
+				}
 
-			String link = "article_list_" + board.code + "_1.html";
-			int recommandCount = articleService.getRecommandsCount(article.id);
-			Member member = memberService.getMemberByMemberId(article.memberId);
-			String writer = member.name;
+				Article nextArticle = null;
+				int nextArticleIndex = i - 1;
+				int nextArticleId = 0;
 
-			articleDetailContent.append(
-					"<div class=\"article-detail__title\" style=\"font-size:2rem\">" + article.title + "</div>");
-			articleDetailContent.append("<div class=\"article-detail__meta-data flex flex-jc-sb\">");
-			articleDetailContent.append("<div class=\"meta-data__left\">");
-			articleDetailContent.append("<span>게시판 : " + board.name + "</span>");
-			articleDetailContent.append("<span>작성일 : " + article.regDate + "</span>");
-			articleDetailContent.append("<span>작성자 : " + writer + "</span></div>");
-			articleDetailContent.append("<div class=\"meta-data__right\">");
-			articleDetailContent.append("<span>번호 : " + article.id + "</span>");
-			articleDetailContent.append("<span>조회수 : " + article.hit + "</span>");
-			articleDetailContent.append("<span>추천수 : " + recommandCount + "</span></div></div>");
-			articleDetailContent.append("<div class=\"article-detail__body\">" + article.body + "</div>");
-			articleDetailContent.append("<div class=\"article-detail__menu flex flex-jc-c\">");
-			if (article.id - 1 != 0) {
-				articleDetailContent
-						.append("<span><a href=\"article_detail_" + (+article.id - 1) + ".html\">&lt; 이전 글</a></span>");
+				if (nextArticleIndex >= 0) {
+					nextArticle = articles.get(nextArticleIndex);
+					nextArticleId = nextArticle.id;
+				}
+
+				StringBuilder sb = new StringBuilder();
+
+				sb.append(head);
+
+				String body = bodyTemplate;
+				int recommandCount = articleService.getRecommandsCount(article.id);
+
+				body = body.replace("${article-detail__title}", article.title);
+				body = body.replace("${article-detail__board-name}", "게시판 : " + article.extra__boardName);
+				body = body.replace("${article-detail__reg-date}", "작성일 : " + article.regDate);
+				body = body.replace("${article-detail__writer}", "작성자 : " + article.extra__writer);
+				body = body.replace("${article-detail__id}", "번호 : " + Integer.toString(article.id));
+				body = body.replace("${article-detail__hit}", "조회수 : " + Integer.toString(article.hit));
+				body = body.replace("${article-detail__recommand}", "추천수 : " + Integer.toString(recommandCount));
+				body = body.replace("${article-detail__body}", article.body);
+				body = body.replace("${article-detail__link-prev-article-url}",
+						getArticleDetailFileName(prevArticleId));
+				body = body.replace("${article-detail__link-prev-article-class-addi}",
+						prevArticleId == 0 ? "none" : "");
+				body = body.replace("${article-detail__link-list-url}",
+						getArticleListFileName(article.extra__boardCode, 1));
+				body = body.replace("${article-detail__link-list-class-addi}", "");
+				body = body.replace("${article-detail__link-next-article-url}",
+						getArticleDetailFileName(nextArticleId));
+				body = body.replace("${article-detail__link-next-article-class-addi}",
+						nextArticleId == 0 ? "none" : "");
+
+				sb.append(body);
+				sb.append(foot);
+
+				String fileName = getArticleDetailFileName(article.id);
+				String filePath = "site/" + fileName;
+
+				Util.writerFile(filePath, sb.toString());
+
+				System.out.println(filePath + " 생성");
 			}
-			articleDetailContent.append("<span><a href=\"" + link + "\">리스트</a></span>");
 
-			if (article.id + 1 <= articles.size()) {
-				articleDetailContent.append(
-						"<span><a href=\"article_detail_" + (+article.id + 1) + ".html\">다음 글 &gt;</a></span> </div>");
-			}
-			body = bodyTemplate.replace("${article-detail__content}", articleDetailContent.toString());
-
-			sb.append(body);
-			sb.append(foot);
-
-			String fileName = "article_detail_" + article.id + ".html";
-			String filePath = "site/" + fileName;
-
-			Util.writerFile(filePath, sb.toString());
-
-			System.out.println(filePath + " 생성");
 		}
 
 		// 게시물 상세 페이지 끝
 
+	}
+
+	private String getArticleDetailFileName(int id) {
+		return "article_detail_" + id + ".html";
 	}
 
 	private String getHeadHtml(String pageName) {
