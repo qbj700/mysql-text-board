@@ -490,21 +490,20 @@ public class ArticleController extends Controller {
 		}
 
 		int itemsInAPage = 10;
-		int startPos = articles.size() - 1;
-		startPos -= (page - 1) * itemsInAPage;
-		int endPos = startPos - (itemsInAPage - 1);
+		int startPos = (page - 1) * itemsInAPage;
+		int endPos = startPos + itemsInAPage - 1;
 
-		if (startPos < 0) {
+		if (startPos > articles.size()) {
 			System.out.printf("%d 페이지는 존재하지 않습니다.\n", page);
 			return;
 		}
-		if (endPos < 0) {
-			endPos = 0;
+		if (endPos > articles.size()) {
+			endPos = articles.size() - 1;
 		}
 
 		System.out.println("번호 / 작성일 / 수정일 / 작성자 / 제목 / 조회수 / 추천수");
 
-		for (int i = startPos; i >= endPos; i--) {
+		for (int i = startPos; i <= endPos; i++) {
 			Article article = articles.get(i);
 			String writer = article.extra__writer;
 			List<Recommand> recommands = articleService.getRecommandsById(article.id);

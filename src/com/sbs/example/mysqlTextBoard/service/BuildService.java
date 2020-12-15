@@ -25,54 +25,86 @@ public class BuildService {
 		Util.copy("site_template/app.css", "site/app.css");
 
 		buildIndexPage();
-		buildListPages();
+		buildArticleListPages();
 		buildArticleDetailPages();
 	}
 
-	private void buildListPages() {
+	private void buildArticleListPage(Board board, int itemsInAPage, int pageBoxMenuSize, List<Article> articles,
+			int page) {
+		StringBuilder sb = new StringBuilder();
+
+		// 헤더 시작
+		sb.append(getHeadHtml("article_list_" + board.code));
+
+		// 바디 시작
+		String bodyTemplate = Util.getFileContents("site_template/article_list.html");
+
+		StringBuilder mainContent = new StringBuilder();
+
+		int articlesCount = articles.size();
+		int start = (page - 1) * itemsInAPage;
+		int end = start + itemsInAPage - 1;
+
+		if (end >= articlesCount) {
+			end = articlesCount - 1;
+		}
+
+		for (int i = start; i <= end; i++) {
+			Article article = articles.get(i);
+
+			String link = "article_detail_" + article.id + ".html";
+
+			mainContent.append("<div>");
+			mainContent.append("<div class=\"article-list__cell-id\">" + article.id + "</div>");
+			mainContent.append("<div class=\"article-list__cell-reg-date\">" + article.regDate + "</div>");
+			mainContent.append("<div class=\"article-list__cell-writer\">" + article.extra__writer + "</div>");
+			mainContent.append("<div class=\"article-list__cell-title\">");
+
+			mainContent.append("<a href=\"" + link + "\" class=\"hover-underline\">" + article.title + "</a>");
+
+			mainContent.append("</div>");
+			mainContent.append("</div>");
+
+		}
+		StringBuilder pageMenuContent = new StringBuilder();
+
+		pageMenuContent.append(" <li><a href=\"#\" class=\"flex flex-ai-c\">&lt; 이전</a></li>");
+		pageMenuContent
+				.append("<li><a href=\"#\"class=\"flex flex-ai-c article-page-menu__link--selected\">1</a></li>");
+		pageMenuContent.append("<li><a href=\"#\" class=\"flex flex-ai-c\">다음 &gt;</a></li> ");
+
+		String body = bodyTemplate.replace("${article-list__main-content}", mainContent.toString());
+		body = body.replace("${article-page-menu__content}", pageMenuContent.toString());
+
+		sb.append(body);
+
+		// 푸터 시작
+		sb.append(Util.getFileContents("site_template/foot.html"));
+
+		// 파일 생성 시작
+		String fileName = "article_list_" + board.code + "_" + page + ".html";
+		String filePath = "site/" + fileName;
+
+		Util.writerFile(filePath, sb.toString());
+
+		System.out.println(filePath + " 생성");
+	}
+
+	private void buildArticleListPages() {
 		List<Board> boards = articleService.getBoards();
 
-		String bodyTemplate = Util.getFileContents("site_template/article_list.html");
-		String foot = Util.getFileContents("site_template/foot.html");
+		int itemsInAPage = 10;
+		int pageBoxMenuSize = 10;
 
 		for (Board board : boards) {
-			StringBuilder sb = new StringBuilder();
+
 			List<Article> articles = articleService.getForPrintArticles(board.id);
+			int articlesCount = articles.size();
+			int totalPage = (int) Math.ceil((double) articlesCount / itemsInAPage);
 
-			sb.append(getHeadHtml("article_list_" + board.code));
-			String body = bodyTemplate;
-
-			StringBuilder mainContent = new StringBuilder();
-
-			if (articles.size() == 0) {
-				body = bodyTemplate.replace("${article-list__main-content}", "<div>게시물이 존재하지 않습니다.</div>");
+			for (int i = 1; i <= totalPage; i++) {
+				buildArticleListPage(board, itemsInAPage, pageBoxMenuSize, articles, i);
 			}
-			for (Article article : articles) {
-
-				String link = "article_detail_" + article.id + ".html";
-
-				mainContent.append("<div>");
-				mainContent.append("<div class=\"article-list__cell-id\">" + article.id + "</div>");
-				mainContent.append("<div class=\"article-list__cell-reg-date\">" + article.regDate + "</div>");
-				mainContent.append("<div class=\"article-list__cell-writer\">" + article.extra__writer + "</div>");
-				mainContent.append("<div class=\"article-list__cell-title\">");
-				mainContent.append("<a href=\"" + link + "\" class=\"hover-underline\">");
-				mainContent.append(article.title + "</a></div>");
-				mainContent.append("</div>");
-
-				body = bodyTemplate.replace("${article-list__main-content}", mainContent.toString());
-
-			}
-
-			sb.append(body);
-			sb.append(foot);
-
-			String fileName = "article_list_" + board.code + "_1.html";
-			String filePath = "site/" + fileName;
-
-			Util.writerFile(filePath, sb.toString());
-
-			System.out.println(filePath + " 생성");
 
 		}
 

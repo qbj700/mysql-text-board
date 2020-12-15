@@ -10,6 +10,7 @@ CREATE TABLE article (
     updateDate DATETIME NOT NULL,
     title CHAR(200) NOT NULL,
     `body` TEXT NOT NULL,
+    hit INT(10) UNSIGNED NOT NULL,
     memberId INT(10) UNSIGNED NOT NULL,
     boardId INT(10) UNSIGNED NOT NULL
 );
@@ -20,6 +21,7 @@ SET regDate = NOW(),
 updateDate = NOW(),
 title = '제목1',
 `body` = '내용1',
+hit = 0,
 memberId = 1,
 boardId = 1;
  
@@ -28,6 +30,7 @@ SET regDate = NOW(),
 updateDate = NOW(),
 title = '제목2',
 `body` = '내용2',
+hit = 0,
 memberId = 1,
 boardId = 1;
  
@@ -36,6 +39,7 @@ SET regDate = NOW(),
 updateDate = NOW(),
 title = '제목3',
 `body` = '내용3',
+hit = 0,
 memberId = 1,
 boardId = 1;
  
@@ -46,14 +50,6 @@ title = '제목4',
 `body` = '내용4',
 memberId = 1,
 boardId = 1;
- 
-SELECT * FROM article;
- 
-UPDATE article
-SET updatedate = NOW()
-WHERE id = 3;
- 
-SELECT * FROM article;
 
 #회원 테이블 생성
 CREATE TABLE `member`(
@@ -78,15 +74,6 @@ loginId = 'bbb',
 loginPw = 'bbb',
 NAME = 'bbb';
 
-SHOW TABLES;
-
-DESC `member`;
-
-SELECT * FROM `member`;
-
-SELECT * FROM MEMBER WHERE loginId = 'aaa';
-
-SHOW TABLES;
 
 CREATE TABLE board(
     id INT(10) NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -110,17 +97,6 @@ updateDate = NOW(),
 `name` = '자유',
 `code` = 'free';
 
-SHOW TABLES;
-
-DESC board;
-
-SELECT * FROM board;
-
-SELECT article.*, `member`.name
-FROM article
-INNER JOIN `member`
-ON article.memberId = member.id;
-
 CREATE TABLE articleReply(
     id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     regDate DATETIME NOT NULL,
@@ -130,22 +106,6 @@ CREATE TABLE articleReply(
     reply TEXT NOT NULL
 );
 
-
-SELECT article.*, `member`.name
-FROM article
-INNER JOIN `member`
-ON article.id = 1 AND article.id = member.id;
-
-SELECT articleReply.*, `member`.name AS extra__writer
-FROM articleReply
-INNER JOIN `member`
-ON articleReply.articleId = 4 AND articleReply.memberId = `member`.id
-ORDER BY articleReply.id DESC;
-
-ALTER TABLE article ADD COLUMN hit INT(10) UNSIGNED NOT NULL AFTER `body`;
-
-SELECT * FROM article;
-
 CREATE TABLE recommand(
     id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     regDate DATETIME NOT NULL,
@@ -154,4 +114,42 @@ CREATE TABLE recommand(
     articleId INT(10) NOT NULL
 );
 
-SELECT * FROM recommand;
+SELECT * FROM article
+
+
+# 테스트 데이터 랜덤 생성
+INSERT INTO article
+SET regDate = NOW(),
+updateDate = NOW(),
+title = CONCAT('제목_', RAND()),
+`body` = CONCAT('내용_', RAND()),
+hit = 0,
+memberId = IF(RAND() > 0.5, 1, 2),
+boardId = IF(RAND() > 0.5, 1, 2);
+
+INSERT INTO article
+SET regDate = NOW(),
+updateDate = NOW(),
+title = CONCAT('제목_', RAND()),
+`body` = CONCAT('내용_', RAND()),
+hit = 0,
+memberId = IF(RAND() > 0.5, 1, 2),
+boardId = IF(RAND() > 0.5, 1, 2);
+
+INSERT INTO article
+SET regDate = NOW(),
+updateDate = NOW(),
+title = CONCAT('제목_', RAND()),
+`body` = CONCAT('내용_', RAND()),
+hit = 0,
+memberId = IF(RAND() > 0.5, 1, 2),
+boardId = IF(RAND() > 0.5, 1, 2);
+
+INSERT INTO article
+SET regDate = NOW(),
+updateDate = NOW(),
+title = CONCAT('제목_', RAND()),
+`body` = CONCAT('내용_', RAND()),
+hit = 0,
+memberId = IF(RAND() > 0.5, 1, 2),
+boardId = IF(RAND() > 0.5, 1, 2);
