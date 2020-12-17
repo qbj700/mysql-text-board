@@ -5,16 +5,13 @@ import java.util.List;
 import com.sbs.example.mysqlTextBoard.Container;
 import com.sbs.example.mysqlTextBoard.dto.Article;
 import com.sbs.example.mysqlTextBoard.dto.Board;
-import com.sbs.example.mysqlTextBoard.dto.Member;
 import com.sbs.example.mysqlTextBoard.util.Util;
 
 public class BuildService {
 	private ArticleService articleService;
-	private MemberService memberService;
 
 	public BuildService() {
 		articleService = Container.articleService;
-		memberService = Container.memberService;
 	}
 
 	public void buildSite() {
@@ -308,7 +305,7 @@ public class BuildService {
 		} else if (pageName.startsWith("article_list_notice")) {
 			return "<i class=\"fas fa-flag\"></i> <span>NOTICE LIST</span>";
 		} else if (pageName.startsWith("article_list")) {
-			return "<i class=\"fas fa-clipboard-list\"> </i><span>LIST</span>";
+			return "<i class=\"fas fa-clipboard-list\"></i> <span>IT LIST</span>";
 		}
 
 		return "";

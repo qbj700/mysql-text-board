@@ -42,14 +42,6 @@ title = '제목3',
 hit = 0,
 memberId = 1,
 boardId = 1;
- 
-INSERT INTO article
-SET regDate = NOW(),
-updateDate = NOW(),
-title = '제목4',
-`body` = '내용4',
-memberId = 1,
-boardId = 1;
 
 #회원 테이블 생성
 CREATE TABLE `member`(
@@ -145,24 +137,7 @@ hit = 0,
 memberId = FLOOR(RAND() * 2) + 1,
 boardId = FLOOR(RAND() * 2) + 1;
 
-INSERT INTO article
-SET regDate = NOW(),
-updateDate = NOW(),
-title = CONCAT('제목_', RAND()),
-`body` = CONCAT('내용_', RAND()),
-hit = 0,
-memberId = FLOOR(RAND() * 2) + 1,
-boardId = FLOOR(RAND() * 2) + 1;
 
-INSERT INTO article
-SET regDate = NOW(),
-updateDate = NOW(),
-title = CONCAT('제목_', RAND()),
-`body` = CONCAT('내용_', RAND()),
-hit = 0,
-memberId = FLOOR(RAND() * 2) + 1,
-boardId = FLOOR(RAND() * 2) + 1;
-`textBoard`
 
 
 # 1번글 내용을 마크다운 문법으로 수정
