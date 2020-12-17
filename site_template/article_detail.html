@@ -23,7 +23,7 @@
 				</div>
 			</div>
 			
-			<div class="article-detail__body"></div>
+			<div class="article-detail__body">${article-detail__body}</div>
 			
 			<div class="article-detail__menu flex flex-jc-c">
 				<span><a href="${article-detail__link-prev-article-url}" class="hover-underline ${article-detail__link-prev-article-class-addi}">&lt; 이전 글</a></span> 
@@ -33,15 +33,3 @@
 		</div>
 	</div>
 </section>
-
-<script>
-	function Article_Detail__Body__init() {
-	  var viewer = new toastui.Editor.factory({
-		    el: document.querySelector('.article-detail__body'),
-		    initialValue: `${article-detail__body}`,
-		    viewer:true
-		  });
-		}
-
-	Article_Detail__Body__init()();
-</script>
