@@ -105,6 +105,13 @@ a {
   text-decoration:underline;
 }
 
+.line {
+  height:1px;
+  width:100%;
+  background-color:skyblue;
+  opacity:50%;
+}
+
 /* 커스텀 */
 .con-min-width {
   min-width:1200px;
@@ -115,41 +122,49 @@ a {
   width:1200px;
 }
 
-/* 로고 시작 */
-.logo {
-  font-size:4rem;
-}
-
-.logo > span {
-  margin-left:10px;
-}
-
-.logo > span > span {
-  color:red;
-}
-
-.logo--mini {
-  font-size:2rem;
-}
-/* 로고 끝 */
-
 /* 로고바 시작 */
 .logo-bar {
-  background-color:black;
-  color:white;
-  height:150px;
+  text-align:center;
+  padding:40px;
 }
+
+.logo {
+  font-size:3rem;
+}
+
+.logo__text {
+  color:pink;
+}
+
+.ico {
+  color:skyblue;
+}
+
+.bg-red {
+  background-color:red;
+}
+
 /* 로고바 끝 */
 
 /* 메뉴바 시작 */
 .menu-bar {
-  background-color:black;
-  color:white;
+  margin-top: 20px;
 }
 
 .menu-bar__menu-1 > ul > li {
-  width:25%;
+  width:20%;
   position:relative;
+}
+
+
+.menu-bar__menu-1 > ul ul {
+  display:none;
+  position:absolute;
+  top:100%;
+  left:0;
+  width:100%;
+  font-size:14px;
+  z-index:10;
 }
 
 .menu-bar__menu-1 ul > li > a {
@@ -157,34 +172,15 @@ a {
   padding:20px 0;
 }
 
+
 .menu-bar__menu-1 ul > li:hover > a {
-  background-color:white;
-  color:black;
-}
-
-.menu-bar__menu-1 > ul > li > a {
-  border-radius:10px 10px 0 0;
-}
-
-.menu-bar__menu-1 > ul ul {
-  display:none;
-  position:absolute;
-  top:100%;
-  left:-10px;
-  width:100%;
-  background-color:black;
-  border:10px solid black;
-  border-top-width:0;
-  border-radius:0 0 20px 20px;
-  z-index:10;
+  color:pink;
+  text-decoration:underline;
 }
 
 .menu-bar__menu-1 > ul > li:hover > ul {
   display:block;
-}
-
-.menu-bar__menu-1 > ul ul > li:last-child > a {
-  border-radius:0 0 10px 10px;
+  background-color:white;
 }
 /* 메뉴바 끝 */
 
@@ -197,16 +193,31 @@ a {
 
 /* 하단바 시작 */
 .bottom-bar {
-  margin-top:30px;
-  background-color:black;
-  color:white;
-  padding-top:30px;
-  padding-bottom:30px;
+	height:100px;
 }
 
-.bottom-bar__site-info {
-  margin-left:20px;
+.bottom__logo {
+  width:100px;
 }
+
+.logo__mini {
+  font-size:20px;
+  text-align:center;
+  padding:10px;
+}
+.bottom-bar__site-info {
+  color:graytext;
+  margin-left:40px;
+  opacity : 60%;
+}
+.bottom-bar__site-info > div{
+  padding:5px;
+}
+.bottom-bar__copyright {
+  color:graytext;
+  opacity : 60%;
+}
+
 /* 하단바 끝 */
 
 /* 게시물 리스트 시작 */
@@ -267,6 +278,7 @@ a {
 .article-list > main > div {
   border-top:1px solid black;
 }
+
 /* 게시물 리스트 끝 */
 
 /* 게시물 리스트 페이지 메뉴 시작 */
@@ -319,4 +331,37 @@ a {
 }
 
 /* 게시물 상세 끝 */
+/* 최상단 이동 버튼 시작 */
+.topBtn-1 {
+  position: fixed;
+  right: 3%;
+  bottom: 11%;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  display: block;
+  font-size: 15px;
+  text-align: center;
+}
+.topBtn-2 {
+  position: fixed;
+  right: 3%;
+  bottom: 10%;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  display: block;
+  font-size: 15px;
+  text-align: center;
+}
 
+.topBtn-2:hover {
+  cursor:pointer;
+}
+/* 최상단 이동 버튼 끝 */
+
+/* 홈 페이지 텍스트 시작 */
+.index-box > div {
+	padding-top:20px;
+}
+/* 홈 페이지 텍스트 끝 */
