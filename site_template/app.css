@@ -32,6 +32,21 @@ a {
   text-decoration:none;
 }
 
+body {
+    background-color: var(--bg-color);
+    color: var(--font-color);
+}
+
+h1 {
+    color: var(--secondary-color);
+}
+
+
+/* 임시 */
+a {
+    color: var(--primary-color);
+}
+
 /* 라이브러리 */
 .flex {
   display:flex;
@@ -108,7 +123,7 @@ a {
 .line {
   height:1px;
   width:100%;
-  background-color:skyblue;
+  background-color:var(--primary-color);
   opacity:50%;
 }
 
@@ -133,11 +148,11 @@ a {
 }
 
 .logo__text {
-  color:pink;
+  color:var(--secondary-color);
 }
 
 .ico {
-  color:skyblue;
+  color:var(--primary-color);
 }
 
 .bg-red {
@@ -176,14 +191,14 @@ a {
 
 
 .menu-bar__menu-1 ul > li:hover > a {
-  color:pink;
+  color:var(--secondary-color);
   text-decoration:underline;
 }
 
 .menu-bar__menu-1 > ul > li:hover > ul {
   opacity:1;
   visibility:visible;
-  background-color:white;
+  background-color:var(--bg-color);
 }
 /* 메뉴바 끝 */
 
@@ -247,7 +262,7 @@ a {
   right:0;
   width:1px;
   height:10px;
-  background-color:black;
+  background-color:var(--font-color);
 }
 
 .article-list > * > div > div {
@@ -279,7 +294,7 @@ a {
 }
 
 .article-list > main > div {
-  border-top:1px solid black;
+  border-top:1px solid var(--font-color);
 }
 
 /* 게시물 리스트 끝 */
@@ -316,7 +331,7 @@ a {
 }
 
 .article-detail__body {
-  border-top:2px solid #afafaf;
+  border-top:2px solid var(--font-color);
   padding-top:40px;
 }
 
@@ -368,3 +383,111 @@ a {
 	padding-top:20px;
 }
 /* 홈 페이지 텍스트 끝 */
+
+/* 다크모드 슬라이더 시작 */
+.switch-box {
+	position:relative;
+	margin-top:10px;
+}
+
+.theme-switch-wrapper {
+  display: flex;
+  position: absolute;
+  align-items: center;
+  right:5%;
+}
+
+em {
+	display: flex;
+	align-items:center;
+    margin-left: 10px;
+    font-size: 1rem;
+}
+
+.theme-switch {
+  display: inline-block;
+  height: 34px;
+  position: relative;
+  width: 60px;
+}
+
+.theme-switch input {
+  display:none;
+}
+
+.slider {
+  background-color: #ccc;
+  bottom: 0;
+  cursor: pointer;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: .4s;
+}
+
+.slider:before {
+  background-color: #fff;
+  bottom: 4px;
+  content: "";
+  height: 26px;
+  left: 4px;
+  position: absolute;
+  transition: .4s;
+  width: 26px;
+}
+
+input:checked + .slider {
+  background-color: #66bb6a;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+/* 다크모드 슬라이더 끝 */
+
+/* 다크모드 시작 */
+:root {
+    --primary-color: skyblue;
+    --secondary-color: pink;
+    --font-color: #424242;
+    --bg-color: #fff;
+    --box-color: #f5f7f8;
+    --heading-color: #292922;
+}
+
+[data-theme="dark"] {
+    --primary-color: #28a6db;
+    --secondary-color: #ff6480;
+    --font-color: #e1e1ff;
+    --bg-color: #161625;
+    --box-color: #000040;
+    --heading-color: #818cab;
+}
+
+.tui-editor-contents pre {
+	background-color:var(--box-color) !important;
+}
+
+.tui-editor-contents p {
+	color:var(--font-color) !important;
+}
+
+.tui-editor-contents dir, .tui-editor-contents menu, .tui-editor-contents ol, .tui-editor-contents ul {
+	color:var(--font-color) !important;
+}
+
+.tui-editor-contents h1, .tui-editor-contents h2, .tui-editor-contents h3, .tui-editor-contents h4, .tui-editor-contents h5, .tui-editor-contents h6 {
+	color:var(--heading-color) !important;
+}
+
+
+/* 다크모드 끝 */
