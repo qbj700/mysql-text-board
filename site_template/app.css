@@ -473,6 +473,7 @@ input:checked + .slider:before {
     --heading-color: #818cab;
 }
 
+/* 토스트 UI 뷰어 시작 */
 .tui-editor-contents pre {
 	background-color:var(--box-color) !important;
 }
@@ -488,6 +489,31 @@ input:checked + .slider:before {
 .tui-editor-contents h1, .tui-editor-contents h2, .tui-editor-contents h3, .tui-editor-contents h4, .tui-editor-contents h5, .tui-editor-contents h6 {
 	color:var(--heading-color) !important;
 }
+/* 토스트 UI 뷰어 끝 */
+/* disqus 설정 시작 */
+#disqus_thread {
+	color: var(--bg-color) !important;
+	border-style: 0px solid;
+	border-color: var(--box-color) !important;
+	padding: 5px;
+}
 
+#dsq-content #dsq-comments .dsq-comment-body {
+	color: var(--bg-color) !important;
+	background-color: var(--heading-color) !important;
+}
+
+.dsq-reaction-body {
+	color: var(--bg-color) !important;
+}
+
+.dsq-reaction-header cite, .dsq-reaction-header span {
+	color: var(--box-color) !important;
+}
+
+.dsq-reaction-retweets {
+	color: var(--box-color) !important;
+}
+/* disqus 설정 끝 */
 
 /* 다크모드 끝 */
