@@ -381,6 +381,71 @@ a {
 /* 홈 페이지 텍스트 시작 */
 .index-box > div {
 	padding-top:20px;
+	position:relative;
+}
+
+.slide {
+  width:500px;
+}
+
+*{margin:0;padding:0;}
+ul,li{list-style:none;}
+.slide{height:300px;overflow:hidden;}
+.slide ul{position:relative;height:100%;}
+.slide li{position:absolute;left:0;right:0;top:0;bottom:0;opacity:0;animation:fade 8s infinite;transition:all 0.5s;}
+.slide li:nth-child(1){background:url('https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdMnVV7%2FbtqQ3grQ99F%2Fnx3LTIJPPHDnO8TjYNx6m0%2Fimg.jpg');animation-delay:0s}
+.slide li:nth-child(2){background:url('https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbFqmPv%2FbtqQ1MLjWmJ%2FVdQBuKsISAzJxEMFKy8eq0%2Fimg.jpg');animation-delay:2s}
+.slide li:nth-child(3){background:url('https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FYbasC%2FbtqRcGQomQa%2FNz5Wvvw0zJdsujgDSqT0hK%2Fimg.jpg');animation-delay:4s}
+.slide li:nth-child(4){background:url('https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcVljcH%2FbtqQZx84yiW%2FJcn0WwFUidO8woX1wR48QK%2Fimg.jpg');animation-delay:6s}
+/* 100 / 8 = 12.5 */
+@keyframes fade {
+  0% {opacity:0;}
+  5% {opacity:1;}
+  25% {opacity:1;}
+  30% {opacity:0;}
+  100% {opacity:0;}
+}
+
+.index-box__content {
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+
+}
+.index > div {
+  width:50%;
+  height:50%;
+  position:absolute;
+  top:0;
+  left:0;
+
+}
+
+.index > .right {
+  top:0;
+  right:0;
+  left:auto;
+}
+
+.index-text {
+  padding:10px 0px;
+}
+
+.profile {
+  position:absolute;
+  padding:20px 0;
+}
+
+.profile > div{
+  padding:7px 0;
+}
+
+.right {
+	border-left:2px solid var(--primary-color);
+	padding-left:160px;
+	padding-right:100px;
 }
 /* 홈 페이지 텍스트 끝 */
 
