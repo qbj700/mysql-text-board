@@ -128,6 +128,10 @@ public class ArticleService {
 	public int getArticlesCount(int boardId) {
 		return articleDao.getArticlesCount(boardId);
 	}
+	
+	public int getArticlesCount() {
+		return articleDao.getArticlesCount();
+	}
 
 	public int getRecommandsCount(int articleId) {
 		return articleDao.getRecommandsCount(articleId);
@@ -139,6 +143,10 @@ public class ArticleService {
 
 	public Board getBoardByBoardId(int boardId) {
 		return articleDao.getBoardByBoardId(boardId);
+	}
+	
+	public int getBoardsCount() {
+		return articleDao.getBoardsCount();
 	}
 
 }

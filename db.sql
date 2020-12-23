@@ -109,6 +109,8 @@ CREATE TABLE recommand(
 SELECT * FROM article
 
 
+/*
+
 # 테스트 데이터 랜덤 생성
 INSERT INTO article
 SET regDate = NOW(),
@@ -149,3 +151,25 @@ SELECT * FROM article;
 # 2번 글 내용에 자바 소스코드 넣기
 UPDATE article SET `body` = '#자바 기본 문법\r\n```java\r\nint a = 3;\r\nint b = 5;\r\n\r\nint c = a + b;\r\nSystem.out.println(c);\r\n\r\n```' 
 WHERE id = '2'; 
+
+*/
+
+# IT 게시판 추가
+INSERT INTO board
+SET regDate = NOW(),
+updateDate = NOW(),
+`name` = 'IT',
+`code` = 'it';
+
+# 사용자 전부 삭제
+TRUNCATE `member`;
+
+# 사용자 추가
+INSERT INTO `member`
+SET regDate = NOW(),
+loginId = 'admin',
+loginPw = 'admin',
+NAME = '최형석';
+
+# 글 전부 삭제
+TRUNCATE article;

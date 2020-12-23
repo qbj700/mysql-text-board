@@ -345,6 +345,14 @@ public class ArticleDao {
 
 		return MysqlUtil.selectRowIntValue(sql);
 	}
+	
+	public int getArticlesCount() {
+		SecSql sql = new SecSql();
+		sql.append("SELECT COUNT(*) AS cnt");
+		sql.append("FROM article");
+
+		return MysqlUtil.selectRowIntValue(sql);
+	}
 
 	public int getRecommandsCount(int articleId) {
 		SecSql sql = new SecSql();
@@ -388,5 +396,15 @@ public class ArticleDao {
 
 		return new Board(boardMap);
 	}
+
+	public int getBoardsCount() {
+		SecSql sql = new SecSql();
+		sql.append("SELECT COUNT(*) AS cnt");
+		sql.append("FROM board");
+
+		return MysqlUtil.selectRowIntValue(sql);
+	}
+
+	
 
 }

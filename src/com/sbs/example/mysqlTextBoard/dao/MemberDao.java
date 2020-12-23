@@ -66,4 +66,12 @@ public class MemberDao {
 
 	}
 
+	public int getMembersCount() {
+		SecSql sql = new SecSql();
+		sql.append("SELECT COUNT(*) AS cnt");
+		sql.append("FROM member");
+
+		return MysqlUtil.selectRowIntValue(sql);
+	}
+
 }

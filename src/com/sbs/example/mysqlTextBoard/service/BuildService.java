@@ -5,13 +5,16 @@ import java.util.List;
 import com.sbs.example.mysqlTextBoard.Container;
 import com.sbs.example.mysqlTextBoard.dto.Article;
 import com.sbs.example.mysqlTextBoard.dto.Board;
+import com.sbs.example.mysqlTextBoard.dto.Member;
 import com.sbs.example.mysqlTextBoard.util.Util;
 
 public class BuildService {
 	private ArticleService articleService;
+	private MemberService memberService;
 
 	public BuildService() {
 		articleService = Container.articleService;
+		memberService = Container.memberService;
 	}
 
 	public void buildSite() {
@@ -26,6 +29,170 @@ public class BuildService {
 		buildIndexPage();
 		buildArticleListPages();
 		buildArticleDetailPages();
+		buildStatisticsPage();
+		buildArticleAllListPage();
+	}
+
+	private void buildArticleAllListPage() {
+
+		int itemsInAPage = 10;
+		int pageBoxMenuSize = 10;
+
+		List<Article> articles = articleService.getArticles();
+		int articlesCount = articles.size();
+		int totalPage = (int) Math.ceil((double) articlesCount / itemsInAPage);
+
+		for (int i = 1; i <= totalPage; i++) {
+			buildArticleAllListPage(itemsInAPage, pageBoxMenuSize, articles, i);
+		}
+
+	}
+
+	private void buildArticleAllListPage(int itemsInAPage, int pageBoxSize, List<Article> articles,
+			int page) {
+		StringBuilder sb = new StringBuilder();
+
+		// 헤더 시작
+		sb.append(getHeadHtml("article_all"));
+
+		// 바디 시작
+		String bodyTemplate = Util.getFileContents("site_template/article_all.html");
+
+		StringBuilder mainContent = new StringBuilder();
+
+		int articlesCount = articles.size();
+		int start = (page - 1) * itemsInAPage;
+		int end = start + itemsInAPage - 1;
+
+		if (end >= articlesCount) {
+			end = articlesCount - 1;
+		}
+
+		for (int i = start; i <= end; i++) {
+			Article article = articles.get(i);
+
+			String link = getArticleDetailFileName(article.id);
+			
+			Member member = memberService.getMemberByMemberId(article.memberId);
+			String writer = member.name;
+			
+			mainContent.append("<div>");
+			mainContent.append("<div class=\"article-list__cell-id\">" + article.id + "</div>");
+			mainContent.append("<div class=\"article-list__cell-reg-date\">" + article.regDate + "</div>");
+			mainContent.append("<div class=\"article-list__cell-writer\">" + writer + "</div>");
+			mainContent.append("<div class=\"article-list__cell-title\">");
+
+			mainContent.append("<a href=\"" + link + "\" class=\"hover-underline\">" + article.title + "</a>");
+
+			mainContent.append("</div>");
+			mainContent.append("</div>");
+
+		}
+		StringBuilder pageMenuContent = new StringBuilder();
+
+		// 토탈 페이지 계산
+		int totalPage = (int) Math.ceil((double) articlesCount / itemsInAPage);
+
+		// 현재 페이지 계산
+		if (page < 1) {
+			page = 1;
+		}
+
+		if (page > totalPage) {
+			page = totalPage;
+		}
+
+		// 현재 페이지 박스 시작, 끝 계산
+		int previousPageBoxesCount = (page - 1) / pageBoxSize;
+		int pageBoxStartPage = pageBoxSize * previousPageBoxesCount + 1;
+		int pageBoxEndPage = pageBoxStartPage + pageBoxSize - 1;
+
+		if (pageBoxEndPage > totalPage) {
+			pageBoxEndPage = totalPage;
+		}
+
+		// 이전버튼 페이지 계산
+		int pageBoxStartBeforePage = pageBoxStartPage - 1;
+		if (pageBoxStartBeforePage < 1) {
+			pageBoxStartBeforePage = 1;
+		}
+
+		// 다음버튼 페이지 계산
+		int pageBoxEndAfterPage = pageBoxEndPage + 1;
+
+		if (pageBoxEndAfterPage > totalPage) {
+			pageBoxEndAfterPage = totalPage;
+		}
+
+		// 이전버튼 노출여부 계산
+		boolean pageBoxStartBeforeBtnNeedToShow = pageBoxStartBeforePage != pageBoxStartPage;
+		// 다음버튼 노출여부 계산
+		boolean pageBoxEndAfterBtnNeedToShow = pageBoxEndAfterPage != pageBoxEndPage;
+
+		if (pageBoxStartBeforeBtnNeedToShow) {
+			pageMenuContent.append(" <li><a href=\"" + getArticleAllListFileName(pageBoxStartBeforePage)
+					+ "\" class=\"flex flex-ai-c\">&lt; 이전</a></li>");
+		}
+
+		for (int i = pageBoxStartPage; i <= pageBoxEndPage; i++) {
+			String selectedClass = "";
+
+			if (i == page) {
+				selectedClass = "article-page-menu__link--selected";
+			}
+
+			pageMenuContent.append("<li><a href=\"" + getArticleAllListFileName(i) + "\"class=\"flex flex-ai-c "
+					+ selectedClass + "\">" + i + "</a></li>");
+		}
+
+		if (pageBoxEndAfterBtnNeedToShow) {
+			pageMenuContent.append("<li><a href=\"" + getArticleAllListFileName(pageBoxEndAfterPage)
+					+ "\" class=\"flex flex-ai-c\">다음 &gt;</a></li> ");
+		}
+
+		String body = bodyTemplate.replace("${article-list__main-content}", mainContent.toString());
+		body = body.replace("${article-page-menu__content}", pageMenuContent.toString());
+
+		sb.append(body);
+
+		// 푸터 시작
+		sb.append(Util.getFileContents("site_template/foot.html"));
+
+		// 파일 생성 시작
+		String fileName = getArticleAllListFileName(page);
+		String filePath = "site/" + fileName;
+
+		Util.writerFile(filePath, sb.toString());
+
+		System.out.println(filePath + " 생성");
+
+	}
+
+	private void buildStatisticsPage() {
+		StringBuilder sb = new StringBuilder();
+
+		String head = getHeadHtml("statistics");
+		String foot = Util.getFileContents("site_template/foot.html");
+
+		String bodyTemplate = Util.getFileContents("site_template/statistics.html");
+
+		String body = bodyTemplate;
+		int articlesCount = articleService.getArticlesCount();
+		int boardCount = articleService.getBoardsCount();
+		int memberCount = memberService.getMembersCount();
+
+		sb.append(head);
+
+		body = body.replace("${statistics-article-count}", Integer.toString(articlesCount));
+		body = body.replace("${statistics-board-count}", Integer.toString(boardCount));
+		body = body.replace("${statistics-member-count}", Integer.toString(memberCount));
+
+		sb.append(body);
+		sb.append(foot);
+
+		String filePath = "site/statistics.html";
+		Util.writerFile(filePath, sb.toString());
+		System.out.println(filePath + " 생성");
 	}
 
 	private void buildArticleListPage(Board board, int itemsInAPage, int pageBoxSize, List<Article> articles,
@@ -143,6 +310,11 @@ public class BuildService {
 
 		System.out.println(filePath + " 생성");
 	}
+
+	private String getArticleAllListFileName(int page) {
+		return "article_all_"+ page + ".html";
+	}
+	
 
 	private String getArticleListFileName(Board board, int page) {
 		return getArticleListFileName(board.code, page);
@@ -308,6 +480,10 @@ public class BuildService {
 			return "<i class=\"fas fa-flag\"></i> <span>NOTICE LIST</span>";
 		} else if (pageName.startsWith("article_list")) {
 			return "<i class=\"fas fa-clipboard-list\"></i> <span>IT LIST</span>";
+		} else if (pageName.startsWith("statistics")) {
+			return "<i class=\"fas fa-chart-pie\"></i> <span>STATISTICS</span>";
+		} else if (pageName.startsWith("article_all")) {
+			return "<i class=\"fas fa-list\"></i> <span>ARTICLE ALL LIST</span>";
 		}
 
 		return "";

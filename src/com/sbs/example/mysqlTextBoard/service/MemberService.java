@@ -30,4 +30,8 @@ public class MemberService {
 		memberDao.logout();
 
 	}
+
+	public int getMembersCount() {
+		return memberDao.getMembersCount();
+	}
 }

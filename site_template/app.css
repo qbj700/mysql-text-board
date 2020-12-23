@@ -517,3 +517,16 @@ input:checked + .slider:before {
 /* disqus 설정 끝 */
 
 /* 다크모드 끝 */
+
+/* 통계 페이지 시작 */
+.statistics-detail {
+  height:400px;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+}
+.statistics-detail > div {
+  font-size:3rem;
+  padding:20px;
+}
+/* 통계 페이지 끝 */
