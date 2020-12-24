@@ -21,9 +21,10 @@ public class BuildService {
 		System.out.println("site 폴더 생성");
 		Util.mkdir("site");
 
+		Util.copyDir("site_template/img", "site/img");
+		
 		Util.copy("site_template/app.css", "site/app.css");
 		Util.copy("site_template/app.js", "site/app.js");
-		Util.copy("site_template/image.png", "site/image.png");
 		Util.copy("site_template/favicon.ico", "site/favicon.ico");
 
 		buildIndexPage();
@@ -365,7 +366,6 @@ public class BuildService {
 	private void buildArticleDetailPages() {
 		List<Board> boards = articleService.getBoards();
 
-		String head = getHeadHtml("article_detail");
 		String bodyTemplate = Util.getFileContents("site_template/article_detail.html");
 		String foot = Util.getFileContents("site_template/foot.html");
 
@@ -375,6 +375,9 @@ public class BuildService {
 
 			for (int i = 0; i < articles.size(); i++) {
 				Article article = articles.get(i);
+				
+				String head = getHeadHtml("article_detail", article);
+				
 				Article prevArticle = null;
 				int prevArticleIndex = i + 1;
 				int prevArticleId = 0;
@@ -440,8 +443,12 @@ public class BuildService {
 	private String getArticleDetailFileName(int id) {
 		return "article_detail_" + id + ".html";
 	}
-
+	
 	private String getHeadHtml(String pageName) {
+		return getHeadHtml(pageName, null);
+	}
+
+	private String getHeadHtml(String pageName, Object relObj) {
 		String head = Util.getFileContents("site_template/head.html");
 		StringBuilder boardMenuContentHtml = new StringBuilder();
 		List<Board> boards = articleService.getBoards();
@@ -465,8 +472,52 @@ public class BuildService {
 		String titleBarContentHtml = getTitleBarContentByPageName(pageName);
 
 		head = head.replace("${title-bar__content}", titleBarContentHtml);
+		
+		String pageTitle = getPageTitle(pageName, relObj);
+		
+		head = head.replace("${page-title}", pageTitle);
+		
+		String siteName = "MODIFY CODE";
+		String siteSubject = "풀스택 개발자 지망생의 기술/일상 블로그";
+		String siteDescription = "풀스택 개발자가 되기위한 기술/일상 관련 글들을 공유합니다.";
+		String siteKeywords = "JAVA, MySQL, HTML, CSS, JAVASCRIPT, SPRING, CODE, CODING";
+		String siteDomain = "ssg.modify.kr";
+		String siteMainUrl = "https://" + siteDomain;
+		String currentDate = Util.getNowDateStr().replace(" ", "T");
+		
+		head = head.replace("${site-name}", siteName);
+		head = head.replace("${site-subject}", siteSubject);
+		head = head.replace("${site-description}", siteDescription);
+		head = head.replace("${site-domain}", siteDomain);
+		head = head.replace("${current-date}", currentDate);
+		head = head.replace("${site-main-url}", siteMainUrl);
+		head = head.replace("${site-keywords}", siteKeywords);
 
 		return head;
+	}
+
+	private String getPageTitle(String pageName, Object relObj) {
+		StringBuilder sb = new StringBuilder();
+		
+		String forPrintPageName = pageName;
+		
+		if (forPrintPageName.equals("index")) {
+			forPrintPageName = "home";
+		}
+		
+		forPrintPageName = forPrintPageName.toUpperCase();
+		forPrintPageName = forPrintPageName.replaceAll("_"," ");
+		
+		sb.append("MODIFY CODE | ");
+		sb.append(forPrintPageName);
+		
+		if (relObj instanceof Article) {
+			Article article = (Article) relObj;
+			
+			sb.insert(0, article.title+ " | ");
+		}
+		
+		return sb.toString();
 	}
 
 	private String getTitleBarContentByPageName(String pageName) {
