@@ -83,7 +83,9 @@ public class BuildService {
 			mainContent.append("<div class=\"article-list__cell-title\">");
 
 			mainContent.append("<a href=\"" + link + "\" class=\"hover-underline\">" + article.title + "</a>");
-
+			mainContent.append("</div>");
+			mainContent.append("<div class=\"article-list__cell-comments flex\">");
+			mainContent.append("<i class=\"far fa-comments\"></i>&nbsp<a href=\"https://ssg.modify.kr/"+ link +"#disqus_thread\">(Second article)</a>");
 			mainContent.append("</div>");
 			mainContent.append("</div>");
 
@@ -228,6 +230,9 @@ public class BuildService {
 
 			mainContent.append("<a href=\"" + link + "\" class=\"hover-underline\">" + article.title + "</a>");
 
+			mainContent.append("</div>");
+			mainContent.append("<div class=\"article-list__cell-comments flex\">");
+			mainContent.append("<i class=\"far fa-comments\"></i>&nbsp<a href=\"https://ssg.modify.kr/"+ link +"#disqus_thread\">(Second article)</a>");
 			mainContent.append("</div>");
 			mainContent.append("</div>");
 
@@ -424,11 +429,14 @@ public class BuildService {
 				body = body.replace("${site-domain}", "ssg.modify.kr");
 				body = body.replace("${file-name}", getArticleDetailFileName(article.id));
 				
+				String fileName = getArticleDetailFileName(article.id);
+				
+				body = body.replace("${article-detail__comments}", "<i class=\"far fa-comments\"></i>&nbsp<a href=\"https://ssg.modify.kr/"+ fileName +"#disqus_thread\">(Second article)</a>");
+				
 				
 				sb.append(body);
 				sb.append(foot);
-
-				String fileName = getArticleDetailFileName(article.id);
+				
 				String filePath = "site/" + fileName;
 
 				Util.writerFile(filePath, sb.toString());
