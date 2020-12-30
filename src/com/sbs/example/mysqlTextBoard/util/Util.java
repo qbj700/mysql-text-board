@@ -17,6 +17,10 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Util {
 
@@ -104,26 +108,24 @@ public class Util {
 		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 	}
 
-	
-	public static void copyDir(String sourceDirectoryLocation, String destinationDirectoryLocation){
-				rmdir(destinationDirectoryLocation);
-		
-			    try {
-					Files.walk(Paths.get(sourceDirectoryLocation))
-					  .forEach(source -> {
-					      Path destination = Paths.get(destinationDirectoryLocation, source.toString()
-					        .substring(sourceDirectoryLocation.length()));
-					      try {
-					          Files.copy(source, destination);
-					      } catch (IOException e) {
-					          e.printStackTrace();
-					      }
-					  });
+	public static void copyDir(String sourceDirectoryLocation, String destinationDirectoryLocation) {
+		rmdir(destinationDirectoryLocation);
+
+		try {
+			Files.walk(Paths.get(sourceDirectoryLocation)).forEach(source -> {
+				Path destination = Paths.get(destinationDirectoryLocation,
+						source.toString().substring(sourceDirectoryLocation.length()));
+				try {
+					Files.copy(source, destination);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-			}
-	
+			});
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public static String callApi(String urlStr, String... args) {
 		// URL 구성 시작
 		StringBuilder queryString = new StringBuilder();
@@ -176,6 +178,35 @@ public class Util {
 		// 연결을 통해서 데이터 가져오기 끝
 
 		return content.toString();
+	}
+
+	public static Map<String, Object> callApiResponseToMap(String urlStr, String... args) {
+		String jsonString = callApi(urlStr, args);
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		try {
+			return (Map<String, Object>) mapper.readValue(jsonString, Map.class);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	public static Object callApiResponseTo(Class cls, String urlStr, String... args) {
+
+		String jsonString = callApi(urlStr, args);
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		try {
+			return mapper.readValue(jsonString, cls);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 }
