@@ -57,14 +57,30 @@ public class ArticleDao {
 
 	}
 
-	public void modify(int inputedId, String title, String body) {
-
+	public void modify(Map<String, Object> args) {
 		SecSql sql = new SecSql();
+
+		int id = (int) args.get("id");
+		String title = args.get("title") != null ? (String) args.get("title") : null;
+		String body = args.get("body") != null ? (String) args.get("body") : null;
+		int recommendsCount = args.get("recommendsCount") != null ? (int) args.get("recommendsCount") : -1;
+
 		sql.append("UPDATE article");
-		sql.append("SET title = ?,", title);
-		sql.append("body = ?,", body);
-		sql.append("updateDate = NOW()");
-		sql.append("WHERE id = ?", inputedId);
+		sql.append("SET updateDate = NOW(),");
+		if (title != null) {
+			sql.append("title = ?,", title);
+		}
+		if (body != null) {
+			sql.append("body = ?,", body);
+		}
+		if (body != null) {
+			sql.append("body = ?,", body);
+		}
+		if (recommendsCount != -1) {
+			sql.append("recommendsCount = ?", recommendsCount);
+		}
+
+		sql.append("WHERE id = ?", id);
 
 		MysqlUtil.update(sql);
 
@@ -234,7 +250,7 @@ public class ArticleDao {
 
 	public void addRecommandData(int inputedId, int loginedMemberId) {
 		SecSql sql = new SecSql();
-		sql.append("INSERT INTO recommand");
+		sql.append("INSERT INTO recommend");
 		sql.append("SET regDate = NOW(),");
 		sql.append("updateDate = NOW(),");
 		sql.append("articleId = ?,", inputedId);
@@ -245,27 +261,27 @@ public class ArticleDao {
 	}
 
 	public List<Recommand> loadRecommandsById(int inputedId) {
-		List<Recommand> recommands = new ArrayList<>();
+		List<Recommand> recommends = new ArrayList<>();
 
 		SecSql sql = new SecSql();
 		sql.append("SELECT *");
-		sql.append("FROM recommand");
+		sql.append("FROM recommend");
 		sql.append("WHERE articleId = ?", inputedId);
 
-		List<Map<String, Object>> recommandListMap = MysqlUtil.selectRows(sql);
+		List<Map<String, Object>> recommendListMap = MysqlUtil.selectRows(sql);
 
-		for (Map<String, Object> recommandMap : recommandListMap) {
+		for (Map<String, Object> recommendMap : recommendListMap) {
 
-			recommands.add(new Recommand(recommandMap));
+			recommends.add(new Recommand(recommendMap));
 
 		}
 
-		return recommands;
+		return recommends;
 	}
 
 	public void doCancelRecommand(int inputedId, int loginedMemberId) {
 		SecSql sql = new SecSql();
-		sql.append("DELETE FROM recommand");
+		sql.append("DELETE FROM recommend");
 		sql.append("WHERE articleId = ? AND memberId = ?", inputedId, loginedMemberId);
 
 		MysqlUtil.delete(sql);
@@ -275,16 +291,16 @@ public class ArticleDao {
 	public Recommand loadRecommandById(int inputedId, int loginedMemberId) {
 		SecSql sql = new SecSql();
 		sql.append("SELECT *");
-		sql.append("FROM recommand");
+		sql.append("FROM recommend");
 		sql.append("WHERE articleId = ? AND memberId = ?", inputedId, loginedMemberId);
 
-		Map<String, Object> recommandMap = MysqlUtil.selectRow(sql);
+		Map<String, Object> recommendMap = MysqlUtil.selectRow(sql);
 
-		if (recommandMap.isEmpty()) {
+		if (recommendMap.isEmpty()) {
 			return null;
 		}
 
-		return new Recommand(recommandMap);
+		return new Recommand(recommendMap);
 	}
 
 	public Board getBoardByCode(String code) {
@@ -345,7 +361,7 @@ public class ArticleDao {
 
 		return MysqlUtil.selectRowIntValue(sql);
 	}
-	
+
 	public int getArticlesCount() {
 		SecSql sql = new SecSql();
 		sql.append("SELECT COUNT(*) AS cnt");
@@ -357,7 +373,7 @@ public class ArticleDao {
 	public int getRecommandsCount(int articleId) {
 		SecSql sql = new SecSql();
 		sql.append("SELECT COUNT(*) AS cnt");
-		sql.append("FROM recommand");
+		sql.append("FROM recommend");
 		sql.append("WHERE articleId = ?", articleId);
 
 		return MysqlUtil.selectRowIntValue(sql);
@@ -382,7 +398,7 @@ public class ArticleDao {
 	}
 
 	public Board getBoardByBoardId(int boardId) {
-		
+
 		SecSql sql = new SecSql();
 		sql.append("SELECT *");
 		sql.append("FROM board");
@@ -404,7 +420,5 @@ public class ArticleDao {
 
 		return MysqlUtil.selectRowIntValue(sql);
 	}
-
-	
 
 }

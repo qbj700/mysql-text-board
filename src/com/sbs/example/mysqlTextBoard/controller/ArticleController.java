@@ -44,7 +44,7 @@ public class ArticleController extends Controller {
 			doSelectBoard(cmd);
 		} else if (cmd.startsWith("article writeReply ")) {
 			doWriteReply(cmd);
-		} else if (cmd.startsWith("article recommand ")) {
+		} else if (cmd.startsWith("article recommend ")) {
 			doRecommand(cmd);
 		} else if (cmd.startsWith("article cancelRecommand ")) {
 			doCancelRecommand(cmd);
@@ -79,9 +79,9 @@ public class ArticleController extends Controller {
 		}
 
 		int loginedMemberId = Container.session.loginedMemberId;
-		Recommand recommand = articleService.getRecommandById(inputedId, loginedMemberId);
+		Recommand recommend = articleService.getRecommandById(inputedId, loginedMemberId);
 
-		if (recommand == null) {
+		if (recommend == null) {
 			System.out.printf("회원님의 %d번 게시물 추천 내역이 존재하지 않습니다.\n", inputedId);
 			return;
 		}
@@ -115,11 +115,11 @@ public class ArticleController extends Controller {
 
 		int loginedMemberId = Container.session.loginedMemberId;
 
-		List<Recommand> recommands = articleService.getRecommandsById(inputedId);
+		List<Recommand> recommends = articleService.getRecommandsById(inputedId);
 
-		for (Recommand recommand : recommands) {
-			if (recommand.articleId == inputedId) {
-				if (recommand.memberId == loginedMemberId) {
+		for (Recommand recommend : recommends) {
+			if (recommend.articleId == inputedId) {
+				if (recommend.memberId == loginedMemberId) {
 					System.out.printf("이미 %d번 게시물을 추천하였습니다.\n", inputedId);
 					return;
 				}
@@ -430,12 +430,12 @@ public class ArticleController extends Controller {
 		articleService.incrementHit(inputedId);
 
 		String writer = article.extra__writer;
-		int recommandsCount = articleService.getRecommandsCount(article.id);
+		int recommendsCount = articleService.getRecommandsCount(article.id);
 
 		System.out.println("== 게시물 상세정보 ==");
 		System.out.printf("번호 : %d\n", article.id);
 		System.out.printf("조회수 : %d\n", article.hit + 1);
-		System.out.printf("추천수 : %d\n", recommandsCount);
+		System.out.printf("추천수 : %d\n", recommendsCount);
 		System.out.printf("작성자 : %s\n", writer);
 		System.out.printf("등록일자 : %s\n", article.regDate);
 		System.out.printf("수정일자 : %s\n", article.updateDate);
@@ -506,9 +506,9 @@ public class ArticleController extends Controller {
 		for (int i = startPos; i <= endPos; i++) {
 			Article article = articles.get(i);
 			String writer = article.extra__writer;
-			List<Recommand> recommands = articleService.getRecommandsById(article.id);
+			List<Recommand> recommends = articleService.getRecommandsById(article.id);
 			System.out.printf("%d / %s / %s / %s / %s / %d / %d\n", article.id, article.regDate, article.updateDate,
-					writer, article.title, article.hit, recommands.size());
+					writer, article.title, article.hit, recommends.size());
 		}
 
 	}

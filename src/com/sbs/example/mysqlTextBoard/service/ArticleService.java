@@ -1,6 +1,8 @@
 package com.sbs.example.mysqlTextBoard.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.sbs.example.mysqlTextBoard.Container;
 import com.sbs.example.mysqlTextBoard.dao.ArticleDao;
@@ -30,7 +32,12 @@ public class ArticleService {
 	}
 
 	public void modify(int inputedId, String title, String body) {
-		articleDao.modify(inputedId, title, body);
+		Map<String, Object> modifyArgs = new HashMap<>();
+		modifyArgs.put("id", inputedId);
+		modifyArgs.put("title", title);
+		modifyArgs.put("body", body);
+
+		modify(modifyArgs);
 	}
 
 	public int saveArticle(String title, String body, int memberId, int boardId, int hit) {
@@ -54,7 +61,7 @@ public class ArticleService {
 	public List<Article> getForPrintArticles(int boardId) {
 		return articleDao.getForPrintArticles(boardId);
 	}
-	
+
 	public List<Article> getForPrintArticles() {
 		return articleDao.getForPrintArticles(0);
 	}
@@ -128,7 +135,7 @@ public class ArticleService {
 	public int getArticlesCount(int boardId) {
 		return articleDao.getArticlesCount(boardId);
 	}
-	
+
 	public int getArticlesCount() {
 		return articleDao.getArticlesCount();
 	}
@@ -144,9 +151,13 @@ public class ArticleService {
 	public Board getBoardByBoardId(int boardId) {
 		return articleDao.getBoardByBoardId(boardId);
 	}
-	
+
 	public int getBoardsCount() {
 		return articleDao.getBoardsCount();
+	}
+
+	public void modify(Map<String, Object> args) {
+		articleDao.modify(args);
 	}
 
 }

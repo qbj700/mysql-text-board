@@ -10,12 +10,12 @@ public class Recommand {
 	public int memberId;
 	public int articleId;
 
-	public Recommand(Map<String, Object> recommandMap) {
-		this.id = (int) recommandMap.get("id");
-		this.regDate = (String) recommandMap.get("regDate");
-		this.updateDate = (String) recommandMap.get("updateDate");
-		this.memberId = (int) recommandMap.get("memberId");
-		this.articleId = (int) recommandMap.get("articleId");
+	public Recommand(Map<String, Object> recommendMap) {
+		this.id = (int) recommendMap.get("id");
+		this.regDate = (String) recommendMap.get("regDate");
+		this.updateDate = (String) recommendMap.get("updateDate");
+		this.memberId = (int) recommendMap.get("memberId");
+		this.articleId = (int) recommendMap.get("articleId");
 
 	}
 }

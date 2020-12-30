@@ -98,7 +98,7 @@ CREATE TABLE articleReply(
     reply TEXT NOT NULL
 );
 
-CREATE TABLE recommand(
+CREATE TABLE recommend(
     id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     regDate DATETIME NOT NULL,
     updateDate DATETIME NOT NULL,
@@ -173,3 +173,6 @@ NAME = '최형석';
 
 # 글 전부 삭제
 TRUNCATE article;
+
+# 게시물 테이블에 추천수 칼럼 추가
+ALTER TABLE article ADD COLUMN recommendsCount INT(10) UNSIGNED NOT NULL;
