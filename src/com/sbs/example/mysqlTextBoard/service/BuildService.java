@@ -85,7 +85,8 @@ public class BuildService {
 			mainContent.append("<a href=\"" + link + "\" class=\"hover-underline\">" + article.title + "</a>");
 			mainContent.append("</div>");
 			mainContent.append("<div class=\"article-list__cell-comments flex\">");
-			mainContent.append("<i class=\"far fa-comments\"></i>&nbsp<a href=\"https://ssg.modify.kr/"+ link +"#disqus_thread\">(Second article)</a>");
+			mainContent.append("<i class=\"far fa-comments\"></i>&nbsp<a href=\"https://ssg.modify.kr/" + link
+					+ "#disqus_thread\">(Second article)</a>");
 			mainContent.append("</div>");
 			mainContent.append("</div>");
 
@@ -232,7 +233,8 @@ public class BuildService {
 
 			mainContent.append("</div>");
 			mainContent.append("<div class=\"article-list__cell-comments flex\">");
-			mainContent.append("<i class=\"far fa-comments\"></i>&nbsp<a href=\"https://ssg.modify.kr/"+ link +"#disqus_thread\">(Second article)</a>");
+			mainContent.append("<i class=\"far fa-comments\"></i>&nbsp<a href=\"https://ssg.modify.kr/" + link
+					+ "#disqus_thread\">(Second article)</a>");
 			mainContent.append("</div>");
 			mainContent.append("</div>");
 
@@ -428,15 +430,16 @@ public class BuildService {
 
 				body = body.replace("${site-domain}", "ssg.modify.kr");
 				body = body.replace("${file-name}", getArticleDetailFileName(article.id));
-				
+
 				String fileName = getArticleDetailFileName(article.id);
-				
-				body = body.replace("${article-detail__comments}", "<i class=\"far fa-comments\"></i>&nbsp<a href=\"https://ssg.modify.kr/"+ fileName +"#disqus_thread\">(Second article)</a>");
-				
-				
+
+				body = body.replace("${article-detail__comments}",
+						"<i class=\"far fa-comments\"></i>&nbsp<a href=\"https://ssg.modify.kr/" + fileName
+								+ "#disqus_thread\">(Second article)</a>");
+
 				sb.append(body);
 				sb.append(foot);
-				
+
 				String filePath = "site/" + fileName;
 
 				Util.writerFile(filePath, sb.toString());
@@ -540,7 +543,8 @@ public class BuildService {
 		} else if (pageName.startsWith("article_list_notice")) {
 			return "<i class=\"fas fa-flag\"></i> <span>NOTICE LIST</span>";
 		} else if (pageName.startsWith("article_list")) {
-			return "<i class=\"fas fa-clipboard-list\"></i> <span>IT LIST</span>";
+			String boardName = pageName.replace("article_list_", "").toUpperCase();
+			return "<i class=\"fas fa-clipboard-list\"></i> <span>" + boardName + " LIST</span>";
 		} else if (pageName.startsWith("statistics")) {
 			return "<i class=\"fas fa-chart-pie\"></i> <span>STATISTICS</span>";
 		} else if (pageName.startsWith("article_all")) {
