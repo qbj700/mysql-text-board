@@ -31,7 +31,8 @@ public class BuildService {
 		Util.copy("site_template/app.js", "site/app.js");
 		Util.copy("site_template/favicon.ico", "site/favicon.ico");
 
-		loadDisqusData();
+		loadDataFromDisqus();
+		loadDataFromGa4Data();
 
 		buildIndexPage();
 		buildArticleListPages();
@@ -40,22 +41,12 @@ public class BuildService {
 		buildArticleAllListPage();
 	}
 
-	private void loadDisqusData() {
-		List<Article> articles = articleService.getForPrintArticles();
+	private void loadDataFromGa4Data() {
+		Container.googleAnalyticsApiService.updatePageHits();
+	}
 
-		for (Article article : articles) {
-			Map<String, Object> disqusArticleData = disqusApiService.getArticleData(article);
-
-			if (disqusArticleData != null) {
-				int recommendsCount = (int) disqusArticleData.get("recommendsCount");
-
-				Map<String, Object> modifyArgs = new HashMap<>();
-				modifyArgs.put("id", article.id);
-				modifyArgs.put("recommendsCount", recommendsCount);
-
-				articleService.modify(modifyArgs);
-			}
-		}
+	private void loadDataFromDisqus() {
+		Container.disqusApiService.updateArticlesCounts();
 	}
 
 	private void buildArticleAllListPage() {
@@ -109,8 +100,7 @@ public class BuildService {
 			mainContent.append("<a href=\"" + link + "\" class=\"hover-underline\">" + article.title + "</a>");
 			mainContent.append("</div>");
 			mainContent.append("<div class=\"article-list__cell-comments flex\">");
-			mainContent.append("<i class=\"far fa-comments\"></i>&nbsp<a href=\"https://ssg.modify.kr/" + link
-					+ "#disqus_thread\">(Second article)</a>");
+			mainContent.append("<i class=\"far fa-comments\"></i>&nbsp<a href=\"https://ssg.modify.kr/" + link + "#disqus_thread\">(Second article)</a>");
 			mainContent.append("</div>");
 			mainContent.append("</div>");
 
@@ -157,8 +147,7 @@ public class BuildService {
 		boolean pageBoxEndAfterBtnNeedToShow = pageBoxEndAfterPage != pageBoxEndPage;
 
 		if (pageBoxStartBeforeBtnNeedToShow) {
-			pageMenuContent.append(" <li><a href=\"" + getArticleAllListFileName(pageBoxStartBeforePage)
-					+ "\" class=\"flex flex-ai-c\">&lt; 이전</a></li>");
+			pageMenuContent.append(" <li><a href=\"" + getArticleAllListFileName(pageBoxStartBeforePage) + "\" class=\"flex flex-ai-c\">&lt; 이전</a></li>");
 		}
 
 		for (int i = pageBoxStartPage; i <= pageBoxEndPage; i++) {
@@ -168,13 +157,11 @@ public class BuildService {
 				selectedClass = "article-page-menu__link--selected";
 			}
 
-			pageMenuContent.append("<li><a href=\"" + getArticleAllListFileName(i) + "\"class=\"flex flex-ai-c "
-					+ selectedClass + "\">" + i + "</a></li>");
+			pageMenuContent.append("<li><a href=\"" + getArticleAllListFileName(i) + "\"class=\"flex flex-ai-c " + selectedClass + "\">" + i + "</a></li>");
 		}
 
 		if (pageBoxEndAfterBtnNeedToShow) {
-			pageMenuContent.append("<li><a href=\"" + getArticleAllListFileName(pageBoxEndAfterPage)
-					+ "\" class=\"flex flex-ai-c\">다음 &gt;</a></li> ");
+			pageMenuContent.append("<li><a href=\"" + getArticleAllListFileName(pageBoxEndAfterPage) + "\" class=\"flex flex-ai-c\">다음 &gt;</a></li> ");
 		}
 
 		String body = bodyTemplate.replace("${article-list__main-content}", mainContent.toString());
@@ -222,8 +209,7 @@ public class BuildService {
 		System.out.println(filePath + " 생성");
 	}
 
-	private void buildArticleListPage(Board board, int itemsInAPage, int pageBoxSize, List<Article> articles,
-			int page) {
+	private void buildArticleListPage(Board board, int itemsInAPage, int pageBoxSize, List<Article> articles, int page) {
 		StringBuilder sb = new StringBuilder();
 
 		// 헤더 시작
@@ -257,8 +243,7 @@ public class BuildService {
 
 			mainContent.append("</div>");
 			mainContent.append("<div class=\"article-list__cell-comments flex\">");
-			mainContent.append("<i class=\"far fa-comments\"></i>&nbsp<a href=\"https://ssg.modify.kr/" + link
-					+ "#disqus_thread\">(Second article)</a>");
+			mainContent.append("<i class=\"far fa-comments\"></i>&nbsp<a href=\"https://ssg.modify.kr/" + link + "#disqus_thread\">(Second article)</a>");
 			mainContent.append("</div>");
 			mainContent.append("</div>");
 
@@ -305,8 +290,7 @@ public class BuildService {
 		boolean pageBoxEndAfterBtnNeedToShow = pageBoxEndAfterPage != pageBoxEndPage;
 
 		if (pageBoxStartBeforeBtnNeedToShow) {
-			pageMenuContent.append(" <li><a href=\"" + getArticleListFileName(board, pageBoxStartBeforePage)
-					+ "\" class=\"flex flex-ai-c\">&lt; 이전</a></li>");
+			pageMenuContent.append(" <li><a href=\"" + getArticleListFileName(board, pageBoxStartBeforePage) + "\" class=\"flex flex-ai-c\">&lt; 이전</a></li>");
 		}
 
 		for (int i = pageBoxStartPage; i <= pageBoxEndPage; i++) {
@@ -316,13 +300,11 @@ public class BuildService {
 				selectedClass = "article-page-menu__link--selected";
 			}
 
-			pageMenuContent.append("<li><a href=\"" + getArticleListFileName(board, i) + "\"class=\"flex flex-ai-c "
-					+ selectedClass + "\">" + i + "</a></li>");
+			pageMenuContent.append("<li><a href=\"" + getArticleListFileName(board, i) + "\"class=\"flex flex-ai-c " + selectedClass + "\">" + i + "</a></li>");
 		}
 
 		if (pageBoxEndAfterBtnNeedToShow) {
-			pageMenuContent.append("<li><a href=\"" + getArticleListFileName(board, pageBoxEndAfterPage)
-					+ "\" class=\"flex flex-ai-c\">다음 &gt;</a></li> ");
+			pageMenuContent.append("<li><a href=\"" + getArticleListFileName(board, pageBoxEndAfterPage) + "\" class=\"flex flex-ai-c\">다음 &gt;</a></li> ");
 		}
 
 		String body = bodyTemplate.replace("${article-list__main-content}", mainContent.toString());
@@ -437,29 +419,21 @@ public class BuildService {
 				body = body.replace("${article-detail__writer}", "작성자 : " + article.extra__writer);
 				body = body.replace("${article-detail__id}", "번호 : " + Integer.toString(article.id));
 				body = body.replace("${article-detail__hit}", "조회수 : " + Integer.toString(article.hit));
-				body = body.replace("${article-detail__recommendsCount}",
-						"추천수 : " + Integer.toString(article.recommendsCount));
+				body = body.replace("${article-detail__recommendsCount}", "추천수 : " + Integer.toString(article.recommendsCount));
 				body = body.replace("${article-detail__body}", article.body);
-				body = body.replace("${article-detail__link-prev-article-url}",
-						getArticleDetailFileName(prevArticleId));
-				body = body.replace("${article-detail__link-prev-article-class-addi}",
-						prevArticleId == 0 ? "none" : "");
-				body = body.replace("${article-detail__link-list-url}",
-						getArticleListFileName(article.extra__boardCode, 1));
+				body = body.replace("${article-detail__link-prev-article-url}", getArticleDetailFileName(prevArticleId));
+				body = body.replace("${article-detail__link-prev-article-class-addi}", prevArticleId == 0 ? "none" : "");
+				body = body.replace("${article-detail__link-list-url}", getArticleListFileName(article.extra__boardCode, 1));
 				body = body.replace("${article-detail__link-list-class-addi}", "");
-				body = body.replace("${article-detail__link-next-article-url}",
-						getArticleDetailFileName(nextArticleId));
-				body = body.replace("${article-detail__link-next-article-class-addi}",
-						nextArticleId == 0 ? "none" : "");
+				body = body.replace("${article-detail__link-next-article-url}", getArticleDetailFileName(nextArticleId));
+				body = body.replace("${article-detail__link-next-article-class-addi}", nextArticleId == 0 ? "none" : "");
 
 				body = body.replace("${site-domain}", "ssg.modify.kr");
 				body = body.replace("${file-name}", getArticleDetailFileName(article.id));
 
 				String fileName = getArticleDetailFileName(article.id);
 
-				body = body.replace("${article-detail__comments}",
-						"<i class=\"far fa-comments\"></i>&nbsp<a href=\"https://ssg.modify.kr/" + fileName
-								+ "#disqus_thread\">(Second article)</a>");
+				body = body.replace("${article-detail__comments}", "<i class=\"far fa-comments\"></i>&nbsp<a href=\"https://ssg.modify.kr/" + fileName + "#disqus_thread\">(Second article)</a>");
 
 				sb.append(body);
 				sb.append(foot);
