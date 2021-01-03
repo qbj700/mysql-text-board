@@ -160,4 +160,7 @@ public class ArticleService {
 		articleDao.modify(args);
 	}
 
+	public void updatePageHits() {
+		articleDao.updatePageHits();
+	}
 }

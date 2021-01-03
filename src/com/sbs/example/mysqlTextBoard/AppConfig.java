@@ -18,4 +18,20 @@ public class AppConfig {
 		return "256604322";
 	}
 
+	public String getDbHost() {
+		return "localhost";
+	}
+
+	public String getDbId() {
+		return "sbsst";
+	}
+
+	public String getDbPw() {
+		return "sbs123414";
+	}
+
+	public String getDbName() {
+		return "textBoard";
+	}
+
 }
