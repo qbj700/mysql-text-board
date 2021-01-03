@@ -10,6 +10,7 @@ import com.sbs.example.mysqlTextBoard.dao.MemberDao;
 import com.sbs.example.mysqlTextBoard.service.ArticleService;
 import com.sbs.example.mysqlTextBoard.service.BuildService;
 import com.sbs.example.mysqlTextBoard.service.DisqusApiService;
+import com.sbs.example.mysqlTextBoard.service.GoogleAnalyticsApiService;
 import com.sbs.example.mysqlTextBoard.service.MemberService;
 import com.sbs.example.mysqlTextBoard.session.Session;
 
@@ -26,11 +27,13 @@ public class Container {
 	public static MemberService memberService;
 	public static BuildService buildService;
 	public static DisqusApiService disqusApiService;
+	public static GoogleAnalyticsApiService googleAnalyticsApiService;
 
 	public static ArticleDao articleDao;
 	public static MemberDao memberDao;
 	
 	public static AppConfig config;
+	
 	
 
 	static {
@@ -42,6 +45,7 @@ public class Container {
 		articleDao = new ArticleDao();
 		memberDao = new MemberDao();
 		
+		googleAnalyticsApiService = new GoogleAnalyticsApiService();
 		disqusApiService = new DisqusApiService();
 		articleService = new ArticleService();
 		memberService = new MemberService();

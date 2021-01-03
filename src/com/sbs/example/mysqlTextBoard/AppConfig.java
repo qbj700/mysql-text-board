@@ -14,4 +14,8 @@ public class AppConfig {
 		return "chs-ssg";
 	}
 
+	public String getGa4PropertyId() {
+		return "256604322";
+	}
+
 }
