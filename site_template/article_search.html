@@ -1,0 +1,39 @@
+<!-- vue 불러오기 -->
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+<!-- lodash 불러오기 -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
+
+<section id="article-list-wrap" class="section-1 con-min-width">
+	<div class="con">
+		<div class="article-search">
+			<form class="block">
+				<input @input="searchKeywordInputed" type="text" placeholder="검색어"
+					:value="searchKeyword">
+			</form>
+		</div>
+		<div class="article-list">
+			<header>
+				<div>
+					<div class="article-list__cell-id">번호</div>
+					<div class="article-list__cell-reg-date">날짜</div>
+					<div class="article-list__cell-writer">작성자</div>
+					<div class="article-list__cell-title">제목</div>
+				</div>
+			</header>
+			<div class="main">
+				<div v-for="article in filtered">
+					<div class="article-list__cell-id">{{article.id}}</div>
+					<div class="article-list__cell-reg-date">{{article.regDate}}</div>
+					<div class="article-list__cell-writer">{{article.writer}}</div>
+					<div class="article-list__cell-title">
+						<a :href="'article_' + article.id + '.html'" target="_blank"
+							class="hover-underline">{{article.title}}</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<script src="article_search.js"></script>

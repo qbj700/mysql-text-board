@@ -167,7 +167,7 @@ a {
 }
 
 .menu-bar__menu-1 > ul > li {
-  width:20%;
+  flex:1 0 0;
   position:relative;
 }
 
@@ -238,6 +238,16 @@ a {
 
 /* 하단바 끝 */
 
+/* 게시물 검색 시작 */
+
+.article-search > form {
+  display:flex;
+  justify-content:flex-end;
+  padding:10px;
+}
+
+/* 게시물 검색 끝 */
+
 /* 게시물 리스트 시작 */
 :root {
   --article-list__cell-id__width:100px;
@@ -293,12 +303,12 @@ a {
   width:var(--article-list__cell-comments__width);
 }
 
-.article-list > main .article-list__cell-title {
+.article-list > .main .article-list__cell-title {
   text-align:left;
   padding-left:10px;
 }
 
-.article-list > main > div {
+.article-list > .main > div {
   border-top:1px solid var(--font-color);
 }
 

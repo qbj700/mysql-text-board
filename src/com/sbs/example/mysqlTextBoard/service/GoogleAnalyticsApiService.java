@@ -32,6 +32,8 @@ public class GoogleAnalyticsApiService {
 
 			RunReportResponse response = analyticsData.runReport(request);
 
+			// pagePath 결과 보여주기
+			/* 
 			System.out.println("Report result:");
 			for (Row row : response.getRowsList()) {
 				String pagePath = row.getDimensionValues(0).getValue();
@@ -41,6 +43,7 @@ public class GoogleAnalyticsApiService {
 
 				update(pagePath, hit);
 			}
+			*/
 		} catch (IOException e) {
 			return false;
 		}
