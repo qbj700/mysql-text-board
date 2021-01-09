@@ -7,11 +7,11 @@
 
 <section id="article-list-wrap" class="section-1 con-min-width">
 	<div class="con">
-		<div class="article-search">
-			<form class="block">
-				<input @input="searchKeywordInputed" type="text" placeholder="검색어"
-					:value="searchKeyword">
-			</form>
+		<div class="search-bar flex flex-jc-e">
+			<span>
+				<input @input="searchKeywordInputed" :value="searchKeyword" class="clean-slide" id="age" type="text" placeholder="검색어를 입력하세요.">
+				<label for="검색">검색</label>
+			</span>
 		</div>
 		<div class="article-list">
 			<header>
