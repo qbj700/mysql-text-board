@@ -696,3 +696,9 @@ html, body {
 	 transform: translate(100%);
 }
 /* 게시물 검색 끝 */
+
+/* vue 시작 */
+[v-cloak] {
+	display:none;
+}
+/* vue 끝 */

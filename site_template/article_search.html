@@ -1,11 +1,14 @@
-<!-- vue 불러오기 -->
-<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<!-- VUE 상용버전, 속도와 용량이 최적화됨. -->
+<!--  <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+
+<!-- VUE 개발버전, 도움되는 콘솔 경고를 포함. -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
 <!-- lodash 불러오기 -->
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
 
-<section id="article-list-wrap" class="section-1 con-min-width">
+<section v-cloak id="article-list-wrap" class="section-1 con-min-width">
 	<div class="con">
 		<div class="search-bar flex flex-jc-e">
 			<span>
