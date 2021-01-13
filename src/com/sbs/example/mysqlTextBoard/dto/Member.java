@@ -4,11 +4,11 @@ import java.util.Map;
 
 public class Member {
 
-	public int id;
-	public String regDate;
-	public String loginId;
-	public String loginPw;
-	public String name;
+	private int id;
+	private String regDate;
+	private String loginId;
+	private String loginPw;
+	private String name;
 
 	public Member(Map<String, Object> memberMap) {
 		this.id = (int) memberMap.get("id");
@@ -24,5 +24,45 @@ public class Member {
 
 	public boolean isAdmin() {
 		return loginId.equals("aaa");
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getRegDate() {
+		return regDate;
+	}
+
+	public void setRegDate(String regDate) {
+		this.regDate = regDate;
+	}
+
+	public String getLoginId() {
+		return loginId;
+	}
+
+	public void setLoginId(String loginId) {
+		this.loginId = loginId;
+	}
+
+	public String getLoginPw() {
+		return loginPw;
+	}
+
+	public void setLoginPw(String loginPw) {
+		this.loginPw = loginPw;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }

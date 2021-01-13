@@ -39,10 +39,10 @@ public class MemberController extends Controller {
 		int loginedMemberId = Container.session.loginedMemberId;
 		Member member = memberService.getMemberByMemberId(loginedMemberId);
 
-		System.out.printf("번호 : %d\n", member.id);
-		System.out.printf("가입일자 : %s\n", member.regDate);
-		System.out.printf("로그인아이디 : %s\n", member.loginId);
-		System.out.printf("이름 : %s\n", member.name);
+		System.out.printf("번호 : %d\n", member.getId());
+		System.out.printf("가입일자 : %s\n", member.getRegDate());
+		System.out.printf("로그인아이디 : %s\n", member.getLoginId());
+		System.out.printf("이름 : %s\n", member.getName());
 		System.out.printf("회원종류 : %s\n", member.getType());
 
 	}
@@ -79,13 +79,13 @@ public class MemberController extends Controller {
 
 		System.out.printf("로그인 비밀번호 : ");
 		loginPw = Container.scanner.nextLine();
-		if (member.loginPw.equals(loginPw) == false) {
+		if (member.getLoginPw().equals(loginPw) == false) {
 			System.out.println("비밀번호가 일치하지 않습니다.");
 			return;
 		}
 
-		Container.session.login(member.id);
-		System.out.printf("로그인 성공, %s님 환영합니다.\n", member.name);
+		Container.session.login(member.getId());
+		System.out.printf("로그인 성공, %s님 환영합니다.\n", member.getName());
 
 	}
 

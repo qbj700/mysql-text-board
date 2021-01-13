@@ -55,7 +55,7 @@ public class ArticleService {
 
 	public int boardDefaultSetting() {
 		Board board = articleDao.loadBoardDataByBoardId(1);
-		return board.id;
+		return board.getId();
 	}
 
 	public List<Article> getForPrintArticles(int boardId) {
