@@ -288,3 +288,57 @@ INNER JOIN (
 ) AS GA4_PP
 ON AR.id = GA4_PP.articleId
 SET AR.hit = GA4_PP.hit;
+
+
+# 태그 테이블 생성
+CREATE TABLE tag (
+    id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    updateDate DATETIME NOT NULL,
+    relTypeCode CHAR(20) NOT NULL,
+    relId INT(10) UNSIGNED NOT NULL,
+    `body` CHAR(20) NOT NULL 
+);
+
+# 아래 쿼리와 관련된 인덱스 걸기
+# select * from tag where where relTypeCode = 'article' and `body` = 'SQL';
+ALTER TABLE `textBoard`.`tag` ADD INDEX (`relTypeCode` , `body`); 
+
+# 아래 쿼리와 관련된 인덱스 걸기
+# 중복된 데이터 생성 금지
+# select * from tag where where relTypeCode = 'article';
+# select * from tag where where relTypeCode = 'article' and relId = 5;
+# select * from tag where where relTypeCode = 'article' and relId = 5 and `body` = 'SQL';
+ALTER TABLE `textBoard`.`tag` ADD UNIQUE INDEX (`relTypeCode` , `relId`, `body`); 
+
+# 1번 게시글에 `JAVA`, `SQL`, `HTML` 태그 걸기
+INSERT INTO tag
+SET regDate = NOW(),
+updateDate = NOW(),
+relTypeCode = 'article',
+relId = 1,
+`body` = 'JAVA';
+
+INSERT INTO tag
+SET regDate = NOW(),
+updateDate = NOW(),
+relTypeCode = 'article',
+relId = 1,
+`body` = 'SQL';
+
+INSERT INTO tag
+SET regDate = NOW(),
+updateDate = NOW(),
+relTypeCode = 'article',
+relId = 1,
+`body` = 'HTML';
+
+# 게시물 + 태그정보
+SELECT A.id,
+A.title,
+IFNULL(GROUP_CONCAT(T.body), '') AS tags
+FROM article AS A
+LEFT JOIN tag AS T
+ON A.id = T.relId
+AND T.relTypeCode = 'article'
+GROUP BY A.id;
