@@ -18,6 +18,7 @@ import com.google.analytics.data.v1alpha.RunReportRequest;
 import com.google.analytics.data.v1alpha.RunReportResponse;
 import com.sbs.example.mysqlTextBoard.Container;
 import com.sbs.example.mysqlTextBoard.apidto.DisqusApiDataListThread;
+import com.sbs.example.mysqlTextBoard.dto.Article;
 import com.sbs.example.mysqlTextBoard.util.MysqlUtil;
 import com.sbs.example.mysqlTextBoard.util.Util;
 
@@ -30,10 +31,13 @@ public class TestRunner {
 	}
 
 	public void run() {
-		MysqlUtil.setDBInfo(Container.config.getDbHost(), Container.config.getDbId(), Container.config.getDbPw(),
-				Container.config.getDbName());
+		MysqlUtil.setDBInfo(Container.config.getDbHost(), Container.config.getDbId(), Container.config.getDbPw(), Container.config.getDbName());
 
-		testUpdatePageHitsByGa4Api();
+		testMakeArticleTagJsonFile();
+	}
+
+	private void testMakeArticleTagJsonFile() {
+		Container.buildService.buildArticleTagPage();
 	}
 
 	private void testUpdatePageHitsByGa4Api() {
@@ -43,10 +47,7 @@ public class TestRunner {
 	private void testUpdateGoogleAnalyticsApi() {
 		String ga4PropertyId = Container.config.getGa4PropertyId();
 		try (AlphaAnalyticsDataClient analyticsData = AlphaAnalyticsDataClient.create()) {
-			RunReportRequest request = RunReportRequest.newBuilder()
-					.setEntity(Entity.newBuilder().setPropertyId(ga4PropertyId))
-					.addDimensions(Dimension.newBuilder().setName("pagePath"))
-					.addMetrics(Metric.newBuilder().setName("activeUsers"))
+			RunReportRequest request = RunReportRequest.newBuilder().setEntity(Entity.newBuilder().setPropertyId(ga4PropertyId)).addDimensions(Dimension.newBuilder().setName("pagePath")).addMetrics(Metric.newBuilder().setName("activeUsers"))
 					.addDateRanges(DateRange.newBuilder().setStartDate("2020-12-01").setEndDate("today")).build();
 
 			// Make the request
@@ -154,15 +155,13 @@ public class TestRunner {
 
 	private void testApi() {
 		String url = "https://disqus.com/api/3.0/forums/listThreads.json";
-		String rs = Util.callApi(url, "api_key=" + Container.config.getDisqusApiKey(), "forum=chs-ssg",
-				"thread:ident=article_detail_2.html");
+		String rs = Util.callApi(url, "api_key=" + Container.config.getDisqusApiKey(), "forum=chs-ssg", "thread:ident=article_detail_2.html");
 		System.out.println(rs);
 	}
 
 	private void testApi2() {
 		String url = "https://disqus.com/api/3.0/forums/listThreads.json";
-		Map<String, Object> rs = Util.callApiResponseToMap(url, "api_key=" + Container.config.getDisqusApiKey(),
-				"forum=chs-ssg", "thread:ident=article_detail_2.html");
+		Map<String, Object> rs = Util.callApiResponseToMap(url, "api_key=" + Container.config.getDisqusApiKey(), "forum=chs-ssg", "thread:ident=article_detail_2.html");
 		List<Map<String, Object>> response = (List<Map<String, Object>>) rs.get("response");
 		Map<String, Object> thread = response.get(0);
 		System.out.println((int) thread.get("likes"));
@@ -170,9 +169,7 @@ public class TestRunner {
 
 	private void testApi3() {
 		String url = "https://disqus.com/api/3.0/forums/listThreads.json";
-		DisqusApiDataListThread rs = (DisqusApiDataListThread) Util.callApiResponseTo(DisqusApiDataListThread.class,
-				url, "api_key=" + Container.config.getDisqusApiKey(), "forum=chs-ssg",
-				"thread:ident=article_detail_2.html");
+		DisqusApiDataListThread rs = (DisqusApiDataListThread) Util.callApiResponseTo(DisqusApiDataListThread.class, url, "api_key=" + Container.config.getDisqusApiKey(), "forum=chs-ssg", "thread:ident=article_detail_2.html");
 		System.out.println(rs.response.get(0).likes + rs.response.get(0).posts);
 	}
 
