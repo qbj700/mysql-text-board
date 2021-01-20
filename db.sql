@@ -342,3 +342,7 @@ LEFT JOIN tag AS T
 ON A.id = T.relId
 AND T.relTypeCode = 'article'
 GROUP BY A.id;
+
+# JSP 게시판 생성
+INSERT INTO `board` (`regDate`, `updateDate`, `name`, `code`) 
+VALUES ('2021-01-20 21:47:01', '2021-01-20 21:47:03', 'JSP', 'jsp');
