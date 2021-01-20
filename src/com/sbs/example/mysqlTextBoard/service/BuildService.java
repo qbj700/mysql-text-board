@@ -445,6 +445,10 @@ public class BuildService {
 				sb.append(head);
 
 				String body = bodyTemplate;
+				
+				
+				String articleBodyForPrint = article.getBody(); 
+				articleBodyForPrint = articleBodyForPrint.replaceAll("script", "t-script");
 
 				body = body.replace("${article-detail__title}", article.getTitle());
 				body = body.replace("${article-detail__board-name}", "게시판 : " + article.extra__boardName);
@@ -453,7 +457,7 @@ public class BuildService {
 				body = body.replace("${article-detail__id}", "번호 : " + Integer.toString(article.getId()));
 				body = body.replace("${article-detail__hit}", "조회수 : " + Integer.toString(article.hit));
 				body = body.replace("${article-detail__recommendsCount}", "추천수 : " + Integer.toString(article.recommendsCount));
-				body = body.replace("${article-detail__body}", article.getBody());
+				body = body.replace("${article-detail__body}", articleBodyForPrint);
 				body = body.replace("${article-detail__link-prev-article-url}", getArticleDetailFileName(prevArticleId));
 				body = body.replace("${article-detail__link-prev-article-class-addi}", prevArticleId == 0 ? "none" : "");
 				body = body.replace("${article-detail__link-list-url}", getArticleListFileName(article.extra__boardCode, 1));
