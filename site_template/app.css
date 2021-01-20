@@ -582,6 +582,7 @@ input:checked + .slider:before {
 }
 .toast-ui-codepen-plugin-wrap > iframe {
   width:100%;
+}
 /* 토스트 UI 뷰어 끝 */
 /* disqus 설정 시작 */
 #disqus_thread {
