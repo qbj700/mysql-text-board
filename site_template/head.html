@@ -24,7 +24,7 @@
 <!-- 메타태그 정보 -->
 <!-- META -->
 <link rel="canonical" href="${site-main-url}" />
-<meta name="subject" content="${site-subject}"/>
+<meta name="subject" content="${site-subject}" />
 <meta name="title" content="${site-name}" />
 <meta name="keywords" content="${site-keywords}" />
 <meta name="copyright" content="${site-name}" />
@@ -36,11 +36,12 @@
 <meta property="og:title" content="${site-subject}" />
 <meta property="og:description" content="${site-description}" />
 <meta property="og:locale" content="ko_KR" />
-<meta property="og:image" content="${site-main-url}/img/logo/logo_opengraph.png" />
+<meta property="og:image"
+	content="${site-main-url}/img/logo/logo_opengraph.png" />
 <meta property="og:image:alt" content="${site-domain}" />
 <meta property="og:image:width" content="486" />
 <meta property="og:image:height" content="254" />
-<meta property="og:updated_time" content="${current-date}"/>
+<meta property="og:updated_time" content="${current-date}" />
 <meta property="og:pubdate" content="${current-date}" />
 <meta property="og:url" content="${site-main-url}" />
 <!-- TWITTER -->
@@ -85,7 +86,8 @@
 
 <!-- 토스트 UI 에디터, 자바스크립트 코어 -->
 <script
-	src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js" defer></script>
+	src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"
+	defer></script>
 
 <!-- 코드 미러 라이브러리 추가, 토스트 UI 에디터에서 사용됨 -->
 <link rel="stylesheet"
@@ -96,98 +98,111 @@
 
 <!-- 토스트 UI 에디터, 신택스 하이라이트 플러그인 추가 -->
 <script
-	src="https://uicdn.toast.com/editor-plugin-code-syntax-highlight/latest/toastui-editor-plugin-code-syntax-highlight.min.js" defer></script>
-	
+	src="https://uicdn.toast.com/editor-plugin-code-syntax-highlight/latest/toastui-editor-plugin-code-syntax-highlight.min.js"
+	defer></script>
+
 <link rel="stylesheet" href="app.css">
 <script src="app.js" defer></script>
-<script id="dsq-count-scr" src="//chs-ssg.disqus.com/count.js" async defer></script>
+<script id="dsq-count-scr" src="//chs-ssg.disqus.com/count.js" async
+	defer></script>
 
 </head>
 <body>
 
 	<div class="body-content min-height-100vh flex flex-column">
-	
-	<!-- 다크모드 시작 -->
-		<div class="con-min-width">
-			<div class="con switch-box">
-				<div class="theme-switch-wrapper">
-					<label class="theme-switch" for="checkbox"> 
-					<input type="checkbox" id="checkbox" />
-						<div class="slider round"></div>
-					</label> <em>Enable Dark Mode!</em>
+		<!-- 탑바 시작 -->
+		<header class="visible-md-up con-min-width">
+			<div class="top-bar nav-down flex flex-ai-c">
+				<div class="logo-bar">
+					<div class="logo-box">
+						<a href="index_1.html" class="logo"> <span class="logo__text">MODIFY</span>
+							<i class="fas fa-tools ico"></i> <span class="logo__text">CODE</span>
+						</a>
+					</div>
+				</div>
+				<div class="flex-1-0-0"></div>
+				<div class="menu-bar height-100p">
+					<nav class="menu-box height-100p">
+						<ul class="flex height-100p flex-ai-c">
+							<li><a href="article_search.html"><span>BOARDS</span> </a>
+								<ul>${menu-bar__menu-1__board-menu-content}
+								</ul></li>
+							<li><a href="#"><span>ABOUT</span></a></li>
+							<li><a href="statistics.html"><span>DATA</span></a></li>
+						</ul>
+					</nav>
 				</div>
 			</div>
-		</div>
-		
-		<script>
-		const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
-		const currentTheme = localStorage.getItem('theme');
-
-		if (currentTheme) {
-		    document.documentElement.setAttribute('data-theme', currentTheme);
-		  
-		    if (currentTheme === 'dark') {
-		        toggleSwitch.checked = true;
-		    }
-		}
-
-		function switchTheme(e) {
-		    if (e.target.checked) {
-		        document.documentElement.setAttribute('data-theme', 'dark');
-		        localStorage.setItem('theme', 'dark');
-		    }
-		    else {        document.documentElement.setAttribute('data-theme', 'light');
-		          localStorage.setItem('theme', 'light');
-		    }    
-		}
-
-		toggleSwitch.addEventListener('change', switchTheme, false);</script>
-		<!-- 다크모드 끝 -->
-		<!-- 로고바 시작 -->
-		<header class="logo-bar con-min-width">
-			<div class="con">
-				<a href="index.html" class="logo"> <span class="logo__text">MODIFY</span>
-					<i class="fas fa-tools ico"></i> <span class="logo__text">CODE</span>
-				</a>
+			<div>
+				<div class="back-img">
+					<div class="con height-100p">
+						<div class="page-title-box flex flex-column">
+							<div class="page-title">
+								<span>MODIFY</span> <i class="fas fa-tools"></i> <span>CODE</span>
+							</div>
+							<div class="small-bar"></div>
+							<div class="page-subtitle">
+								<span>주니어 개발자에서 부터 시니어 개발자가 되기까지</span> <span>코딩을 공부하는 기술
+									블로그</span>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</header>
-		<!-- 로고바 끝 -->
-		
-		<!-- 메뉴바 시작 -->
-		<header class="menu-bar con-min-width">
-			<div class="con height-100p">
-				<nav class="menu-bar__menu-1">
-					<ul class="flex flex-jc-c">
-						<li><a class="block" href="index.html"> <span>HOME</span>
-						</a></li>
-						<li><a class="block" href="article_all_1.html"> <span>ARTICLES</span>
+
+		<!-- 탑바 끝 -->
+		<!-- 모바일 탑바 시작 -->
+		<header class="visible-sm-down con-min-width">
+			<div class="mobile-top-bar flex">
+				<div class="mobile-logo-bar height-100p flex">
+					<div class="con flex-as-c">
+						<a href="index_1.html" class="mobile-logo"> <span
+							class="logo__text">MODIFY</span> <i class="fas fa-tools ico"></i>
+							<span class="logo__text">CODE</span>
 						</a>
+					</div>
+				</div>
+				<div class="flex-1-0-0"></div>
+				<div class="mobile-top-bar__btn-toggle-side-bar flex-as-c">
+					<div></div>
+					<div></div>
+					<div></div>
+				</div>
+			</div>
+			<div>
+				<div class="mobile-back-img">
+					<div class="con height-100p">
+						<div class="mobile-page-title-box flex flex-column">
+							<div class="mobile-page-title">
+								<span>MODIFY</span> <i class="fas fa-tools"></i> <span>CODE</span>
+							</div>
+							<div class="mobile-small-bar"></div>
+							<div class="mobile-page-subtitle">
+								<span>주니어 개발자에서 부터 시니어 개발자가 되기까지</span> <span>코딩을 공부하는 기술
+									블로그</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</header>
+		<!-- 모바일 탑바 끝 -->
+		<!-- 모바일 사이드바 시작 -->
+		<div class="mobile-side-bar visible-sm-down con-min-width">
+			<div class="con mobile-menu-bar">
+				<nav class="mobile-menu-box">
+					<ul>
+						<li><a href="article_search.html">BOARD</a>
 							<ul>${menu-bar__menu-1__board-menu-content}
 							</ul></li>
-						<li><a class="block" href="article_search.html"> <span>SEARCH</span>
-						</a>
-							</li>
-						<li><a class="block" href="#"> <span>SITE</span>
-						</a>
-							<ul><li>
-							<a class="block" href="https://qbj700.tistory.com"
-							target="_blank"> <span>BLOG</span>
-						</a></li>
-							<li><a class="block" href="https://github.com/qbj700"
-							target="_blank"> <sapn>GIT HUB</sapn>
-						</a></li>
-							</ul></li>
-						
-						<li><a class="block" href="statistics.html"><span>STATISTICS</span> </a></li>
+						<li><a href="#">ABOUT</a></li>
+						<li><a href="statistics.html">DATA</a></li>
 					</ul>
 				</nav>
 			</div>
-		</header>
-		<!-- 메뉴바 끝 -->
+		</div>
+		<!-- 모바일 사이드바 끝 -->
 
-		<div class="line"></div>
-
-		<main class="flex-grow-1">
-			<section class="title-bar con-min-width">
-				<h1 class="con">${title-bar__content}</h1>
-			</section>
+		<main class="flex-1-0-0 con-min-width">
+			<div class="con">

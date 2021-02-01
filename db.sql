@@ -346,3 +346,6 @@ GROUP BY A.id;
 # JSP 게시판 생성
 INSERT INTO `board` (`regDate`, `updateDate`, `name`, `code`) 
 VALUES ('2021-01-20 21:47:01', '2021-01-20 21:47:03', 'JSP', 'jsp');
+
+# 부제목 칼럼 생성
+ALTER TABLE `article` ADD COLUMN `subtitle` CHAR(200) NOT NULL AFTER `title`

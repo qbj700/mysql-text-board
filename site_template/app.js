@@ -1,3 +1,20 @@
+console.clear();
+function MobileTopBar__init() {
+  $(".mobile-top-bar__btn-toggle-side-bar").click(function () {
+    let $this = $(this);
+
+    if ($this.hasClass("active")) {
+      $this.removeClass("active");
+      $(".mobile-side-bar").removeClass("active");
+    } else {
+      $this.addClass("active");
+      $(".mobile-side-bar").addClass("active");
+    }
+  });
+}
+
+MobileTopBar__init();
+
 function ArticleDetail__Body__init() {
 	if (toastui === undefined) {
 		return;
@@ -76,10 +93,61 @@ function ArticleDetail__Body__init() {
 
 ArticleDetail__Body__init();
 
-var topEle = $('.topBtn-2');
-var delay = 500;
-topEle.on('click', function() {
-	$('html, body').stop().animate({
-		scrollTop: 0
-	}, delay);
+// 최상단 이동 버튼 시작
+$(window).scroll(function(){
+	if ($(this).scrollTop() > 300){
+		$('.btn_gotop').show();
+	} else{
+		$('.btn_gotop').hide();
+	}
 });
+$('.btn_gotop').click(function(){
+	$('html, body').animate({scrollTop:0},400);
+	return false;
+});
+// 최상단 이동 버튼 끝
+
+// Hide Header on on scroll down
+var didScroll;
+var lastScrollTop = 0;
+var delta = 5;
+var navbarHeight = $('.top-bar').outerHeight();
+
+$(window).scroll(function(event){
+    didScroll = true;
+});
+
+setInterval(function() {
+    if (didScroll) {
+        hasScrolled();
+        didScroll = false;
+    }
+}, 250);
+
+function hasScrolled() {
+    var st = $(this).scrollTop();
+    
+    // Make sure they scroll more than delta
+    if(Math.abs(lastScrollTop - st) <= delta)
+        return;
+    
+    // If they scrolled down and are past the navbar, add class .nav-up.
+    // This is necessary so you never see what is "behind" the navbar.
+    if (st > lastScrollTop && st > navbarHeight){
+        // Scroll Down
+        $('.top-bar').removeClass('nav-down').addClass('nav-up');
+        $('.mobile-top-bar').removeClass('nav-down').addClass('nav-up');
+        $('.mobile-side-bar').removeClass('side-bar-down').addClass('side-bar-up');
+    } else {
+        // Scroll Up
+        if(st + $(window).height() < $(document).height()) {
+            $('.top-bar').removeClass('nav-up').addClass('nav-down');
+            $('.mobile-top-bar').removeClass('nav-up').addClass('nav-down');
+            $('.mobile-side-bar').removeClass('side-bar-up').addClass('side-bar-down');
+        }
+    }
+    
+    lastScrollTop = st;
+}
+
+hasScrolled();

@@ -8,35 +8,25 @@
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
 
-<section v-cloak id="article-list-wrap" class="section-1 con-min-width">
-	<div class="con">
-		<div class="search-bar flex flex-jc-e">
-			<span>
-				<input @input="searchKeywordInputed" :value="searchKeyword" class="clean-slide" id="age" type="text" placeholder="검색어를 입력하세요.">
-				<label for="검색">검색</label>
-			</span>
-		</div>
-		<div class="article-list">
-			<header>
-				<div>
-					<div class="article-list__cell-id">번호</div>
-					<div class="article-list__cell-reg-date">날짜</div>
-					<div class="article-list__cell-writer">작성자</div>
-					<div class="article-list__cell-title">제목</div>
-				</div>
-			</header>
-			<div class="main">
-				<div v-for="article in filtered">
-					<div class="article-list__cell-id">{{article.id}}</div>
-					<div class="article-list__cell-reg-date">{{article.regDate}}</div>
-					<div class="article-list__cell-writer">{{article.writer}}</div>
-					<div class="article-list__cell-title">
-						<a :href="'article_detail_' + article.id + '.html'" target="_blank"
-							class="hover-underline">{{article.title}}</a>
-					</div>
-				</div>
-			</div>
+<div v-cloak id="article-list-wrap" class="content-box">
+	<h5 class="recent-post">Latest Articles</h5>
+
+	<div class="search-bar flex flex-jc-e">
+		<span> <input @input="searchKeywordInputed"
+			:value="searchKeyword" class="clean-slide" id="age" type="text"
+			placeholder="검색어를 입력하세요."> <label for="검색">검색</label>
+		</span>
+	</div>
+
+	<div v-for="article in filtered">
+		<div class="post-preview">
+			<a :href="'article_detail_' + article.id + '.html'" target="_blank">
+				<h2 class="post-title">{{article.title}}</h2>
+				<h3 class="post-subtitle">{{article.subtitle}}</h3>
+			</a>
+			<p class="post-meta">{{article.regDate}}, {{article.writer}}</p>
 		</div>
 	</div>
-</section>
+
+</div>
 <script src="article_search.js"></script>

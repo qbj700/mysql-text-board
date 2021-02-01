@@ -33,30 +33,29 @@ public class BuildService {
 		loadDataFromDisqus();
 		loadDataFromGa4Data();
 
-		buildIndexPage();
 		buildArticleTagPage();
 		buildArticleListPages();
 		buildArticleDetailPages();
 		buildStatisticsPage();
-		buildArticleAllListPage();
+		buildIndexPage();
 		buildArticleSearchPage();
 	}
 
 	public void buildArticleTagPage() {
 		Map<String, List<Article>> articlesByTagMap = articleService.getArticlesByTagMap();
-		
+
 		String jsonText = Util.getJsonText(articlesByTagMap);
 		Util.writerFile("site/article_tag.json", jsonText);
 	}
 
 	private void buildArticleSearchPage() {
 		List<Article> articles = articleService.getForPrintArticles(0);
-		
+
 		String jsonText = Util.getJsonText(articles);
 		Util.writerFile("site/article_list.json", jsonText);
-		
+
 		Util.copy("site_template/article_search.js", "site/article_search.js");
-		
+
 		StringBuilder sb = new StringBuilder();
 
 		String head = getHeadHtml("article_search");
@@ -71,7 +70,7 @@ public class BuildService {
 		String filePath = "site/article_search.html";
 		Util.writerFile(filePath, sb.toString());
 		System.out.println(filePath + " 생성");
-		
+
 	}
 
 	private void loadDataFromGa4Data() {
@@ -82,29 +81,29 @@ public class BuildService {
 		Container.disqusApiService.updateArticlesCounts();
 	}
 
-	private void buildArticleAllListPage() {
+	private void buildIndexPage() {
 
 		int itemsInAPage = 10;
 		int pageBoxMenuSize = 10;
 
-		List<Article> articles = articleService.getArticles();
+		List<Article> articles = articleService.getForPrintArticles();
 		int articlesCount = articles.size();
 		int totalPage = (int) Math.ceil((double) articlesCount / itemsInAPage);
 
 		for (int i = 1; i <= totalPage; i++) {
-			buildArticleAllListPage(itemsInAPage, pageBoxMenuSize, articles, i);
+			buildIndexPage(itemsInAPage, pageBoxMenuSize, articles, i);
 		}
 
 	}
 
-	private void buildArticleAllListPage(int itemsInAPage, int pageBoxSize, List<Article> articles, int page) {
+	private void buildIndexPage(int itemsInAPage, int pageBoxSize, List<Article> articles, int page) {
 		StringBuilder sb = new StringBuilder();
 
 		// 헤더 시작
-		sb.append(getHeadHtml("article_all"));
+		sb.append(getHeadHtml("index"));
 
 		// 바디 시작
-		String bodyTemplate = Util.getFileContents("site_template/article_all.html");
+		String bodyTemplate = Util.getFileContents("site_template/index.html");
 
 		StringBuilder mainContent = new StringBuilder();
 
@@ -121,21 +120,15 @@ public class BuildService {
 
 			String link = getArticleDetailFileName(article.getId());
 
-			Member member = memberService.getMemberByMemberId(article.getMemberId());
-			String writer = member.getName();
-
-			mainContent.append("<div>");
-			mainContent.append("<div class=\"article-list__cell-id\">" + article.getId() + "</div>");
-			mainContent.append("<div class=\"article-list__cell-reg-date\">" + article.getRegDate() + "</div>");
-			mainContent.append("<div class=\"article-list__cell-writer\">" + writer + "</div>");
-			mainContent.append("<div class=\"article-list__cell-title\">");
-
-			mainContent.append("<a href=\"" + link + "\" class=\"hover-underline\">" + article.getTitle() + "</a>");
+			mainContent.append("<div class=\"post-preview\">");
+			mainContent.append("<a href=\"" + link + "\">");
+			mainContent.append("<h2 class=\"post-title\">" + article.getTitle() + "</h2>");
+			mainContent.append("<h3 class=\"post-subtitle\">" + article.getSubtitle() + "</h3>");
+			mainContent.append("</a>");
+			mainContent.append(
+					"<p class=\"post-meta\">" + article.getRegDate() + ", writer : " + article.getExtra__writer() + " <i class=\"far fa-comments\"></i>&nbsp<a href=\"https://ssg.modify.kr/" + link + "#disqus_thread\">(Second article)</a></p>");
 			mainContent.append("</div>");
-			mainContent.append("<div class=\"article-list__cell-comments flex\">");
-			mainContent.append("<i class=\"far fa-comments\"></i>&nbsp<a href=\"https://ssg.modify.kr/" + link + "#disqus_thread\">(Second article)</a>");
-			mainContent.append("</div>");
-			mainContent.append("</div>");
+			mainContent.append("<div class=\"list\"></div>");
 
 		}
 		StringBuilder pageMenuContent = new StringBuilder();
@@ -180,7 +173,7 @@ public class BuildService {
 		boolean pageBoxEndAfterBtnNeedToShow = pageBoxEndAfterPage != pageBoxEndPage;
 
 		if (pageBoxStartBeforeBtnNeedToShow) {
-			pageMenuContent.append(" <li><a href=\"" + getArticleAllListFileName(pageBoxStartBeforePage) + "\" class=\"flex flex-ai-c\">&lt; 이전</a></li>");
+			pageMenuContent.append(" <li><a href=\"" + getArticleIndexFileName(pageBoxStartBeforePage) + "\" class=\"flex flex-ai-c\">&lt; 이전</a></li>");
 		}
 
 		for (int i = pageBoxStartPage; i <= pageBoxEndPage; i++) {
@@ -190,11 +183,11 @@ public class BuildService {
 				selectedClass = "article-page-menu__link--selected";
 			}
 
-			pageMenuContent.append("<li><a href=\"" + getArticleAllListFileName(i) + "\"class=\"flex flex-ai-c " + selectedClass + "\">" + i + "</a></li>");
+			pageMenuContent.append("<li><a href=\"" + getArticleIndexFileName(i) + "\"class=\"flex flex-ai-c " + selectedClass + "\">" + i + "</a></li>");
 		}
 
 		if (pageBoxEndAfterBtnNeedToShow) {
-			pageMenuContent.append("<li><a href=\"" + getArticleAllListFileName(pageBoxEndAfterPage) + "\" class=\"flex flex-ai-c\">다음 &gt;</a></li> ");
+			pageMenuContent.append("<li><a href=\"" + getArticleIndexFileName(pageBoxEndAfterPage) + "\" class=\"flex flex-ai-c\">다음 &gt;</a></li> ");
 		}
 
 		String body = bodyTemplate.replace("${article-list__main-content}", mainContent.toString());
@@ -206,7 +199,7 @@ public class BuildService {
 		sb.append(Util.getFileContents("site_template/foot.html"));
 
 		// 파일 생성 시작
-		String fileName = getArticleAllListFileName(page);
+		String fileName = getArticleIndexFileName(page);
 		String filePath = "site/" + fileName;
 
 		Util.writerFile(filePath, sb.toString());
@@ -266,19 +259,15 @@ public class BuildService {
 
 			String link = getArticleDetailFileName(article.getId());
 
-			mainContent.append("<div>");
-			mainContent.append("<div class=\"article-list__cell-id\">" + article.getId() + "</div>");
-			mainContent.append("<div class=\"article-list__cell-reg-date\">" + article.getRegDate() + "</div>");
-			mainContent.append("<div class=\"article-list__cell-writer\">" + article.extra__writer + "</div>");
-			mainContent.append("<div class=\"article-list__cell-title\">");
-
-			mainContent.append("<a href=\"" + link + "\" class=\"hover-underline\">" + article.getTitle() + "</a>");
-
+			mainContent.append("<div class=\"post-preview\">");
+			mainContent.append("<a href=\"" + link + "\">");
+			mainContent.append("<h2 class=\"post-title\">" + article.getTitle() + "</h2>");
+			mainContent.append("<h3 class=\"post-subtitle\">" + article.getSubtitle() + "</h3>");
+			mainContent.append("</a>");
+			mainContent.append(
+					"<p class=\"post-meta\">" + article.getRegDate() + ", writer : " + article.getExtra__writer() + " <i class=\"far fa-comments\"></i>&nbsp<a href=\"https://ssg.modify.kr/" + link + "#disqus_thread\">(Second article)</a></p>");
 			mainContent.append("</div>");
-			mainContent.append("<div class=\"article-list__cell-comments flex\">");
-			mainContent.append("<i class=\"far fa-comments\"></i>&nbsp<a href=\"https://ssg.modify.kr/" + link + "#disqus_thread\">(Second article)</a>");
-			mainContent.append("</div>");
-			mainContent.append("</div>");
+			mainContent.append("<div class=\"list\"></div>");
 
 		}
 		StringBuilder pageMenuContent = new StringBuilder();
@@ -357,8 +346,8 @@ public class BuildService {
 		System.out.println(filePath + " 생성");
 	}
 
-	private String getArticleAllListFileName(int page) {
-		return "article_all_" + page + ".html";
+	private String getArticleIndexFileName(int page) {
+		return "index_" + page + ".html";
 	}
 
 	private String getArticleListFileName(Board board, int page) {
@@ -386,24 +375,6 @@ public class BuildService {
 			}
 
 		}
-
-	}
-
-	private void buildIndexPage() {
-		StringBuilder sb = new StringBuilder();
-
-		String head = getHeadHtml("index");
-		String foot = Util.getFileContents("site_template/foot.html");
-
-		String mainHtml = Util.getFileContents("site_template/index.html");
-
-		sb.append(head);
-		sb.append(mainHtml);
-		sb.append(foot);
-
-		String filePath = "site/index.html";
-		Util.writerFile(filePath, sb.toString());
-		System.out.println(filePath + " 생성");
 
 	}
 
@@ -445,9 +416,8 @@ public class BuildService {
 				sb.append(head);
 
 				String body = bodyTemplate;
-				
-				
-				String articleBodyForPrint = article.getBody(); 
+
+				String articleBodyForPrint = article.getBody();
 				articleBodyForPrint = articleBodyForPrint.replaceAll("script", "t-script");
 
 				body = body.replace("${article-detail__title}", article.getTitle());

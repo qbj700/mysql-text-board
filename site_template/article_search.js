@@ -12,6 +12,7 @@ $.get(
         regDate: row.regDate,
         writer: row.extra__writer,
         title: row.title,
+		subtitle: row.subtitle,
         body: row.body
       };
       
