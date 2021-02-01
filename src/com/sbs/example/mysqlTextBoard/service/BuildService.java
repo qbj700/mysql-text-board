@@ -347,7 +347,7 @@ public class BuildService {
 	}
 
 	private String getArticleIndexFileName(int page) {
-		return "index_" + page + ".html";
+		return "index.html";
 	}
 
 	private String getArticleListFileName(Board board, int page) {
