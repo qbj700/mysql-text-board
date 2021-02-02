@@ -499,7 +499,7 @@ public class BuildService {
 		String siteSubject = "풀스택 개발자 지망생의 기술/일상 블로그";
 		String siteDescription = "풀스택 개발자가 되기위한 기술/일상 관련 글들을 공유합니다.";
 		String siteKeywords = "JAVA, MySQL, HTML, CSS, JAVASCRIPT, SPRING, CODE, CODING";
-		String siteDomain = "modify.kr";
+		String siteDomain = "ssg.modify.kr";
 		String siteMainUrl = "https://" + siteDomain;
 		String currentDate = Util.getNowDateStr().replace(" ", "T");
 
