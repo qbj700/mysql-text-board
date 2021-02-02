@@ -487,9 +487,9 @@ public class BuildService {
 
 		head = head.replace("${menu-bar__menu-1__board-menu-content}", boardMenuContentHtml);
 
-		String titleBarContentHtml = getTitleBarContentByPageName(pageName);
+		String mainContentHtml = getMainContentByPageName(pageName);
 
-		head = head.replace("${title-bar__content}", titleBarContentHtml);
+		head = head.replace("${main__content}", mainContentHtml);
 
 		String pageTitle = getPageTitle(pageName, relObj);
 
@@ -512,6 +512,19 @@ public class BuildService {
 		head = head.replace("${site-keywords}", siteKeywords);
 
 		return head;
+	}
+
+	private String getMainContentByPageName(String pageName) {
+		if (pageName.equals("index")) {
+			return "<i class=\"fas fa-home\"></i> <span>Latest Articles</span>";
+		} else if (pageName.startsWith("article_list_jsp")) {
+			return "<i class=\"fab fa-java\"></i> <span>jsp LIST</span>";
+		} else if (pageName.startsWith("article_list_notice")) {
+			return "<i class=\"fas fa-flag\"></i> <span>NOTICE LIST</span>";
+		} else if (pageName.startsWith("article_list_it")) {
+			return "<i class=\"fas fa-laptop-code\"></i> <span>IT LIST</span>";
+		}
+		return "";
 	}
 
 	private String getPageTitle(String pageName, Object relObj) {
@@ -545,8 +558,8 @@ public class BuildService {
 			return "<i class=\"fas fa-file-alt\"></i> <span>ARTICLE DETAIL</span>";
 		} else if (pageName.equals("article_search")) {
 			return "<i class=\"fas fa-search\"></i> <span>ARTICLE SEARCH</span>";
-		} else if (pageName.startsWith("article_list_free")) {
-			return "<i class=\"fab fa-free-code-camp\"></i> <span>FREE LIST</span>";
+		} else if (pageName.startsWith("article_list_jsp")) {
+			return "<i class=\"fab fa-java\"></i> <span>JSP LIST</span>";
 		} else if (pageName.startsWith("article_list_notice")) {
 			return "<i class=\"fas fa-flag\"></i> <span>NOTICE LIST</span>";
 		} else if (pageName.startsWith("article_list")) {
@@ -554,8 +567,8 @@ public class BuildService {
 			return "<i class=\"fas fa-clipboard-list\"></i> <span>" + boardName + " LIST</span>";
 		} else if (pageName.startsWith("statistics")) {
 			return "<i class=\"fas fa-chart-pie\"></i> <span>STATISTICS</span>";
-		} else if (pageName.startsWith("article_all")) {
-			return "<i class=\"fas fa-list\"></i> <span>ARTICLE ALL LIST</span>";
+		}else if (pageName.startsWith("article_list_it")) {
+			return "<i class=\"fas fa-laptop-code\"></i> <span>IT LIST</span>";
 		}
 
 		return "";
