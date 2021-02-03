@@ -5,13 +5,11 @@
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
 <!-- lodash 불러오기 -->
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
 
-	<div v-cloak id="article-list-wrap" class="search-bar flex flex-jc-e">
-		<span> <input @input="searchKeywordInputed"
-			:value="searchKeyword" class="clean-slide" id="age" type="text"
-			placeholder="검색어를 입력하세요."> <label for="검색">검색</label>
+	<div class="search-bar flex flex-jc-e">
+		<span> <input @input="searchKeywordInputed" :value="searchKeyword" class="clean-slide" id="age" type="text" placeholder="검색어를 입력하세요."> 
+		<label for="검색">검색</label>
 		</span>
 	</div>
 
@@ -24,6 +22,6 @@
 			<p class="post-meta">{{article.regDate}}, {{article.writer}}</p>
 		</div>
 	</div>
-
 </div>
+
 <script src="article_search.js"></script>
