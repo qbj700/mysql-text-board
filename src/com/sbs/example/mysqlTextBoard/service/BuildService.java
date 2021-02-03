@@ -523,6 +523,8 @@ public class BuildService {
 			return "<i class=\"fas fa-flag\"></i> <span>NOTICE LIST</span>";
 		} else if (pageName.startsWith("article_list_it")) {
 			return "<i class=\"fas fa-laptop-code\"></i> <span>IT LIST</span>";
+		} else if (pageName.equals("article_search")) {
+			return "<i class=\"fas fa-search\"></i> <span>ARTICLE SEARCH</span>";
 		}
 		return "";
 	}
@@ -567,7 +569,7 @@ public class BuildService {
 			return "<i class=\"fas fa-clipboard-list\"></i> <span>" + boardName + " LIST</span>";
 		} else if (pageName.startsWith("statistics")) {
 			return "<i class=\"fas fa-chart-pie\"></i> <span>STATISTICS</span>";
-		}else if (pageName.startsWith("article_list_it")) {
+		} else if (pageName.startsWith("article_list_it")) {
 			return "<i class=\"fas fa-laptop-code\"></i> <span>IT LIST</span>";
 		}
 
