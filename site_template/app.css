@@ -115,6 +115,7 @@ a {
   margin-left:auto;
   margin-right:auto;
   padding-left:10px;
+  padding-right:10px;
 }
 .con-min-width {
   min-width:320px;
@@ -623,6 +624,9 @@ div.list {
 .article-detail > *:not(:first-child) {
   margin-top:40px;
 }
+.article-detail__title{
+  font-size: 2rem;
+}
 
 .article-detail__body {
   border-top:2px solid var(--font-color);
@@ -640,6 +644,29 @@ div.list {
 .article-detail__menu > span:nth-child(2) > a{
 	margin-left:40px;
 	margin-right:40px;
+}
+
+@media (max-width:900px){
+	.article-detail__title {
+		font-size: 1.5rem;
+	}
+	.article-detail__meta-data {
+		flex-direction: column;
+	}
+	.meta-data__right {
+		margin-top : 10px;
+	}
+	.meta-data__right > span:first-child {
+		margin-left: 0;
+	}
+}
+@media (max-width:425px){
+	.article-detail__title {
+		font-size: 1rem;
+	}
+	.article-detail__meta-data {
+		font-size: 0.5rem;
+	}
 }
 
 /* 게시물 상세 끝 */
