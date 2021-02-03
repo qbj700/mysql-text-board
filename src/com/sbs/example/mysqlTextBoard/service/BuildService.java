@@ -39,6 +39,23 @@ public class BuildService {
 		buildStatisticsPage();
 		buildIndexPage();
 		buildArticleSearchPage();
+		buildAboutPage();
+	}
+
+	private void buildAboutPage() {
+		StringBuilder sb = new StringBuilder();
+
+		String head = getHeadHtml("about");
+		String bodyTemplate = Util.getFileContents("site_template/about.html");
+		String foot = Util.getFileContents("site_template/foot.html");
+		
+		sb.append(head);
+		sb.append(bodyTemplate);
+		sb.append(foot);
+		
+		String filePath = "site/about.html";
+		Util.writerFile(filePath, sb.toString());
+		System.out.println(filePath + " 생성");
 	}
 
 	public void buildArticleTagPage() {
@@ -517,6 +534,8 @@ public class BuildService {
 	private String getMainContentByPageName(String pageName) {
 		if (pageName.equals("index")) {
 			return "<i class=\"fas fa-home\"></i> <span>Latest Articles</span>";
+		} else if (pageName.startsWith("about")) {
+			return "<i class=\"fas fa-address-card\"></i> <span>ABOUT</span>";
 		} else if (pageName.startsWith("article_list_jsp")) {
 			return "<i class=\"fab fa-java\"></i> <span>jsp LIST</span>";
 		} else if (pageName.startsWith("article_list_notice")) {
@@ -571,6 +590,8 @@ public class BuildService {
 			return "<i class=\"fas fa-chart-pie\"></i> <span>STATISTICS</span>";
 		} else if (pageName.startsWith("article_list_it")) {
 			return "<i class=\"fas fa-laptop-code\"></i> <span>IT LIST</span>";
+		} else if (pageName.startsWith("about")) {
+			return "<i class=\"fas fa-address-card\"></i> <span>ABOUT</span>";
 		}
 
 		return "";

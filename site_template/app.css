@@ -461,6 +461,7 @@ a {
   background-color:#f8f8f8;
   transition:top .3s;
   border-bottom:solid 1px #e7e7e7;
+  z-index: 3;
 }
 
 .mobile-side-bar.active {
@@ -683,6 +684,17 @@ div.list {
   font-size:3rem;
   padding:20px;
 }
+
+@media (max-width:900px){
+	.statistics-detail > div {
+		font-size:1.5rem;	
+	}	
+}
+@media (max-width:425px){
+	.statistics-detail > div {
+		font-size:1rem;	
+	}	
+}
 /* 통계 페이지 끝 */
 
 /* 게시물 검색 시작 */
@@ -830,5 +842,111 @@ html, body {
 	border-radius:50%;
 }
 /* 최상단 이동 버튼 끝 */
+/* 홈 페이지 텍스트 시작 */
 
+.index-content-1 {
+  margin-top: 20px;
+}
+
+.index-content-2 {
+  margin-top: 20px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+ul,
+li {
+  list-style: none;
+}
+.slide {
+  width: 500px;
+  height: 300px;
+  overflow: hidden;
+}
+.slide ul {
+  position: relative;
+  height: 100%;
+}
+.slide li {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  opacity: 0;
+  animation: fade 8s infinite;
+  transition: all 0.5s;
+}
+.slide li:nth-child(1) {
+  background: url("https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdMnVV7%2FbtqQ3grQ99F%2Fnx3LTIJPPHDnO8TjYNx6m0%2Fimg.jpg");
+  animation-delay: 0s;
+}
+.slide li:nth-child(2) {
+  background: url("https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbFqmPv%2FbtqQ1MLjWmJ%2FVdQBuKsISAzJxEMFKy8eq0%2Fimg.jpg");
+  animation-delay: 2s;
+}
+.slide li:nth-child(3) {
+  background: url("https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FYbasC%2FbtqRcGQomQa%2FNz5Wvvw0zJdsujgDSqT0hK%2Fimg.jpg");
+  animation-delay: 4s;
+}
+.slide li:nth-child(4) {
+  background: url("https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcVljcH%2FbtqQZx84yiW%2FJcn0WwFUidO8woX1wR48QK%2Fimg.jpg");
+  animation-delay: 6s;
+}
+/* 100 / 8 = 12.5 */
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  25% {
+    opacity: 1;
+  }
+  30% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.index-box__content {
+  display: flex;
+  justify-content: space-between;
+}
+.profile {
+  margin-top: 10px;
+}
+@media (max-width: 875px) {
+  .index-box__content {
+    display: flex;
+    flex-direction: column;
+  }
+  .index-content-1{
+    height:394px;
+  }
+}
+@media (max-width: 550px) {
+  .slide {
+    width: 250px;
+    height: 150px;
+    overflow: hidden;
+  }
+  .slide li:nth-child(1) {
+  background: url("https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2F4nEPp%2FbtqVvPDPuFZ%2FsxrgbjUsDQ4QGIaxvjasbK%2Fimg.jpg");
+}
+.slide li:nth-child(2) {
+  background: url("https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fb3WTD0%2FbtqVJSrFQhu%2Fk7Y5KmsRKKkun5nvKOyvZk%2Fimg.jpg");
+}
+.slide li:nth-child(3) {
+  background: url("https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcO9fhN%2FbtqVII3URrt%2F4dkHofXvbr7NkMyryyknd1%2Fimg.jpg");
+}
+.slide li:nth-child(4) {
+  background: url("https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FUPjWv%2FbtqVyUEMJFt%2FXDdYpVAzPNnkd9t2bfzXU0%2Fimg.jpg");
+}
+}
+/* 홈 페이지 텍스트 끝 */
 /* 커스텀 끝 */
