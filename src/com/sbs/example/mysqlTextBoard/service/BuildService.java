@@ -48,11 +48,11 @@ public class BuildService {
 		String head = getHeadHtml("about");
 		String bodyTemplate = Util.getFileContents("site_template/about.html");
 		String foot = Util.getFileContents("site_template/foot.html");
-		
+
 		sb.append(head);
 		sb.append(bodyTemplate);
 		sb.append(foot);
-		
+
 		String filePath = "site/about.html";
 		Util.writerFile(filePath, sb.toString());
 		System.out.println(filePath + " 생성");
@@ -537,13 +537,15 @@ public class BuildService {
 		} else if (pageName.startsWith("about")) {
 			return "<i class=\"fas fa-address-card\"></i> <span>ABOUT</span>";
 		} else if (pageName.startsWith("article_list_jsp")) {
-			return "<i class=\"fab fa-java\"></i> <span>jsp LIST</span>";
+			return "<i class=\"fab fa-java\"></i> <span>JSP LIST</span>";
 		} else if (pageName.startsWith("article_list_notice")) {
 			return "<i class=\"fas fa-flag\"></i> <span>NOTICE LIST</span>";
 		} else if (pageName.startsWith("article_list_it")) {
 			return "<i class=\"fas fa-laptop-code\"></i> <span>IT LIST</span>";
 		} else if (pageName.equals("article_search")) {
 			return "<i class=\"fas fa-search\"></i> <span>ARTICLE SEARCH</span>";
+		} else if (pageName.startsWith("article_list_codeup")) {
+			return "<i class=\"fas fa-laptop-code\"></i> <span>CODEUP LIST</span>";
 		}
 		return "";
 	}
@@ -581,6 +583,8 @@ public class BuildService {
 			return "<i class=\"fas fa-search\"></i> <span>ARTICLE SEARCH</span>";
 		} else if (pageName.startsWith("article_list_jsp")) {
 			return "<i class=\"fab fa-java\"></i> <span>JSP LIST</span>";
+		} else if (pageName.startsWith("article_list_codeup")) {
+			return "<i class=\"fas fa-laptop-code\"></i> <span>CODEUP LIST</span>";
 		} else if (pageName.startsWith("article_list_notice")) {
 			return "<i class=\"fas fa-flag\"></i> <span>NOTICE LIST</span>";
 		} else if (pageName.startsWith("article_list")) {
