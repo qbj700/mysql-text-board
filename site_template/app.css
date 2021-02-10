@@ -294,7 +294,7 @@ a {
 /* 메뉴 끝 */
 /* 상단 이미지 시작 */
 .back-img {
-  background-image:url('img/bg/home.jpg');
+  background-image:url('https://cdn.jsdelivr.net/gh/qbj700/ssg-2020-12/img/bg/home.jpg');
   width:100%;
   height:50vh;
   background-attachment:fixed;
