@@ -13,10 +13,10 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": "/landing.html?source=pwa",
+  "start_url": "/?source=pwa",
   "background_color": "#3367D6",
   "display": "standalone",
-  "scope": "/landing.html",
+  "scope": "/",
   "theme_color": "#3367D6",
   "shortcuts": [
     {
