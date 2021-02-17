@@ -1,21 +1,22 @@
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
-    navigator.serviceWorker.register('/sw.js').then(function(registration) {
-      // Registration was successful
-      console.log('ServiceWorker registration successful with scope: ', registration.scope);
-    }, function(err) {
-      // registration failed :(
-      console.log('ServiceWorker registration failed: ', err);
-    });
-  });
-}
+self.addEventListener('install', event => {
+	console.log('Install event!');
+});
+
+self.addEventListener('activate', event => {
+	console.log('activate event!');
+});
+
+self.addEventListener('fetch', event => {
+	console.log('Fetch intercepted for:', event.request.url);
+});
 
 self.addEventListener('install', function(event) {
   // Perform install steps
 });
 
-const CACHE_NAME = 'my-site-cache-v1';
-const urlsToCache = [
+
+const cacheName = 'cache-v1';
+const resourcesToPrecache = [
   '/',
   '/app.css',
   '/app.js',
@@ -28,26 +29,25 @@ const urlsToCache = [
 ];
 
 self.addEventListener('install', function(event) {
-  // Perform install steps
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(function(cache) {
-        console.log('Opened cache');
-        return cache.addAll(urlsToCache);
-      })
+	console.log('Service worker install event!');
+	event.waitUntil(
+		caches.open(cacheName)
+			.then(cache => {
+				return cache.addAll(resourcesToPrecache);
+			})
+	);
+});
+
+
+self.addEventListener('fetch', event => {
+  event.respondWith(caches.match(event.request)
   );
 });
 
-self.addEventListener('fetch', function(event) {
-  event.respondWith(
-    caches.match(event.request)
-      .then(function(response) {
-        // Cache hit - return response
-        if (response) {
-          return response;
-        }
-        return fetch(event.request);
-      }
-    )
-  );
+self.addEventListener('fecth', event =>{
+	event.respondWith(caches.match(event.request)
+		.then(cachedResponse => {
+			return cachedResponse || fetch(event.request);
+		})
+	);
 });
