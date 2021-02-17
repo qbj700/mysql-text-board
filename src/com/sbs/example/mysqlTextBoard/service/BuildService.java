@@ -29,6 +29,7 @@ public class BuildService {
 		Util.copy("site_template/app.css", "site/app.css");
 		Util.copy("site_template/app.js", "site/app.js");
 		Util.copy("site_template/favicon.ico", "site/favicon.ico");
+		Util.copy("site_template/manifest.json", "site/manifest.json");
 
 		loadDataFromDisqus();
 		loadDataFromGa4Data();
