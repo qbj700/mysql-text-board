@@ -42,6 +42,23 @@ public class BuildService {
 		buildIndexPage();
 		buildArticleSearchPage();
 		buildAboutPage();
+		buildLandingPage();
+	}
+
+	private void buildLandingPage() {
+		StringBuilder sb = new StringBuilder();
+
+		String head = getHeadHtml("landing");
+		String bodyTemplate = Util.getFileContents("site_template/landing.html");
+		String foot = Util.getFileContents("site_template/foot.html");
+		
+		sb.append(head);
+		sb.append(bodyTemplate);
+		sb.append(foot);
+		
+		String filePath = "site/landing.html";
+		Util.writerFile(filePath, sb.toString());
+		System.out.println(filePath + " 생성");
 	}
 
 	private void buildAboutPage() {
@@ -598,6 +615,8 @@ public class BuildService {
 			return "<i class=\"fas fa-laptop-code\"></i> <span>IT LIST</span>";
 		} else if (pageName.startsWith("about")) {
 			return "<i class=\"fas fa-address-card\"></i> <span>ABOUT</span>";
+		} else if (pageName.startsWith("landing")) {
+			return "<i class=\"fas fa-address-card\"></i> <span>WELLCOME</span>";
 		}
 
 		return "";
