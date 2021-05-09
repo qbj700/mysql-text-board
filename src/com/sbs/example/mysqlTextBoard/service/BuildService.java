@@ -162,7 +162,7 @@ public class BuildService {
 			mainContent.append("<h3 class=\"post-subtitle\">" + article.getSubtitle() + "</h3>");
 			mainContent.append("</a>");
 			mainContent.append(
-					"<p class=\"post-meta\">" + article.getRegDate() + ", writer : " + article.getExtra__writer() + " <i class=\"far fa-comments\"></i>&nbsp<a href=\"https://ssg.modify.kr/" + link + "#disqus_thread\">(Second article)</a></p>");
+					"<p class=\"post-meta\">" + article.getRegDate() + ", writer : " + article.getExtra__writer() + " <i class=\"far fa-comments\"></i>&nbsp<a href=\"https://modify.kr/" + link + "#disqus_thread\">(Second article)</a></p>");
 			mainContent.append("</div>");
 			mainContent.append("<div class=\"list\"></div>");
 
@@ -301,7 +301,7 @@ public class BuildService {
 			mainContent.append("<h3 class=\"post-subtitle\">" + article.getSubtitle() + "</h3>");
 			mainContent.append("</a>");
 			mainContent.append(
-					"<p class=\"post-meta\">" + article.getRegDate() + ", writer : " + article.getExtra__writer() + " <i class=\"far fa-comments\"></i>&nbsp<a href=\"https://ssg.modify.kr/" + link + "#disqus_thread\">(Second article)</a></p>");
+					"<p class=\"post-meta\">" + article.getRegDate() + ", writer : " + article.getExtra__writer() + " <i class=\"far fa-comments\"></i>&nbsp<a href=\"https://modify.kr/" + link + "#disqus_thread\">(Second article)</a></p>");
 			mainContent.append("</div>");
 			mainContent.append("<div class=\"list\"></div>");
 
@@ -471,12 +471,12 @@ public class BuildService {
 				body = body.replace("${article-detail__link-next-article-url}", getArticleDetailFileName(nextArticleId));
 				body = body.replace("${article-detail__link-next-article-class-addi}", nextArticleId == 0 ? "none" : "");
 
-				body = body.replace("${site-domain}", "ssg.modify.kr");
+				body = body.replace("${site-domain}", "modify.kr");
 				body = body.replace("${file-name}", getArticleDetailFileName(article.getId()));
 
 				String fileName = getArticleDetailFileName(article.getId());
 
-				body = body.replace("${article-detail__comments}", "<i class=\"far fa-comments\"></i>&nbsp<a href=\"https://ssg.modify.kr/" + fileName + "#disqus_thread\">(Second article)</a>");
+				body = body.replace("${article-detail__comments}", "<i class=\"far fa-comments\"></i>&nbsp<a href=\"https://modify.kr/" + fileName + "#disqus_thread\">(Second article)</a>");
 
 				sb.append(body);
 				sb.append(foot);
@@ -535,7 +535,7 @@ public class BuildService {
 		String siteSubject = "풀스택 개발자 지망생의 기술/일상 블로그";
 		String siteDescription = "풀스택 개발자가 되기위한 기술/일상 관련 글들을 공유합니다.";
 		String siteKeywords = "JAVA, MySQL, HTML, CSS, JAVASCRIPT, SPRING, CODE, CODING";
-		String siteDomain = "ssg.modify.kr";
+		String siteDomain = "modify.kr";
 		String siteMainUrl = "https://" + siteDomain;
 		String currentDate = Util.getNowDateStr().replace(" ", "T");
 

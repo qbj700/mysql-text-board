@@ -411,7 +411,7 @@ a {
 }
 /* 모바일 상단 이미지 시작 */
 .mobile-back-img {
-  background-image:url('https://rgpkorea.github.io/img/home-bg.jpg');
+  background-image:url('https://cdn.jsdelivr.net/gh/qbj700/ssg-2020-12/img/bg/home.jpg');
   width:100%;
   height:200px;
   background-attachment:scroll;
