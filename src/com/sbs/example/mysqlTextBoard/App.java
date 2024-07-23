@@ -29,7 +29,7 @@ public class App {
 			String cmd = sc.nextLine();
 
 			// DB 접속
-			MysqlUtil.setDBInfo("localhost", "sbsst", "sbs123414", "textBoard");
+			MysqlUtil.setDBInfo("172.19.91.73:3306", "sbsst", "sbs123414", "textBoard");
 
 			// 개발자모드 (true = 명령어 출력 / false = 명령어 출력 X)
 			MysqlUtil.setDevMode(false);

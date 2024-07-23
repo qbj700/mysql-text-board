@@ -22,6 +22,12 @@
 			<version>8.0.22</version>
 		</dependency>
 
+		<dependency>
+			 <groupId>org.mariadb.jdbc</groupId>
+			 <artifactId>mariadb-java-client</artifactId>
+			 <version>2.0.1</version>
+		</dependency>
+
 		<!-- jackson maven repository -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
