@@ -162,7 +162,7 @@ public class BuildService {
 			mainContent.append("<h3 class=\"post-subtitle\">" + article.getSubtitle() + "</h3>");
 			mainContent.append("</a>");
 			mainContent.append(
-					"<p class=\"post-meta\">" + article.getRegDate() + ", writer : " + article.getExtra__writer() + " <i class=\"far fa-comments\"></i>&nbsp<a href=\"https://modify.kr/" + link + "#disqus_thread\">(comments)</a></p>");
+					"<p class=\"post-meta\">" + article.getRegDate() + ", writer : " + article.getExtra__writer() + " <i class=\"far fa-comments\"></i>&nbsp<a href=\"https://modify.kr/" + link + "#disqus_thread\" data-disqus-identifier=\"" + link + "\">(comments)</a></p>");
 			mainContent.append("</div>");
 			mainContent.append("<div class=\"list\"></div>");
 
@@ -301,7 +301,7 @@ public class BuildService {
 			mainContent.append("<h3 class=\"post-subtitle\">" + article.getSubtitle() + "</h3>");
 			mainContent.append("</a>");
 			mainContent.append(
-					"<p class=\"post-meta\">" + article.getRegDate() + ", writer : " + article.getExtra__writer() + " <i class=\"far fa-comments\"></i>&nbsp<a href=\"https://modify.kr/" + link + "#disqus_thread\">(Comments)</a></p>");
+					"<p class=\"post-meta\">" + article.getRegDate() + ", writer : " + article.getExtra__writer() + " <i class=\"far fa-comments\"></i>&nbsp<a href=\"https://modify.kr/" + link + "#disqus_thread\" data-disqus-identifier=\"" + link + "\">(Comments)</a></p>");
 			mainContent.append("</div>");
 			mainContent.append("<div class=\"list\"></div>");
 
@@ -476,7 +476,7 @@ public class BuildService {
 
 				String fileName = getArticleDetailFileName(article.getId());
 
-				body = body.replace("${article-detail__comments}", "<i class=\"far fa-comments\"></i>&nbsp<a href=\"https://modify.kr/" + fileName + "#disqus_thread\">(Comments)</a>");
+				body = body.replace("${article-detail__comments}", "<i class=\"far fa-comments\"></i>&nbsp<a href=\"https://modify.kr/" + fileName + "#disqus_thread\" data-disqus-identifier=\"" + fileName + "\">(Comments)</a>");
 
 				sb.append(body);
 				sb.append(foot);
